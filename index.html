@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pepe Earn — Invite & UI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e17;
+    --card:#11121a;
+    --muted:#9aa4c3;
+    --accent1:#7b3cff;
+    --accent2:#6bffea;
+    --pepe-green:#66d84a;
+  }
+  *{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+  body{
+    margin:0;
+    min-height:100vh;
+    background: linear-gradient(180deg,#070712 0%, #0b0e17 60%);
+    color:#e7eefc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .app{ width:360px; max-width:95vw; }
+
+  /* Top */
+  .top {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px; padding:14px;
+    display:flex; gap:12px; justify-content:space-between; align-items:center;
+    box-shadow: 0 8px 30px rgba(11,14,23,0.6); border:1px solid rgba(255,255,255,0.03);
+  }
+  .idcol { font-size:12px; color:var(--muted) }
+  .idcol .value { font-weight:700; margin-top:6px; letter-spacing:0.6px; }
+  .balance { text-align:center; flex:1; }
+  .balance .label { font-size:12px; color:var(--muted) }
+  .balance .amount { font-weight:800; font-size:20px; color:#c6f7b3; margin-top:2px }
+  .balance .token { font-weight:800; color:var(--pepe-green); font-size:14px; margin-top:2px; }
+  .cards { text-align:right; font-size:12px; color:var(--muted); }
+  .cards .value { font-weight:700; margin-top:6px; }
+
+  /* Main */
+  .main { margin-top:14px; background: linear-gradient(180deg, rgba(123,60,255,0.04), rgba(123,60,255,0.02)); border-radius:14px; padding:14px; border:1px solid rgba(123,60,255,0.06); }
+  .tabs { display:flex; gap:8px; margin-bottom:12px; }
+  .tab { flex:1; padding:8px 10px; background:transparent; border-radius:10px; text-align:center; font-weight:700; color:#cfcaf8; font-size:13px; cursor:pointer; border:1px solid transparent; }
+  .tab.active { background: linear-gradient(90deg, var(--accent1), #9b6bff); box-shadow: 0 6px 18px rgba(123,60,255,0.12); color:white; }
+  .card-inner { background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008)); border-radius:12px; padding:14px; margin-top:6px; border:1px solid rgba(255,255,255,0.02); }
+
+  .row-hr { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px }
+  .reward { display:flex; gap:8px; align-items:center; }
+  .coin { width:36px; height:36px; border-radius:50%; background: linear-gradient(180deg,#9fe07b,#66d84a); display:flex; align-items:center; justify-content:center; font-weight:800; color:#143214; font-size:12px; box-shadow: 0 6px 18px rgba(102,216,74,0.12); border: 1px solid rgba(255,255,255,0.08); }
+  .reward .title { font-weight:700; font-size:14px; color:#f1eaff }
+  .reward .sub { font-size:12px; color:var(--muted) }
+
+  .progress-label { font-size:12px; color:var(--muted); margin-bottom:6px; display:flex; justify-content:space-between }
+  .bar { height:8px; background:rgba(255,255,255,0.04); border-radius:8px; overflow:hidden; margin-bottom:10px; }
+  .bar > i { display:block; height:100%; width:0%; background: linear-gradient(90deg, var(--accent1), var(--accent2)); box-shadow: 0 6px 18px rgba(107,255,234,0.08); border-radius:8px; transition:width 450ms ease; }
+
+  .watch-btn { display:block; width:100%; margin-top:8px; padding:12px 14px; border-radius:12px; background: linear-gradient(90deg,#6b2bff,#9b6bff); color:white; font-weight:800; border:none; cursor:pointer; box-shadow: 0 12px 30px rgba(123,60,255,0.12); }
+
+  /* Invite area */
+  .invite { margin-top:14px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008)); border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,0.02); }
+  .invite label { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
+  .invite .row { display:flex; gap:8px; }
+  .invite input[type="text"]{ flex:1; padding:10px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:inherit;}
+  .invite button{ padding:10px 12px; border-radius:8px; border:none; cursor:pointer; background:var(--accent1); color:white; font-weight:700; }
+
+  /* bottom nav */
+  .nav { margin-top:14px; display:flex; gap:6px; justify-content:space-between; align-items:center; }
+  .nav button { background:transparent; border-radius:10px; padding:10px 8px; color:var(--muted); flex:1; border:none; cursor:pointer; font-weight:700; font-size:13px; }
+  .nav button.active { color:var(--accent1); text-shadow:0 2px 8px rgba(123,60,255,0.06) }
+
+  @media (max-width:420px){ .app{width:94vw} }
+</style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Pepe Earn UI">
+    <!-- TOP -->
+    <div class="top" aria-hidden="false">
+      <div class="idcol">
+        <div style="font-size:11px;color:var(--muted)">ID</div>
+        <div class="value" id="userId">7934303408</div>
+      </div>
+
+      <div class="balance" style="padding:0 8px">
+        <div class="label">BALANCE</div>
+        <div class="amount" id="balance">45.00</div>
+        <div class="token">PEPE</div>
+      </div>
+
+      <div class="cards">
+        <div style="font-size:11px;color:var(--muted)">CARDS</div>
+        <div class="value">0</div>
+      </div>
+    </div>
+
+    <!-- MAIN: Ads -->
+    <div class="main" role="region" aria-label="Watch Ads and Earn">
+      <div class="tabs" role="tablist">
+        <div class="tab active" id="tab-quick" role="tab" aria-selected="true">Quick Ads ⚡</div>
+        <div class="tab" id="tab-mega" role="tab">Mega Ads 🔥</div>
+      </div>
+
+      <div class="card-inner">
+        <div class="row-hr">
+          <div class="reward">
+            <div class="coin">PE</div>
+            <div>
+              <div class="title">Quick Ads ⚡ Ads</div>
+              <div class="sub" id="rewardText">50 PEPE</div>
+            </div>
+          </div>
+          <div style="text-align:right;color:var(--muted);font-size:12px">Daily Limit</div>
+        </div>
+
+        <div>
+          <div class="progress-label"><span>Daily Progress</span><span id="dailyCount">2/30</span></div>
+          <div class="bar"><i id="dailyBar" style="width:8%"></i></div>
+
+          <div class="progress-label"><span>Hourly Progress</span><span id="hourlyCount">2/10</span></div>
+          <div class="bar"><i id="hourlyBar" style="width:20%"></i></div>
+
+          <button class="watch-btn" id="watchBtn">Watch Ad Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVITE -->
+    <div class="invite" aria-label="Invite friends">
+      <label>Invite Friends 🎁 — share your unique link</label>
+      <div class="row" style="margin-bottom:8px">
+        <input type="text" id="inviteLink" readonly>
+        <button id="copyBtn">Copy</button>
+      </div>
+      <div class="row" style="margin-bottom:8px">
+        <input type="text" id="customId" placeholder="Enter different user ID (optional)" />
+        <button id="genBtn">Generate</button>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button id="shareBtn" style="flex:1;background:linear-gradient(90deg,var(--accent2),#9bffeb);color:#012;">Share</button>
+        <button id="qrBtn" style="flex:1;background:linear-gradient(90deg,var(--accent1),#9b6bff)">Show QR</button>
+      </div>
+      <div id="qrArea" style="margin-top:8px;display:none;"></div>
+    </div>
+
+    <!-- NAV -->
+    <div class="nav" role="navigation" aria-label="Main Navigation">
+      <button class="active">TASK</button>
+      <button>CARDS</button>
+      <button>INVITE</button>
+      <button>WITHDRAW</button>
+    </div>
+  </div>
+
+<script>
+  // Config / initial state
+  let userId = "7934303408"; // this would normally come from backend/auth
+  const perAdReward = 50; // PER AD = 50 PEPE
+  const dailyTotal = 30;
+  const hourlyTotal = 10;
+  let daily = 2;
+  let hourly = 2;
+
+  // Elements
+  const userIdEl = document.getElementById('userId');
+  const balanceEl = document.getElementById('balance');
+  const dailyCount = document.getElementById('dailyCount');
+  const hourlyCount = document.getElementById('hourlyCount');
+  const dailyBar = document.getElementById('dailyBar');
+  const hourlyBar = document.getElementById('hourlyBar');
+  const watchBtn = document.getElementById('watchBtn');
+  const inviteLinkInput = document.getElementById('inviteLink');
+  const copyBtn = document.getElementById('copyBtn');
+  const genBtn = document.getElementById('genBtn');
+  const customIdInput = document.getElementById('customId');
+  const shareBtn = document.getElementById('shareBtn');
+  const qrBtn = document.getElementById('qrBtn');
+  const qrArea = document.getElementById('qrArea');
+  const rewardText = document.getElementById('rewardText');
+
+  // Update UI initial
+  function updateUI() {
+    userIdEl.textContent = userId;
+    dailyCount.textContent = `${daily}/${dailyTotal}`;
+    hourlyCount.textContent = `${hourly}/${hourlyTotal}`;
+    dailyBar.style.width = `${Math.round((daily/dailyTotal)*100)}%`;
+    hourlyBar.style.width = `${Math.round((hourly/hourlyTotal)*100)}%`;
+    rewardText.textContent = `${perAdReward} PEPE`;
+    // invite link
+    inviteLinkInput.value = `https://t.me/SmartPaisayBot?start=${encodeURIComponent(userId)}`;
+  }
+  updateUI();
+
+  // Watch ad simulation: reward 50 PEPE per ad
+  watchBtn.addEventListener('click', () => {
+    if (daily >= dailyTotal) { alert('Daily limit reached'); return; }
+    if (hourly >= hourlyTotal) { alert('Hourly limit reached'); return; }
+
+    watchBtn.disabled = true;
+    watchBtn.textContent = 'Watching...';
+
+    setTimeout(() => {
+      // increase balance
+      let current = parseFloat(balanceEl.textContent || '0');
+      current += perAdReward;
+      balanceEl.textContent = current.toFixed(2);
+
+      daily += 1;
+      hourly += 1;
+      updateUI();
+
+      watchBtn.disabled = false;
+      watchBtn.textContent = 'Watch Ad Now';
+    }, 2200); // simulate ad duration
+  });
+
+  // Copy invite link
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(inviteLinkInput.value);
+      alert('Invite link copied to clipboard:\\n' + inviteLinkInput.value);
+    } catch (e) {
+      inviteLinkInput.select();
+      document.execCommand('copy');
+      alert('Copied (fallback)');
+    }
+  });
+
+  // Generate invite from custom ID (simulate backend)
+  genBtn.addEventListener('click', () => {
+    const v = customIdInput.value.trim();
+    if (!v) return alert('Enter a user ID to generate link.');
+    userId = v;
+    updateUI();
+    alert('Invite link updated for user ID: ' + userId);
+  });
+
+  // Share (Web Share API)
+  shareBtn.addEventListener('click', async () => {
+    const url = inviteLinkInput.value;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'Join SmartPaisayBot', text: 'Join and earn PEPE!', url });
+      } catch (e) {
+        // user cancelled
+      }
+    } else {
+      // fallback: copy
+      try { await navigator.clipboard.writeText(url); alert('Link copied for sharing: ' + url); }
+      catch (e) { alert('Share not supported — copy this link: ' + url); }
+    }
+  });
+
+  // Simple QR generation (uses canvas)
+  qrBtn.addEventListener('click', () => {
+    const url = inviteLinkInput.value;
+    if (!url) return;
+    if (qrArea.style.display === 'none' || qrArea.innerHTML === '') {
+      qrArea.style.display = 'block';
+      // Generate minimal QR (no external lib) - use simple library-free tiny QR generator
+      // For better QR use an external lib; here we create a data URL via Google Chart fallback if allowed,
+      // but since no web requests, we'll draw a basic QR-like placeholder.
+      const canvas = document.createElement('canvas');
+      canvas.width = 200; canvas.height = 200;
+      const c = canvas.getContext('2d');
+      c.fillStyle = '#0b0e17';
+      c.fillRect(0,0,200,200);
+      c.fillStyle = '#66d84a';
+      c.fillRect(20,20,60,60); c.fillRect(120,20,60,60); c.fillRect(20,120,60,60);
+      c.fillStyle = '#fff';
+      c.fillText('PEPE', 84, 110);
+      qrArea.innerHTML = '';
+      qrArea.appendChild(canvas);
+    } else {
+      qrArea.style.display = 'none';
+    }
+  });
+
+  // Tab click handlers (visual only)
+  document.getElementById('tab-quick').addEventListener('click', () => {
+    document.getElementById('tab-quick').classList.add('active');
+    document.getElementById('tab-mega').classList.remove('active');
+    // keep perAdReward same (could change)
+  });
+  document.getElementById('tab-mega').addEventListener('click', () => {
+    document.getElementById('tab-mega').classList.add('active');
+    document.getElementById('tab-quick').classList.remove('active');
+    alert('Mega Ads selected (mock). You can change rewards in code.');
+  });
+
+  // Allow pressing Enter in customId to generate
+  customIdInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') genBtn.click(); });
+
+</script>
+</body>
+</html>
