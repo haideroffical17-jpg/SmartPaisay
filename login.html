@@ -1,15 +1,11 @@
-<!-- COMPLETE login.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>VYROVA LOGIN</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
 
@@ -22,10 +18,10 @@ box-sizing:border-box;
 body{
 font-family:'DM Sans',sans-serif;
 background:#07080f;
-min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
+height:100vh;
 overflow:hidden;
 color:#fff;
 }
@@ -36,41 +32,27 @@ inset:0;
 
 background:
 
-radial-gradient(circle at 15% 20%,rgba(109,40,217,.30),transparent 35%),
+radial-gradient(circle at 20% 20%,rgba(109,40,217,.28),transparent 35%),
 
-radial-gradient(circle at 80% 75%,rgba(37,99,235,.28),transparent 35%),
-
-radial-gradient(circle at 50% 40%,rgba(13,148,136,.18),transparent 45%);
-
-}
-
-.grid{
-position:fixed;
-inset:0;
-
-background-image:
-linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
-linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
-
-background-size:55px 55px;
+radial-gradient(circle at 80% 80%,rgba(37,99,235,.22),transparent 35%);
 }
 
 .card{
 
 position:relative;
-z-index:10;
+z-index:2;
 
 width:520px;
 
 padding:45px;
 
-border-radius:34px;
+border-radius:32px;
 
-background:rgba(18,22,36,.72);
+background:rgba(18,22,36,.85);
 
-backdrop-filter:blur(26px);
+backdrop-filter:blur(18px);
 
-border:1px solid rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.05);
 
 }
 
@@ -78,9 +60,9 @@ border:1px solid rgba(255,255,255,.08);
 
 display:flex;
 align-items:center;
-gap:16px;
+gap:15px;
 
-margin-bottom:32px;
+margin-bottom:35px;
 
 }
 
@@ -89,7 +71,7 @@ margin-bottom:32px;
 width:68px;
 height:68px;
 
-border-radius:20px;
+border-radius:22px;
 
 background:
 linear-gradient(135deg,#6d28d9,#2563eb);
@@ -99,68 +81,69 @@ justify-content:center;
 align-items:center;
 
 font-family:'Syne';
+
 font-size:30px;
+
 font-weight:800;
 
 }
 
 .logo h1{
 font-family:'Syne';
-font-size:30px;
 }
 
 .sub{
 font-size:12px;
-color:#8f98bf;
+color:#8f98bc;
 }
 
 .title{
 
 font-family:'Syne';
-font-size:46px;
+
+font-size:42px;
+
 margin-bottom:12px;
 
 }
 
 .desc{
 
-color:#9099c0;
-line-height:1.8;
-margin-bottom:35px;
+color:#9099be;
+
+margin-bottom:32px;
+
+line-height:1.7;
 
 }
 
 .group{
-margin-bottom:22px;
+margin-bottom:20px;
 }
 
-.label{
+label{
 
-font-size:13px;
+display:block;
+
 margin-bottom:10px;
-color:#a3abd1;
+
+color:#9aa3ca;
 
 }
 
 .inputbox{
 
-height:66px;
-
 display:flex;
 align-items:center;
 
+height:64px;
+
 background:#14192d;
 
-border:1px solid #252d4a;
-
-border-radius:20px;
+border-radius:18px;
 
 padding:0 18px;
 
-}
-
-.icon{
-margin-right:12px;
 }
 
 input{
@@ -169,7 +152,9 @@ width:100%;
 height:100%;
 
 background:none;
+
 border:none;
+
 outline:none;
 
 color:#fff;
@@ -186,16 +171,18 @@ button{
 
 width:100%;
 
-height:68px;
+height:65px;
 
 border:none;
 
-border-radius:22px;
+border-radius:20px;
 
 cursor:pointer;
 
 font-family:'Syne';
-font-size:16px;
+
+font-size:15px;
+
 font-weight:800;
 
 background:
@@ -213,7 +200,7 @@ margin-top:20px;
 
 text-align:center;
 
-color:#ff5d80;
+color:#ff4567;
 
 }
 
@@ -225,18 +212,16 @@ text-align:center;
 
 font-size:13px;
 
-color:#7782aa;
+color:#7f88b0;
 
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="bg"></div>
-<div class="grid"></div>
 
 <div class="card">
 
@@ -260,29 +245,23 @@ AI CREATIVE SUITE
 
 <div class="title">
 
-Welcome Back.
+Welcome Back
 
 </div>
 
 <div class="desc">
 
-Login to continue into your premium creative workspace.
+Login to continue into your premium workspace.
 
 </div>
 
 <div class="group">
 
-<div class="label">
-
+<label>
 Username
-
-</div>
+</label>
 
 <div class="inputbox">
-
-<div class="icon">
-👤
-</div>
 
 <input
 id="username"
@@ -294,17 +273,11 @@ placeholder="Enter Username">
 
 <div class="group">
 
-<div class="label">
-
+<label>
 Password
-
-</div>
+</label>
 
 <div class="inputbox">
-
-<div class="icon">
-🔒
-</div>
 
 <input
 id="password"
@@ -344,20 +317,24 @@ Secure Login • VYROVA Workspace
 function toggle(){
 
 let p=
+
 document.getElementById(
 "password"
 )
 
 p.type=
+
 p.type==="password"
+
 ?
+
 "text"
+
 :
+
 "password"
 
 }
-
-/* COMPLETE LOGIN */
 
 function login(){
 
@@ -424,11 +401,23 @@ users.find(
 
 u=>
 
-u.username===username
+String(
+u.username
+).trim()
+
+===
+
+username
 
 &&
 
-u.password===password
+String(
+u.password
+).trim()
+
+===
+
+password
 
 )
 
@@ -444,7 +433,7 @@ return
 
 }
 
-/* FIXED EXPIRY */
+/* EXPIRE CHECK */
 
 if(
 
@@ -452,8 +441,13 @@ found.expiry
 
 &&
 
-Date.now()>
+Date.now()
+
+>
+
+Number(
 found.expiry
+)
 
 ){
 
