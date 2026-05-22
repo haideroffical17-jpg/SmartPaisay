@@ -5,65 +5,219 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>VYROVA LOGIN</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
 <style>
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial,sans-serif;
 }
 
 body{
-background:#070b16;
-color:#fff;
+
+font-family:'DM Sans',sans-serif;
+
+background:#07080f;
+
+min-height:100vh;
+
 display:flex;
+
 justify-content:center;
+
 align-items:center;
-height:100vh;
+
+overflow:hidden;
+
+color:#fff;
+
+}
+
+.bg{
+
+position:fixed;
+
+inset:0;
+
+background:
+
+radial-gradient(circle at 15% 20%,rgba(109,40,217,.35),transparent 35%),
+
+radial-gradient(circle at 80% 75%,rgba(37,99,235,.28),transparent 35%),
+
+radial-gradient(circle at 50% 40%,rgba(13,148,136,.18),transparent 45%);
+
+}
+
+.grid{
+
+position:fixed;
+
+inset:0;
+
+background-image:
+
+linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+
+linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+
+background-size:55px 55px;
+
 }
 
 .card{
 
-width:520px;
+position:relative;
 
-padding:40px;
+z-index:10;
 
-background:#10172c;
+width:560px;
 
-border-radius:25px;
+padding:45px;
+
+border-radius:34px;
+
+background:rgba(18,22,36,.72);
+
+backdrop-filter:blur(28px);
+
+border:1px solid rgba(255,255,255,.08);
+
+box-shadow:0 0 60px rgba(0,0,0,.35);
 
 }
 
-h1{
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:16px;
+
+margin-bottom:32px;
+
+}
+
+.mark{
+
+width:72px;
+height:72px;
+
+border-radius:22px;
+
+background:
+linear-gradient(135deg,#6d28d9,#2563eb);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-family:'Syne';
+
+font-size:32px;
+
+font-weight:800;
+
+}
+
+.logo h1{
+
+font-family:'Syne';
+
+font-size:30px;
+
+}
+
+.sub{
+
+font-size:12px;
+
+color:#8f98bf;
+
+}
+
+.title{
+
+font-family:'Syne';
+
 font-size:52px;
-margin-bottom:10px;
+
+margin-bottom:12px;
+
 }
 
-p{
-color:#9099be;
-margin-bottom:30px;
+.desc{
+
+color:#9099c0;
+
+line-height:1.8;
+
+margin-bottom:35px;
+
+}
+
+.group{
+
+margin-bottom:22px;
+
+}
+
+.label{
+
+font-size:13px;
+
+margin-bottom:10px;
+
+color:#a3abd1;
+
+}
+
+.inputbox{
+
+height:68px;
+
+display:flex;
+
+align-items:center;
+
+background:#14192d;
+
+border:1px solid #252d4a;
+
+border-radius:20px;
+
+padding:0 18px;
+
 }
 
 input{
 
 width:100%;
 
-height:65px;
+height:100%;
 
-margin-bottom:20px;
-
-padding:0 20px;
+background:none;
 
 border:none;
 
-border-radius:16px;
+outline:none;
 
-background:#161d35;
+color:#fff;
 
-color:white;
+font-size:15px;
 
-font-size:16px;
+}
+
+.eye{
+
+cursor:pointer;
+
+font-size:22px;
 
 }
 
@@ -71,22 +225,34 @@ button{
 
 width:100%;
 
-height:65px;
+height:70px;
 
 border:none;
 
-border-radius:18px;
+border-radius:22px;
 
 cursor:pointer;
 
+font-family:'Syne';
+
 font-size:16px;
 
-font-weight:bold;
+font-weight:800;
 
 background:
 linear-gradient(135deg,#6d28d9,#2563eb);
 
-color:white;
+color:#fff;
+
+margin-top:12px;
+
+transition:.25s;
+
+}
+
+button:hover{
+
+transform:translateY(-2px);
 
 }
 
@@ -96,32 +262,102 @@ margin-top:18px;
 
 text-align:center;
 
-color:#ff4567;
+color:#ff5d80;
+
+font-size:15px;
+
+}
+
+.footer{
+
+margin-top:24px;
+
+text-align:center;
+
+font-size:13px;
+
+color:#7782aa;
 
 }
 
 </style>
+
 </head>
+
 <body>
+
+<div class="bg"></div>
+
+<div class="grid"></div>
 
 <div class="card">
 
-<h1>
-Welcome Back
-</h1>
+<div class="logo">
 
-<p>
-Login to continue into your premium workspace.
-</p>
+<div class="mark">
+V
+</div>
+
+<div>
+
+<h1>VYROVA</h1>
+
+<div class="sub">
+AI CREATIVE SUITE
+</div>
+
+</div>
+
+</div>
+
+<div class="title">
+Welcome Back.
+</div>
+
+<div class="desc">
+Login to continue into your premium creative workspace.
+</div>
+
+<div class="group">
+
+<div class="label">
+Username
+</div>
+
+<div class="inputbox">
 
 <input
 id="username"
-placeholder="Username">
+placeholder="Enter Username">
+
+</div>
+
+</div>
+
+<div class="group">
+
+<div class="label">
+Password
+</div>
+
+<div class="inputbox">
 
 <input
 id="password"
 type="password"
-placeholder="Password">
+placeholder="Enter Password">
+
+<div
+class="eye"
+onclick="toggle()">
+
+👁️
+
+</div>
+
+</div>
+
+</div>
 
 <button onclick="login()">
 
@@ -130,6 +366,12 @@ LOGIN TO VYROVA
 </button>
 
 <div id="error"></div>
+
+<div class="footer">
+
+Secure Login • VYROVA Workspace
+
+</div>
 
 </div>
 
@@ -157,30 +399,21 @@ from
 
 "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-/* FIREBASE CONFIG */
+const firebaseConfig={
 
-const firebaseConfig = {
+apiKey:"AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
 
-apiKey:
-"AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
+authDomain:"vyrova-2eb4d.firebaseapp.com",
 
-authDomain:
-"vyrova-2eb4d.firebaseapp.com",
+projectId:"vyrova-2eb4d",
 
-projectId:
-"vyrova-2eb4d",
+storageBucket:"vyrova-2eb4d.firebasestorage.app",
 
-storageBucket:
-"vyrova-2eb4d.firebasestorage.app",
+messagingSenderId:"136436344218",
 
-messagingSenderId:
-"136436344218",
+appId:"1:136436344218:web:0efa47a4da3f20b7bc8623",
 
-appId:
-"1:136436344218:web:0efa47a4da3f20b7bc8623",
-
-measurementId:
-"G-1TNRGDFL4M"
+measurementId:"G-1TNRGDFL4M"
 
 };
 
@@ -190,7 +423,29 @@ initializeApp(firebaseConfig)
 const db=
 getFirestore(app)
 
-/* LOGIN */
+window.toggle=
+
+function(){
+
+let p=
+
+document.getElementById(
+"password"
+)
+
+p.type=
+
+p.type==="password"
+
+?
+
+"text"
+
+:
+
+"password"
+
+}
 
 window.login=
 
@@ -305,8 +560,6 @@ return
 
 }
 
-/* EXPIRY */
-
 if(
 
 found.expiry
@@ -331,27 +584,21 @@ return
 
 }
 
-/* SAVE SESSION */
-
 localStorage.setItem(
 
 "activeUser",
 
 JSON.stringify({
 
-username:
-found.username,
+username:found.username,
 
 role:"user",
 
-device:
-found.device,
+device:found.device,
 
-days:
-found.days,
+days:found.days,
 
-expiry:
-found.expiry
+expiry:found.expiry
 
 })
 
