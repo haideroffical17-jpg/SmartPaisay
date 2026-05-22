@@ -1,691 +1,1016 @@
-<!-- index.html -->
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>VYROVA SUITE</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-body{
-font-family:'DM Sans',sans-serif;
-background:#07080f;
-color:#fff;
-overflow:hidden;
-}
-
-.bg{
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at 20% 20%,rgba(109,40,217,.28),transparent 35%),
-radial-gradient(circle at 80% 80%,rgba(37,99,235,.25),transparent 35%);
-}
-
-.container{
-display:flex;
-height:100vh;
-position:relative;
-z-index:2;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-
-width:270px;
-
-background:rgba(18,22,36,.88);
-
-padding:30px;
-
-backdrop-filter:blur(18px);
-
-border-right:1px solid rgba(255,255,255,.05);
-
-}
-
-.logo{
-
-display:flex;
-align-items:center;
-gap:15px;
-
-margin-bottom:45px;
-
-}
-
-.mark{
-
-width:68px;
-height:68px;
-
-border-radius:22px;
-
-background:
-linear-gradient(135deg,#6d28d9,#2563eb);
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-font-family:'Syne';
-font-size:30px;
-font-weight:800;
-
-}
-
-.logo h1{
-font-family:'Syne';
-}
-
-.logo p{
-font-size:12px;
-color:#8f98bc;
-}
-
-.nav{
-display:flex;
-flex-direction:column;
-gap:14px;
-}
-
-.nav button{
-
-height:58px;
-
-border:none;
-
-border-radius:18px;
-
-background:#15192c;
-
-color:#fff;
-
-font-weight:700;
-
-cursor:pointer;
-
-transition:.25s;
-
-}
-
-.nav button:hover{
-background:#6d28d9;
-}
-
-/* MAIN */
-
-.main{
-
-flex:1;
-
-padding:35px;
-
-overflow:auto;
-
-}
-
-.header{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-margin-bottom:30px;
-
-}
-
-.title{
-
-font-family:'Syne';
-
-font-size:42px;
-
-}
-
-.profile{
-
-display:flex;
-align-items:center;
-gap:14px;
-
-}
-
-.avatar{
-
-width:58px;
-height:58px;
-
-border-radius:18px;
-
-background:
-linear-gradient(135deg,#6d28d9,#2563eb);
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-font-family:'Syne';
-font-size:24px;
-font-weight:800;
-
-}
-
-/* HERO */
-
-.hero{
-
-background:rgba(18,22,36,.82);
-
-padding:38px;
-
-border-radius:32px;
-
-margin-bottom:28px;
-
-}
-
-.hero h2{
-
-font-size:46px;
-
-font-family:'Syne';
-
-line-height:1.1;
-
-margin-bottom:12px;
-
-}
-
-.hero p{
-
-color:#9099be;
-
-line-height:1.8;
-
-}
-
-/* STATS */
-
-.cards{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:20px;
-
-margin-bottom:28px;
-
-}
-
-.card{
-
-background:rgba(18,22,36,.82);
-
-padding:28px;
-
-border-radius:28px;
-
-}
-
-.card h2{
-
-font-size:38px;
-
-font-family:'Syne';
-
-margin-bottom:8px;
-
-}
-
-.card p{
-
-color:#9099be;
-
-}
-
-/* TOOLS */
-
-.tools{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:22px;
-
-}
-
-.tool{
-
-background:rgba(18,22,36,.84);
-
-padding:34px;
-
-border-radius:32px;
-
-transition:.25s;
-
-}
-
-.tool:hover{
-
-transform:translateY(-6px);
-
-}
-
-.tool h2{
-
-font-family:'Syne';
-
-font-size:34px;
-
-margin-bottom:14px;
-
-}
-
-.tool p{
-
-color:#9099be;
-
-line-height:1.8;
-
-margin-bottom:20px;
-
-}
-
-.open{
-
-display:inline-block;
-
-padding:14px 22px;
-
-border-radius:16px;
-
-background:
-linear-gradient(135deg,#6d28d9,#2563eb);
-
-text-decoration:none;
-
-color:#fff;
-
-font-weight:800;
-
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VYROVA AI - Admin Control Suite</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            900: '#4c1d95',
+                            950: '#1e1b4b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #05070f;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        /* Glassmorphism Panel with dynamic border pulse */
+        .glass-panel {
+            background: rgba(10, 15, 30, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+        }
+        .neon-glow {
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.15);
+        }
+        /* Animated gradient background mesh */
+        .animated-mesh {
+            background: radial-gradient(circle at 10% 20%, rgba(76, 29, 149, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(37, 99, 235, 0.12) 0%, transparent 45%),
+                        radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 1) 0%, rgba(5, 7, 15, 1) 100%);
+        }
+        /* Input highlight styling */
+        input:focus, select:focus {
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+        }
+    </style>
 </head>
 
-<body>
-
-<div class="bg"></div>
-
-<div class="container">
-
-<div class="sidebar">
-
-<div class="logo">
-
-<div class="mark">
-V
-</div>
-
-<div>
-
-<h1>VYROVA</h1>
-
-<p>AI CREATIVE SUITE</p>
-
-</div>
-
-</div>
-
-<div class="nav">
-
-<button>Dashboard</button>
-
-<button>Projects</button>
-
-<button>Settings</button>
-
-<button
-id="adminPanelBtn"
-style="display:none;"
-onclick="goAdmin()">
-
-Admin Panel
-
-</button>
-
-<button onclick="logout()">
-
-Logout
-
-</button>
-
-</div>
-
-</div>
-
-<div class="main">
-
-<div class="header">
-
-<div class="title">
-
-VIP Dashboard
-
-</div>
-
-<div class="profile">
-
-<div>
-
-<h3 id="userName">
-
-Premium User
-
-</h3>
-
-<p style="color:#9099be;font-size:13px;">
-
-Creative Workspace
-
-</p>
-
-</div>
-
-<div class="avatar">
-
-V
-
-</div>
-
-</div>
-
-</div>
-
-<div class="hero">
-
-<h2>
-
-Welcome To VYROVA SUITE
-
-</h2>
-
-<p>
-
-Premium creative workspace for AI tools, video editing, voice generation and automation.
-
-</p>
-
-</div>
-
-<div class="cards">
-
-<div class="card">
-
-<h2>
-
-4
-
-</h2>
-
-<p>
-
-Premium Tools
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>
-
-LIVE
-
-</h2>
-
-<p>
-
-System Status
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>
-
-VIP
-
-</h2>
-
-<p>
-
-Access Level
-
-</p>
-
-</div>
-
-</div>
-
-<div class="tools">
-
-<div class="tool">
-
-<h2>
-
-🎬 Video Editor
-
-</h2>
-
-<p>
-
-Professional editing workspace.
-
-</p>
-
-<a
-href="editor.html"
-class="open">
-
-Open Tool
-
-</a>
-
-</div>
-
-<div class="tool">
-
-<h2>
-
-🎥 Video Generator
-
-</h2>
-
-<p>
-
-Generate premium AI videos.
-
-</p>
-
-<a
-href="generator.html"
-class="open">
-
-Open Tool
-
-</a>
-
-</div>
-
-<div class="tool">
-
-<h2>
-
-🔊 Text To Audio
-
-</h2>
-
-<p>
-
-Realistic premium voice creation.
-
-</p>
-
-<a
-href="voice.html"
-class="open">
-
-Open Tool
-
-</a>
-
-</div>
-
-<div class="tool">
-
-<h2>
-
-✂️ Long To Short
-
-</h2>
-
-<p>
-
-Convert long content into shorts.
-
-</p>
-
-<a
-href="shorts.html"
-class="open">
-
-Open Tool
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-let activeUser=
-
-JSON.parse(
-
-localStorage.getItem(
-"activeUser"
-)
-
-)
-
-/* LOGIN CHECK */
-
-if(!activeUser){
-
-window.location=
-"login.html"
-
-}
-
-/* ADMIN BUTTON */
-
-if(
-activeUser
-&&
-activeUser.role==="admin"
-){
-
-document.getElementById(
-"adminPanelBtn"
-).style.display=
-"block"
-
-}
-
-/* AUTO EXPIRY */
-
-if(
-
-activeUser.role!=="admin"
-
-&&
-
-activeUser.expiry
-
-&&
-
-Date.now()>
-activeUser.expiry
-
-){
-
-alert(
-"Account Expired"
-)
-
-localStorage.removeItem(
-"activeUser"
-)
-
-window.location=
-"login.html"
-
-}
-
-/* USER NAME */
-
-document.getElementById(
-"userName"
-).innerText=
-
-activeUser.username
-
-/* ADMIN */
-
-function goAdmin(){
-
-window.location=
-"admin.html"
-
-}
-
-/* LOGOUT */
-
-function logout(){
-
-localStorage.removeItem(
-"activeUser"
-)
-
-window.location=
-"login.html"
-
-}
-
-</script>
-
+<body class="min-h-screen animated-mesh text-slate-100 flex flex-col justify-between relative">
+
+    <!-- Glowing Background Ambiance -->
+    <div class="absolute top-10 left-1/4 w-96 h-96 rounded-full bg-brand-600/10 blur-[120px] pointer-events-none"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-blue-600/5 blur-[100px] pointer-events-none"></div>
+
+    <!-- 1. LOGIN SCREEN CONTAINER -->
+    <div id="view-login" class="flex-1 flex flex-col justify-center items-center px-4 py-12 relative z-10">
+        <!-- Logo & Header -->
+        <div class="flex flex-col items-center mb-8 text-center">
+            <img src="https://i.ibb.co/5XQLZbcm/Tool-Logo.png" alt="VYROVA-Logo" 
+                 class="h-16 w-auto object-contain mb-4 filter drop-shadow-[0_0_15px_rgba(139,92,246,0.3)]"
+                 onerror="this.onerror=null; this.src='https://placehold.co/200x60/8b5cf6/ffffff?text=VYROVA+AI'"/>
+            <span class="px-3 py-1 rounded-full text-[10px] tracking-widest font-bold uppercase bg-brand-500/10 text-brand-300 border border-brand-500/20">
+                <i class="fa-solid fa-bolt mr-1 animate-pulse"></i> Next Generation AI Hub
+            </span>
+        </div>
+
+        <!-- Premium Login Card -->
+        <div class="glass-panel neon-glow max-w-md w-full p-8 rounded-3xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-brand-500 via-blue-500 to-emerald-500"></div>
+
+            <div class="mb-6 text-center">
+                <h1 class="text-2xl font-black tracking-tight text-white uppercase bg-gradient-to-r from-white via-indigo-100 to-indigo-300 bg-clip-text text-transparent">
+                    VYROVA AI CREATIVE SUITE
+                </h1>
+                <p class="text-xs text-slate-400 mt-2">Apne credentials enter karke workspace ko activate karein.</p>
+            </div>
+
+            <form id="loginForm" class="space-y-5">
+                <div>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500">
+                            <i class="fa-solid fa-user-shield text-sm"></i>
+                        </span>
+                        <input type="text" id="loginUsername" required placeholder="Phone ya Username" 
+                               class="block w-full pl-10 pr-4 py-3.5 rounded-xl border border-slate-800/80 bg-slate-950/90 text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500">
+                            <i class="fa-solid fa-lock text-sm"></i>
+                        </span>
+                        <input type="password" id="loginPassword" required placeholder="Password" 
+                               class="block w-full pl-10 pr-10 py-3.5 rounded-xl border border-slate-800/80 bg-slate-950/90 text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm transition-all">
+                        <button type="button" onclick="togglePasswordVisibility('loginPassword')" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-500 hover:text-slate-300">
+                            <i class="fa-solid fa-eye" id="loginPasswordEye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="loginSubmitBtn" class="w-full flex justify-center items-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-brand-600 via-indigo-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 text-white font-bold text-sm tracking-wide shadow-lg shadow-brand-500/15 active:scale-[0.99] transition-all">
+                    <span>Initialize Session</span>
+                    <i class="fa-solid fa-circle-notch animate-spin hidden" id="loginLoader"></i>
+                    <i class="fa-solid fa-arrow-right-to-bracket text-xs" id="loginArrowIcon"></i>
+                </button>
+            </form>
+
+            <div class="mt-6 pt-5 border-t border-slate-900 flex items-center justify-between text-[10px] text-slate-500">
+                <span class="flex items-center gap-1"><i class="fa-solid fa-shield-halved text-emerald-500"></i> Platform Secure Core</span>
+                <span class="flex items-center gap-1">
+                    <span id="syncStatusIndicator" class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> 
+                    <span id="syncStatusText">Initializing Sync...</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. ADMIN DASHBOARD CONTAINER (Hiddent at start) -->
+    <div id="view-admin" class="hidden flex-1 flex flex-col justify-between">
+        <!-- HEADER -->
+        <header class="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 sticky top-0 z-50">
+            <div class="flex items-center gap-3">
+                <img src="https://i.ibb.co/5XQLZbcm/Tool-Logo.png" alt="VYROVA Logo" class="h-10 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(139,92,246,0.2)]"/>
+                <span class="h-6 w-px bg-slate-800"></span>
+                <div class="flex flex-col">
+                    <span class="text-xs font-black tracking-widest text-brand-400 uppercase">Admin Control Room</span>
+                    <span class="text-[10px] text-slate-500 font-medium">VYROVA AI CREATIVE SUITE v5.5</span>
+                </div>
+            </div>
+
+            <!-- Tab Navigation (Bina reload ke shift hone ke liye) -->
+            <div class="flex bg-slate-900/80 p-1 rounded-xl border border-slate-800/80">
+                <button onclick="switchView('admin')" id="viewBtn-admin" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-brand-600 text-white">
+                    <i class="fa-solid fa-users mr-1.5"></i> Users Database
+                </button>
+                <button onclick="switchView('tools')" id="viewBtn-tools" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Use AI Tools
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex flex-col text-right">
+                    <span class="text-xs font-bold text-slate-200">Haider Ali</span>
+                    <span class="text-[9px] text-emerald-400 font-mono font-bold">Admin Verified (923220498935)</span>
+                </div>
+                <button onclick="handleLogout()" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-red-950/40 border border-slate-800 hover:border-red-900 text-white text-xs font-bold transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-right-from-bracket text-red-400"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- ADMIN WORKSPACE -->
+        <div class="flex-1 w-full max-w-7xl mx-auto p-4 sm:p-6 space-y-6">
+            <!-- Quick Metric Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-slate-950/60 border border-slate-900 p-5 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">Total Active Users</span>
+                        <span id="totalUsersCount" class="text-2xl font-black text-white">0</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-brand-600/10 text-brand-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                </div>
+                <div class="bg-slate-950/60 border border-slate-900 p-5 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">Total System Devices</span>
+                        <span id="totalDeviceAllocation" class="text-2xl font-black text-emerald-400">0</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                </div>
+                <div class="bg-slate-950/60 border border-slate-900 p-5 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">Standard Active Plan</span>
+                        <span class="text-lg font-black text-indigo-300">30 Days Fixed</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Management Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left: Form Card -->
+                <section class="lg:col-span-5">
+                    <div class="glass-panel p-6 rounded-2xl neon-glow">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div id="formAccentIcon" class="w-8 h-8 rounded-lg bg-brand-600/20 text-brand-400 flex items-center justify-center">
+                                <i class="fa-solid fa-user-plus text-sm"></i>
+                            </div>
+                            <h2 id="formTitleText" class="text-sm font-extrabold text-white">Naya Account Active Karein</h2>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-5">User banate hi 30 days ka dynamic server allocation instantly active ho jayega.</p>
+
+                        <form id="userForm" class="space-y-4">
+                            <input type="hidden" id="editUserId">
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">User Ka Naam</label>
+                                <input type="text" id="newFullName" required placeholder="e.g., Haider Ali"
+                                       class="block w-full px-3.5 py-3 rounded-xl border border-slate-800/80 bg-slate-950/90 text-white text-xs placeholder-slate-600 focus:outline-none focus:border-brand-500 transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Phone / Username</label>
+                                <input type="text" id="newPhone" required placeholder="e.g., 923220000000"
+                                       class="block w-full px-3.5 py-3 rounded-xl border border-slate-800/80 bg-slate-950/90 text-white text-xs placeholder-slate-600 focus:outline-none focus:border-brand-500 transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Password</label>
+                                <div class="relative">
+                                    <input type="password" id="newPassword" required placeholder="Set Password"
+                                           class="block w-full pl-3.5 pr-10 py-3 rounded-xl border border-slate-800/80 bg-slate-950/90 text-white text-xs placeholder-slate-600 focus:outline-none focus:border-brand-500 transition-all">
+                                    <button type="button" onclick="togglePasswordVisibility('newPassword')" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-500 hover:text-slate-300">
+                                        <i class="fa-solid fa-eye" id="newPasswordEye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Allowed Devices (1 - 5)</label>
+                                <select id="userDevices" class="block w-full px-3.5 py-3 rounded-xl border border-slate-800 bg-slate-950 text-white text-xs focus:outline-none focus:border-brand-500 transition-all">
+                                    <option value="1">1 Device Limit</option>
+                                    <option value="2">2 Devices Limit</option>
+                                    <option value="3">3 Devices Limit</option>
+                                    <option value="4">4 Devices Limit</option>
+                                    <option value="5">5 Devices Limit</option>
+                                </select>
+                            </div>
+                            
+                            <div class="pt-2 flex items-center gap-3">
+                                <button type="submit" id="formSubmitBtn" class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-brand-600 via-indigo-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-500/15">
+                                    <i class="fa-solid fa-circle-notch animate-spin hidden" id="formLoader"></i>
+                                    <span id="formSubmitText">Register & Activate Plan</span>
+                                </button>
+                                <button type="button" id="cancelEditBtn" onclick="resetFormState()" class="hidden py-3.5 px-4 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white font-bold text-xs transition-all">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Right: Users Database Grid -->
+                <section class="lg:col-span-7 flex flex-col">
+                    <div class="glass-panel p-6 rounded-2xl flex-1 flex flex-col justify-between overflow-hidden">
+                        <div>
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-sm font-extrabold text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-database text-brand-400"></i>
+                                    <span>Live Profiles Database</span>
+                                </h2>
+                                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">
+                                    <span class="w-1.5 h-1.5 inline-block bg-emerald-500 rounded-full animate-ping mr-1"></span> Live Sync
+                                </span>
+                            </div>
+
+                            <!-- Table Container -->
+                            <div class="overflow-x-auto w-full max-h-[460px] overflow-y-auto">
+                                <table class="w-full text-left text-xs min-w-[500px]">
+                                    <thead class="border-b border-slate-800/80 text-slate-400 uppercase text-[10px] tracking-wider font-bold sticky top-0 bg-slate-950/90 backdrop-blur z-10">
+                                        <tr>
+                                            <th class="py-3 px-3">Profile Details</th>
+                                            <th class="py-3 px-3">Username & Password</th>
+                                            <th class="py-3 px-3 text-center">Allowed Devices</th>
+                                            <th class="py-3 px-3 text-center">Plan Remaining</th>
+                                            <th class="py-3 px-3 text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usersTableBody" class="divide-y divide-slate-900 text-slate-300">
+                                        <!-- Dynamic User Table rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Empty message warning -->
+                            <div id="noUsersMessage" class="hidden flex flex-col items-center justify-center text-center p-12">
+                                <i class="fa-solid fa-users-slash text-slate-800 text-5xl mb-3"></i>
+                                <p class="text-sm text-slate-400 font-semibold">Koi bhi profile register nahi mili!</p>
+                                <p class="text-[10px] text-slate-600 mt-1">Naya account create krne ke liye left side form ka use krein.</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-900 text-[10px] text-slate-600 flex items-center justify-between">
+                            <span><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> Data automatically stored in Firebase Cloud</span>
+                            <span>Click credentials to copy instantly</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. USER AI WORKSPACE CONSOLE VIEW (Unified Use Tools view) -->
+    <div id="view-tools-suite" class="hidden flex-1 flex flex-col justify-between">
+        <!-- HEADER -->
+        <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <img src="https://i.ibb.co/5XQLZbcm/Tool-Logo.png" alt="VYROVA Logo" class="h-10 w-auto object-contain"/>
+                <span class="h-6 w-px bg-slate-800"></span>
+                <span class="text-xs font-black text-indigo-400 tracking-wider uppercase"><i class="fa-solid fa-wand-magic-sparkles mr-1.5 animate-pulse"></i> VYROVA CREATIVE SUITE</span>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <!-- Special Admin mode return badge -->
+                <button id="adminReturnBadge" onclick="switchView('admin')" class="hidden px-3 py-1.5 rounded-xl bg-brand-600/20 text-brand-300 hover:bg-brand-600 hover:text-white border border-brand-500/30 text-xs font-bold transition-all">
+                    <i class="fa-solid fa-user-shield mr-1.5"></i> Return to Admin Panel
+                </button>
+                <div class="flex flex-col text-right">
+                    <span id="activeUserName" class="text-xs font-bold text-white">Client Session</span>
+                    <span id="activeUserTier" class="text-[9px] text-indigo-400 font-bold uppercase tracking-wider">Premium Access</span>
+                </div>
+                <button onclick="handleLogout()" class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white text-xs font-bold transition-all">
+                    <i class="fa-solid fa-arrow-right-from-bracket mr-1.5 text-red-400"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Dynamic User Workspace Layout -->
+        <div class="flex-1 flex flex-col lg:flex-row max-w-7xl w-full mx-auto p-4 sm:p-6 gap-6">
+            <!-- Left Side Tab Navigation -->
+            <nav class="lg:w-1/4 flex flex-row lg:flex-col gap-2 overflow-x-auto whitespace-nowrap pb-4 lg:pb-0">
+                <button onclick="switchAITab('veo')" id="btn-veo" class="flex-1 lg:flex-initial flex items-center gap-3 px-4 py-3 rounded-xl bg-brand-600 text-white font-semibold text-sm">
+                    <i class="fa-solid fa-film text-lg"></i>
+                    <span>Veo Video Generator</span>
+                </button>
+                <button onclick="switchAITab('audio')" id="btn-audio" class="flex-1 lg:flex-initial flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-900/60 text-slate-400 text-sm">
+                    <i class="fa-solid fa-volume-high text-lg"></i>
+                    <span>Text to Audio AI</span>
+                </button>
+                <button onclick="switchAITab('editor')" id="btn-editor" class="flex-1 lg:flex-initial flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-900/60 text-slate-400 text-sm">
+                    <i class="fa-solid fa-sliders text-lg"></i>
+                    <span>Video Editing AI</span>
+                </button>
+                <button onclick="switchAITab('trimmer')" id="btn-trimmer" class="flex-1 lg:flex-initial flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-900/60 text-slate-400 text-sm">
+                    <i class="fa-solid fa-scissors text-lg"></i>
+                    <span>Long into Short</span>
+                </button>
+            </nav>
+
+            <!-- Tool Panel Viewport -->
+            <main class="flex-1 glass-panel rounded-2xl p-6 min-h-[450px] flex flex-col justify-between">
+                <!-- Veo Tool -->
+                <div id="tool-veo" class="tool-panel space-y-4">
+                    <h2 class="text-base font-bold text-white"><i class="fa-solid fa-film text-brand-400 mr-2"></i>Veo Video Generation</h2>
+                    <p class="text-xs text-slate-400">Enter high-fidelity cinematic instructions to synthesize instant preview stream blocks.</p>
+                    <textarea id="veoPrompt" rows="4" class="w-full p-3 rounded-xl bg-slate-950 border border-slate-900 text-xs text-white focus:outline-none resize-none" placeholder="A futuristic drone shot over mountains at golden hour, 4k cinematic grading..."></textarea>
+                    <button onclick="triggerRender('veo')" class="px-5 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 font-bold text-xs transition-all">Generate Cinematic Video</button>
+                    <div id="veoPreview" class="hidden mt-4 p-4 border border-slate-900 bg-slate-950 rounded-xl text-center text-xs text-slate-400">Simulation: Rendering finalized successfully via Vyrova core processors!</div>
+                </div>
+
+                <!-- Text to Audio Tool -->
+                <div id="tool-audio" class="tool-panel space-y-4 hidden">
+                    <h2 class="text-base font-bold text-white"><i class="fa-solid fa-volume-high text-blue-400 mr-2"></i>Text to Audio Converter</h2>
+                    <p class="text-xs text-slate-400">Convert script prompts into customized vocal synthesizer models instantly.</p>
+                    <textarea id="audioText" rows="4" class="w-full p-3 rounded-xl bg-slate-950 border border-slate-900 text-xs text-white focus:outline-none resize-none" placeholder="Enter voiceover script..."></textarea>
+                    <button onclick="triggerRender('audio')" class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-xs transition-all">Convert Text to Sound</button>
+                    <div id="audioPreview" class="hidden mt-4 p-4 border border-slate-900 bg-slate-950 rounded-xl text-center text-xs text-slate-400">Simulation: Vocal speech synthesized to 24kHz Stereo successfully.</div>
+                </div>
+
+                <!-- Video Editor Tool -->
+                <div id="tool-editor" class="tool-panel space-y-4 hidden">
+                    <h2 class="text-base font-bold text-white"><i class="fa-solid fa-sliders text-pink-400 mr-2"></i>Video Editing AI Co-Pilot</h2>
+                    <p class="text-xs text-slate-400">Select filter enhancements and timeline auto-corrections profiles.</p>
+                    <select class="w-full p-3 rounded-xl bg-slate-950 border border-slate-900 text-xs text-slate-300 focus:outline-none">
+                        <option>Cinematic Contrast & Color Grading (Auto HDR)</option>
+                        <option>Podcast Voice Auto Ducking & Speech Polish</option>
+                    </select>
+                    <button onclick="triggerRender('editor')" class="px-5 py-3 rounded-xl bg-pink-600 hover:bg-pink-500 font-bold text-xs transition-all">Run AI Polish</button>
+                    <div id="editorPreview" class="hidden mt-4 p-4 border border-slate-900 bg-slate-950 rounded-xl text-center text-xs text-slate-400">Simulation: Applied timeline cuts, color pass optimization complete.</div>
+                </div>
+
+                <!-- Long to Short Tool -->
+                <div id="tool-trimmer" class="tool-panel space-y-4 hidden">
+                    <h2 class="text-base font-bold text-white"><i class="fa-solid fa-scissors text-emerald-400 mr-2"></i>Long into Short Reel Cutter</h2>
+                    <p class="text-xs text-slate-400">Slice long narrative podcasts or files into multiple viral vertical clips.</p>
+                    <input type="text" placeholder="e.g. youtube-video-url.mp4" class="w-full p-3 rounded-xl bg-slate-950 border border-slate-900 text-xs text-white focus:outline-none">
+                    <button onclick="triggerRender('trimmer')" class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-xs transition-all">Slice into Viral Shorts</button>
+                    <div id="trimmerPreview" class="hidden mt-4 p-4 border border-slate-900 bg-slate-950 rounded-xl text-center text-xs text-slate-400">Simulation: Successfully extracted 3 viral reels segments.</div>
+                </div>
+
+                <div class="mt-8 pt-4 border-t border-slate-900 text-xs text-slate-600 flex justify-between items-center">
+                    <span><i class="fa-solid fa-server text-indigo-400 mr-1.5 animate-pulse"></i> Live Node: Secure API Connection</span>
+                    <span>Ready for secure processing</span>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer id="globalFooter" class="border-t border-slate-950 bg-slate-950 py-4 px-6 text-center text-[10px] text-slate-600 relative z-10">
+        &copy; 2026 Vyrova AI Creative Corp. Built safely utilizing secure cloud synchronization.
+    </footer>
+
+    <!-- Floating Toast Notification System Container -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full px-4 sm:px-0"></div>
+
+    <!-- Firebase SDK Modules & Application Controller logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Admin hardcoded credentials
+        const ADMIN_USERNAME = "923220498935";
+        const ADMIN_PASSWORD = "HaiderAli000";
+
+        // Firebase credential configurations matching platform standards
+        const firebaseConfig = {
+            apiKey: "AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
+            authDomain: "vyrova-2eb4d.firebaseapp.com",
+            projectId: "vyrova-2eb4d",
+            storageBucket: "vyrova-2eb4d.firebasestorage.app",
+            messagingSenderId: "136436344218",
+            appId: "1:136436344218:web:0efa47a4da3f20b7bc8623",
+            measurementId: "G-1TNRGDFL4M"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'vyrova-2eb4d';
+
+        // RULE 1: Strict paths used precisely
+        const usersCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'users');
+
+        // Application State references
+        window.localUsersArray = [];
+        window.isEditMode = false;
+        window.isOfflineMode = false;
+
+        // Custom Toast system
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const icons = {
+                success: '<i class="fa-solid fa-circle-check text-emerald-500"></i>',
+                error: '<i class="fa-solid fa-circle-xmark text-red-500"></i>',
+                info: '<i class="fa-solid fa-circle-info text-blue-500"></i>',
+                warning: '<i class="fa-solid fa-triangle-exclamation text-amber-500"></i>'
+            };
+            toast.className = `flex items-center gap-3 p-4 rounded-xl bg-slate-900 border border-slate-800 shadow-xl transform translate-y-4 opacity-0 transition-all duration-300 select-none`;
+            toast.innerHTML = `
+                <div class="text-xl">${icons[type] || icons.success}</div>
+                <div class="flex-1 text-xs font-semibold text-slate-200">${message}</div>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
+        // Render dynamic counts inside cards
+        function renderMetrics() {
+            document.getElementById('totalUsersCount').innerText = window.localUsersArray.length;
+            let totalDevices = 0;
+            window.localUsersArray.forEach(u => {
+                totalDevices += parseInt(u.devices || 1);
+            });
+            document.getElementById('totalDeviceAllocation').innerText = totalDevices;
+        }
+
+        // Render live profile lists table
+        function renderUsersTable() {
+            const tbody = document.getElementById('usersTableBody');
+            const noMsg = document.getElementById('noUsersMessage');
+            tbody.innerHTML = "";
+
+            if (window.localUsersArray.length === 0) {
+                noMsg.classList.remove('hidden');
+                return;
+            } else {
+                noMsg.classList.add('hidden');
+            }
+
+            window.localUsersArray.forEach((u) => {
+                // Determine days remaining status logic
+                const createdDate = new Date(u.createdAt || Date.now());
+                const expirationDate = new Date(u.expiresAt || (createdDate.getTime() + 30 * 24 * 60 * 60 * 1000));
+                const timeDiff = expirationDate.getTime() - Date.now();
+                const daysRemaining = Math.max(0, Math.ceil(timeDiff / (1000 * 60 * 60 * 24)));
+                
+                let daysBadgeColor = "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+                if (daysRemaining <= 5) {
+                    daysBadgeColor = "bg-rose-500/10 text-rose-400 border-rose-500/20 animate-pulse";
+                } else if (daysRemaining <= 15) {
+                    daysBadgeColor = "bg-amber-500/10 text-amber-400 border-amber-500/20";
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-900/40 border-b border-slate-900/80 transition-colors";
+                tr.innerHTML = `
+                    <td class="py-3 px-3">
+                        <div class="font-bold text-white text-xs">${u.name}</div>
+                        <div class="text-[9px] text-slate-500 mt-0.5">Joined: ${new Date(u.createdAt).toLocaleDateString()}</div>
+                    </td>
+                    <td class="py-3 px-3">
+                        <div class="font-mono text-indigo-400 text-xs cursor-pointer hover:text-indigo-300" onclick="copyValue('${u.username}', 'Username copied!')">
+                            <i class="fa-solid fa-copy text-[10px] mr-1"></i>${u.username}
+                        </div>
+                        <div class="font-mono text-slate-400 text-[10px] mt-0.5 cursor-pointer hover:text-slate-300" onclick="copyValue('${u.password}', 'Password copied!')">
+                            <i class="fa-solid fa-key text-[9px] mr-1"></i>${u.password}
+                        </div>
+                    </td>
+                    <td class="py-3 px-3 text-center">
+                        <div class="flex items-center justify-center gap-1.5">
+                            <button onclick="changeDeviceLimit('${u.id}', -1)" class="w-5 h-5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-850 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                                <i class="fa-solid fa-minus text-[9px]"></i>
+                            </button>
+                            <span class="font-mono font-bold text-slate-200 text-xs w-6">${u.devices || 1}</span>
+                            <button onclick="changeDeviceLimit('${u.id}', 1)" class="w-5 h-5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-850 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                                <i class="fa-solid fa-plus text-[9px]"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="py-3 px-3 text-center">
+                        <span class="px-2.5 py-1 rounded border text-[10px] font-bold ${daysBadgeColor}">
+                            <i class="fa-solid fa-hourglass-half mr-1 text-[8px]"></i>${daysRemaining} Days left
+                        </span>
+                    </td>
+                    <td class="py-3 px-3 text-right">
+                        <div class="flex items-center justify-end gap-1.5">
+                            <button onclick="loadUserIntoEditForm('${u.id}')" class="w-8 h-8 rounded-lg bg-indigo-600/10 hover:bg-indigo-600 border border-indigo-500/20 text-indigo-400 hover:text-white transition-all flex items-center justify-center">
+                                <i class="fa-solid fa-user-pen text-xs"></i>
+                            </button>
+                            <button onclick="deleteUserAccount('${u.id}')" class="w-8 h-8 rounded-lg bg-rose-600/10 hover:bg-rose-600 border border-rose-500/20 text-rose-400 hover:text-white transition-all flex items-center justify-center">
+                                <i class="fa-solid fa-trash text-xs"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        let unsubscribeUsers = null;
+
+        // REAL-TIME LISTENER: Sync Firestore database instantly to state
+        function startUsersRealtimeListener(user) {
+            if (!user || window.isOfflineMode) return;
+            if (unsubscribeUsers) unsubscribeUsers();
+
+            try {
+                unsubscribeUsers = onSnapshot(usersCollectionRef, (snapshot) => {
+                    const fetchedList = [];
+                    snapshot.forEach((doc) => {
+                        fetchedList.push({ id: doc.id, ...doc.data() });
+                    });
+                    window.localUsersArray = fetchedList;
+                    localStorage.setItem('ai_users', JSON.stringify(fetchedList));
+                    
+                    document.getElementById('syncStatusText').innerText = "Live Sync Connected";
+                    document.getElementById('syncStatusIndicator').className = "w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping";
+                    
+                    renderMetrics();
+                    renderUsersTable();
+                }, (error) => {
+                    console.log("Sync failed, using offline backup model.");
+                    enableLocalSafeBypass();
+                });
+            } catch (err) {
+                console.log("Database socket redirect.");
+                enableLocalSafeBypass();
+            }
+        }
+
+        // Activate offline fallback mode gracefully
+        function enableLocalSafeBypass() {
+            window.isOfflineMode = true;
+            document.getElementById('syncStatusText').innerText = "Sandbox Mode Active";
+            document.getElementById('syncStatusIndicator').className = "w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse";
+            
+            window.localUsersArray = JSON.parse(localStorage.getItem('ai_users')) || [];
+            renderMetrics();
+            renderUsersTable();
+        }
+
+        // RULE 3: Auth Before Queries - Robust fail-safe execution flow
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } catch (tokErr) {
+                        console.log("Custom token failed, signing in anonymously.");
+                        await signInAnonymously(auth);
+                    }
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.log("Auth setup failed. Offline storage bypass enabled.");
+                enableLocalSafeBypass();
+            }
+        };
+
+        // Initialize auth flow immediately
+        initAuth();
+
+        // Listen for authentication completion to trigger real-time listener safely
+        onAuthStateChanged(auth, (user) => {
+            if (user && !window.isOfflineMode) {
+                startUsersRealtimeListener(user);
+            } else {
+                enableLocalSafeBypass();
+            }
+        });
+
+        // VIEW CONTROLLER ROUTING METHOD (Replaces location.href beautifully!)
+        window.switchView = function(viewKey) {
+            const loginView = document.getElementById('view-login');
+            const adminView = document.getElementById('view-admin');
+            const toolsView = document.getElementById('view-tools-suite');
+            const footer = document.getElementById('globalFooter');
+
+            // Hide all first
+            loginView.classList.add('hidden');
+            adminView.classList.add('hidden');
+            toolsView.classList.add('hidden');
+
+            if (viewKey === 'login') {
+                loginView.classList.remove('hidden');
+                footer.classList.remove('hidden');
+            } else if (viewKey === 'admin') {
+                adminView.classList.remove('hidden');
+                footer.classList.remove('hidden');
+                
+                // Update active tab selector styling
+                document.getElementById('viewBtn-admin').className = "px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-brand-600 text-white";
+                document.getElementById('viewBtn-tools').className = "px-4 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white";
+            } else if (viewKey === 'tools') {
+                toolsView.classList.remove('hidden');
+                footer.classList.add('hidden'); // Clean canvas view
+                
+                // Configure headers for tool console depending on role
+                const activeSession = JSON.parse(localStorage.getItem('vyrova_session'));
+                if (activeSession) {
+                    document.getElementById('activeUserName').innerText = activeSession.name;
+                    document.getElementById('activeUserTier').innerText = activeSession.tier || "Pro Creator";
+                    
+                    if (activeSession.role === 'admin') {
+                        document.getElementById('adminReturnBadge').classList.remove('hidden');
+                    } else {
+                        document.getElementById('adminReturnBadge').classList.add('hidden');
+                    }
+                }
+                
+                // Set default selected tab
+                switchAITab('veo');
+            }
+        };
+
+        // Direct Session check upon page load to verify routing instantly
+        const runStartupSessionCheck = () => {
+            const activeSession = JSON.parse(localStorage.getItem('vyrova_session'));
+            if (activeSession) {
+                if (activeSession.role === 'admin') {
+                    window.switchView('admin');
+                } else {
+                    window.switchView('tools');
+                }
+            } else {
+                window.switchView('login');
+            }
+        };
+
+        // Execute routing check
+        runStartupSessionCheck();
+
+        // Login Handler submission validation
+        window.handleAuthSubmit = async function(event) {
+            event.preventDefault();
+            
+            const usernameInput = document.getElementById('loginUsername').value.trim();
+            const passwordInput = document.getElementById('loginPassword').value;
+            const submitBtn = document.getElementById('loginSubmitBtn');
+            const loader = document.getElementById('loginLoader');
+            const arrowIcon = document.getElementById('loginArrowIcon');
+
+            submitBtn.disabled = true;
+            loader.classList.remove('hidden');
+            arrowIcon.classList.add('hidden');
+
+            setTimeout(async () => {
+                // 1. Verify if Admin logging in
+                if (usernameInput === ADMIN_USERNAME && passwordInput === ADMIN_PASSWORD) {
+                    window.showToast("Admin authorized successfully!", "success");
+                    localStorage.setItem('vyrova_session', JSON.stringify({
+                        username: ADMIN_USERNAME,
+                        role: 'admin',
+                        name: 'Haider Ali'
+                    }));
+                    
+                    // Reset fields
+                    document.getElementById('loginForm').reset();
+                    submitBtn.disabled = false;
+                    loader.classList.add('hidden');
+                    arrowIcon.classList.remove('hidden');
+                    
+                    // Route directly via SPA state
+                    window.switchView('admin');
+                    return;
+                }
+
+                // 2. Validate using live synchronised data
+                let cachedUsers = window.localUsersArray || JSON.parse(localStorage.getItem('ai_users')) || [];
+                
+                // Force sync check if missing on slow setups
+                if (cachedUsers.length === 0 && !window.isOfflineMode) {
+                    try {
+                        const snapshot = await getDocs(usersCollectionRef);
+                        const usersList = [];
+                        snapshot.forEach((doc) => {
+                            usersList.push({ id: doc.id, ...doc.data() });
+                        });
+                        window.localUsersArray = usersList;
+                        localStorage.setItem('ai_users', JSON.stringify(usersList));
+                        cachedUsers = usersList;
+                    } catch (e) {
+                        console.log("Silent credentials verification fetch bypassed.");
+                    }
+                }
+
+                const matchedUser = cachedUsers.find(u => u.username === usernameInput && u.password === passwordInput);
+
+                if (matchedUser) {
+                    // Check if subscription has expired (fixed 30 days limitation verification)
+                    const createdDate = new Date(matchedUser.createdAt || Date.now());
+                    const expirationDate = new Date(matchedUser.expiresAt || (createdDate.getTime() + 30 * 24 * 60 * 60 * 1000));
+                    
+                    if (Date.now() > expirationDate.getTime()) {
+                        window.showToast("Aapka subscription plan khatam ho chuka hai (30 Days over)!", "error");
+                        submitBtn.disabled = false;
+                        loader.classList.add('hidden');
+                        arrowIcon.classList.remove('hidden');
+                        return;
+                    }
+
+                    window.showToast(`Swagat hai, ${matchedUser.name}! Loading tools.`, "success");
+                    localStorage.setItem('vyrova_session', JSON.stringify({
+                        username: matchedUser.username,
+                        role: 'user',
+                        name: matchedUser.name,
+                        tier: matchedUser.tier
+                    }));
+
+                    // Reset fields
+                    document.getElementById('loginForm').reset();
+                    submitBtn.disabled = false;
+                    loader.classList.add('hidden');
+                    arrowIcon.classList.remove('hidden');
+                    
+                    // Route directly via SPA state
+                    window.switchView('tools');
+                } else {
+                    window.showToast("Credentials match nahi ho rahe!", "error");
+                    submitBtn.disabled = false;
+                    loader.classList.add('hidden');
+                    arrowIcon.classList.remove('hidden');
+                }
+            }, 600);
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', window.handleAuthSubmit);
+
+        // CREATE & EDIT USER: Submission logic
+        window.handleFormSubmit = async function(e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('newFullName').value.trim();
+            const phone = document.getElementById('newPhone').value.trim();
+            const password = document.getElementById('newPassword').value;
+            const devices = parseInt(document.getElementById('userDevices').value);
+            const editId = document.getElementById('editUserId').value;
+
+            if (phone === "923220498935") {
+                window.showToast("Admin number block list restrict active.", "error");
+                return;
+            }
+
+            document.getElementById('formLoader').classList.remove('hidden');
+            document.getElementById('formSubmitBtn').disabled = true;
+
+            const now = new Date();
+            const thirtyDaysLater = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+            if (window.isEditMode && editId) {
+                // Update logic
+                const existingUser = window.localUsersArray.find(u => u.id === editId);
+                const updatedPayload = {
+                    ...existingUser,
+                    name: fullName,
+                    username: phone,
+                    password: password,
+                    devices: devices
+                };
+
+                // Optimistic state
+                window.localUsersArray = window.localUsersArray.map(u => u.id === editId ? updatedPayload : u);
+                localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+                renderUsersTable();
+                resetFormState();
+                window.showToast("Profile details updated successfully!", "success");
+
+                try {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', editId), updatedPayload);
+                } catch (err) {
+                    console.error("Cloud sync error on update:", err);
+                }
+            } else {
+                // Insert logic
+                if (window.localUsersArray.some(u => u.username === phone)) {
+                    window.showToast("Username already registered!", "warning");
+                    document.getElementById('formLoader').classList.add('hidden');
+                    document.getElementById('formSubmitBtn').disabled = false;
+                    return;
+                }
+
+                const newUserId = crypto.randomUUID();
+                const newUserPayload = {
+                    id: newUserId,
+                    name: fullName,
+                    username: phone,
+                    password: password,
+                    devices: devices,
+                    tier: "Pro Creator",
+                    createdAt: now.toISOString(),
+                    expiresAt: thirtyDaysLater.toISOString(),
+                    isActive: true
+                };
+
+                // Optimistic UI
+                window.localUsersArray.push(newUserPayload);
+                localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+                renderUsersTable();
+                renderMetrics();
+                
+                document.getElementById('userForm').reset();
+                window.showToast("Naya Account successfully create aur register ho chuka hai!", "success");
+
+                try {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', newUserId), newUserPayload);
+                } catch (err) {
+                    console.error("Cloud sync error on insert:", err);
+                }
+            }
+
+            document.getElementById('formLoader').classList.add('hidden');
+            document.getElementById('formSubmitBtn').disabled = false;
+        };
+
+        document.getElementById('userForm').addEventListener('submit', window.handleFormSubmit);
+
+        // Edit Mode Form Configuration
+        window.loadUserIntoEditForm = function(id) {
+            const user = window.localUsersArray.find(u => u.id === id);
+            if (!user) return;
+
+            window.isEditMode = true;
+            document.getElementById('editUserId').value = user.id;
+            document.getElementById('newFullName').value = user.name;
+            document.getElementById('newPhone').value = user.username;
+            document.getElementById('newPassword').value = user.password;
+            document.getElementById('userDevices').value = user.devices || 1;
+
+            document.getElementById('formTitleText').innerText = "Edit User Settings";
+            document.getElementById('formSubmitText').innerText = "Update User Profile";
+            document.getElementById('formAccentIcon').className = "w-8 h-8 rounded-lg bg-indigo-600/20 text-indigo-400 flex items-center justify-center";
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+
+            window.showToast("Edit profile properties loaded in inputs.", "info");
+        };
+
+        // Reset state
+        window.resetFormState = function() {
+            window.isEditMode = false;
+            document.getElementById('editUserId').value = "";
+            document.getElementById('userForm').reset();
+            
+            document.getElementById('formTitleText').innerText = "Naya Account Active Karein";
+            document.getElementById('formSubmitText').innerText = "Register & Activate Plan";
+            document.getElementById('formAccentIcon').className = "w-8 h-8 rounded-lg bg-brand-600/20 text-brand-400 flex items-center justify-center";
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+        };
+
+        // Edit Allowed devices count instantly (+ / - buttons inside table rows)
+        window.changeDeviceLimit = async function(id, delta) {
+            const user = window.localUsersArray.find(u => u.id === id);
+            if (!user) return;
+
+            const currentDevices = parseInt(user.devices || 1);
+            const targetDevices = Math.max(1, Math.min(5, currentDevices + delta));
+
+            if (currentDevices === targetDevices) return;
+
+            const updatedUser = {
+                ...user,
+                devices: targetDevices
+            };
+
+            // Optimistic Local state
+            window.localUsersArray = window.localUsersArray.map(u => u.id === id ? updatedUser : u);
+            localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+            renderUsersTable();
+            renderMetrics();
+            window.showToast(`Devices changed to ${targetDevices} limit!`, "info");
+
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id), updatedUser);
+            } catch (err) {
+                console.error("Cloud update error on limit adjustment:", err);
+            }
+        };
+
+        // Deletion accounts logic
+        window.deleteUserAccount = async function(id) {
+            window.localUsersArray = window.localUsersArray.filter(u => u.id !== id);
+            localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+            renderUsersTable();
+            renderMetrics();
+            window.showToast("Profile access subscription terminated.", "warning");
+
+            try {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id));
+                window.showToast("Profile removed from cloud storage.", "success");
+            } catch (err) {
+                console.error("Cloud delete error:", err);
+            }
+        };
+
+        // Clipboard Copy Utility
+        window.copyValue = function(val, successMsg) {
+            const el = document.createElement('input');
+            el.value = val;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            window.showToast(successMsg, "info");
+        };
+
+        // User creative tab panel switcher
+        window.switchAITab = function(tabKey) {
+            document.querySelectorAll('.tool-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`tool-${tabKey}`).classList.remove('hidden');
+
+            const tabButtons = ['veo', 'audio', 'editor', 'trimmer'];
+            tabButtons.forEach(b => {
+                const btn = document.getElementById(`btn-${b}`);
+                if (b === tabKey) {
+                    let btnColorClass = "bg-brand-600 text-white font-semibold";
+                    if (tabKey === 'audio') btnColorClass = "bg-blue-600 text-white font-semibold";
+                    if (tabKey === 'editor') btnColorClass = "bg-pink-600 text-white font-semibold";
+                    if (tabKey === 'trimmer') btnColorClass = "bg-emerald-600 text-white font-semibold";
+                    btn.className = `flex-1 lg:flex-initial flex items-center gap-3 px-4 py-3 rounded-xl ${btnColorClass} text-sm transition-all`;
+                } else {
+                    btn.className = "flex-1 lg:flex-initial flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-900/60 text-slate-400 text-sm hover:bg-slate-900 hover:text-white transition-all";
+                }
+            });
+        };
+
+        // Client rendering preview blocks triggers
+        window.triggerRender = function(tab) {
+            document.getElementById(`${tab}Preview`).classList.remove('hidden');
+            window.showToast("Simulation initialized!", "success");
+        };
+
+        // Logout session clear
+        window.handleLogout = function() {
+            localStorage.removeItem('vyrova_session');
+            window.showToast("Logged out successfully.", "info");
+            
+            // Re-route safely
+            window.switchView('login');
+        };
+
+        // Register Password reveal helper globally
+        window.togglePasswordVisibility = function(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const eyeIcon = document.getElementById(`${fieldId}Eye`);
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        };
+    </script>
 </body>
 </html>
