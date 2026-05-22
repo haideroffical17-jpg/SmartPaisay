@@ -1,4 +1,5 @@
 <!-- admin.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,8 +28,8 @@ overflow:hidden;
 position:fixed;
 inset:0;
 background:
-radial-gradient(circle at 15% 20%,rgba(109,40,217,.28),transparent 35%),
-radial-gradient(circle at 80% 80%,rgba(37,99,235,.22),transparent 35%);
+radial-gradient(circle at 20% 20%,rgba(109,40,217,.30),transparent 35%),
+radial-gradient(circle at 80% 80%,rgba(37,99,235,.25),transparent 35%);
 }
 
 .container{
@@ -37,8 +38,6 @@ height:100vh;
 position:relative;
 z-index:2;
 }
-
-/* SIDEBAR */
 
 .sidebar{
 
@@ -125,8 +124,6 @@ transition:.25s;
 background:#6d28d9;
 }
 
-/* MAIN */
-
 .main{
 
 flex:1;
@@ -176,8 +173,6 @@ color:#fff;
 
 }
 
-/* STATS */
-
 .cards{
 
 display:grid;
@@ -216,8 +211,6 @@ color:#9099be;
 
 }
 
-/* PANEL */
-
 .panel{
 
 display:grid;
@@ -227,8 +220,6 @@ grid-template-columns:420px 1fr;
 gap:24px;
 
 }
-
-/* FORM */
 
 .formbox,
 .tablebox{
@@ -309,8 +300,6 @@ linear-gradient(135deg,#6d28d9,#2563eb);
 color:#fff;
 
 }
-
-/* TABLE */
 
 table{
 
@@ -438,7 +427,9 @@ Logout
 <div class="card">
 
 <h2 id="usersCount">
+
 0
+
 </h2>
 
 <p>Total Users</p>
@@ -601,8 +592,7 @@ JSON.stringify(users)
 
 function getStatus(user){
 
-return Date.now()>
-user.expiry
+return Date.now()>user.expiry
 ?
 "Expired"
 :
@@ -626,13 +616,9 @@ table.innerHTML+=`
 <tr>
 
 <td>${u.username}</td>
-
 <td>${u.password}</td>
-
 <td>${u.device}</td>
-
 <td>${u.days}</td>
-
 <td>${getStatus(u)}</td>
 
 <td>
@@ -672,8 +658,6 @@ users.length
 
 }
 
-/* CREATE USER */
-
 function addUser(){
 
 let username=
@@ -687,14 +671,18 @@ document.getElementById(
 ).value.trim()
 
 let device=
+parseInt(
 document.getElementById(
 "device"
 ).value
+)
 
 let days=
+parseInt(
 document.getElementById(
 "days"
 ).value
+)
 
 if(
 !username
@@ -710,31 +698,12 @@ return
 
 }
 
-let exists=
-
-users.find(
-u=>u.username===username
-)
-
-if(exists){
-
-alert(
-"Username Exists"
-)
-
-return
-
-}
-
 users.push({
 
 username,
 password,
-device:
-parseInt(device),
-
-days:
-parseInt(days),
+device,
+days,
 
 expiry:
 
@@ -754,71 +723,72 @@ render()
 
 }
 
-/* EDIT = INCREASE DEVICE + DAYS */
-
 function editUser(i){
 
-let deviceIncrease=
+let mode=
 
 prompt(
 
-"Increase Device Limit (+1,+2,+3)",
+"1 Increase Device\n2 Decrease Device",
 
 "1"
 
 )
 
-if(
-deviceIncrease===null
-)return
+if(mode===null)
+return
 
-let daysIncrease=
+let deviceValue=
+
+parseInt(
 
 prompt(
-
-"Increase Days (+7,+30,+90)",
-
-"7"
+"Device Amount",
+"1"
+)
 
 )
+
+if(mode==="1"){
+
+users[i].device+=
+deviceValue
+
+}
+
+if(mode==="2"){
+
+users[i].device-=
+deviceValue
 
 if(
-daysIncrease===null
-)return
+users[i].device<1
+){
 
-users[i].device=
+users[i].device=1
 
-parseInt(
-users[i].device
-)
+}
 
-+
+}
 
-parseInt(
-deviceIncrease
-)
-
-users[i].days=
+let addDays=
 
 parseInt(
-users[i].days
+
+prompt(
+"Increase Days",
+"7"
 )
 
-+
-
-parseInt(
-daysIncrease
 )
 
-users[i].expiry=
+users[i].days+=
+addDays
 
-users[i].expiry
-
-+
+users[i].expiry+=
 
 (
-parseInt(daysIncrease)
-*
+addDays*
 24*
 60*
 60*
@@ -830,8 +800,6 @@ save()
 render()
 
 }
-
-/* DELETE */
 
 function removeUser(i){
 
@@ -850,8 +818,6 @@ render()
 }
 
 }
-
-/* ADMIN TOOL ACCESS */
 
 function openTools(){
 
@@ -873,8 +839,6 @@ window.location=
 "index.html"
 
 }
-
-/* LOGOUT */
 
 function logout(){
 
