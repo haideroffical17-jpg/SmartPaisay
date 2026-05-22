@@ -15,27 +15,28 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#0b0f1d;
-color:white;
+background:#070b16;
+color:#fff;
 padding:30px;
 }
 
 .container{
-max-width:1400px;
+max-width:1500px;
 margin:auto;
 }
 
 h1{
+font-size:48px;
 margin-bottom:25px;
 }
 
 .card{
 
-background:#13192d;
+background:#10172c;
 
 padding:25px;
 
-border-radius:18px;
+border-radius:22px;
 
 margin-bottom:25px;
 
@@ -46,27 +47,27 @@ select{
 
 width:100%;
 
-height:55px;
+height:60px;
 
-margin-top:8px;
+padding:0 18px;
 
 margin-bottom:18px;
 
-padding:0 15px;
-
 border:none;
 
-border-radius:12px;
+border-radius:14px;
 
-background:#1c2340;
+background:#161d35;
 
-color:#fff;
+color:white;
+
+font-size:15px;
 
 }
 
 button{
 
-height:50px;
+height:52px;
 
 padding:0 20px;
 
@@ -78,28 +79,31 @@ cursor:pointer;
 
 font-weight:bold;
 
+color:white;
+
 }
 
 .create{
-
 background:#6d28d9;
-
-color:white;
-
 width:100%;
-
 }
 
 .tools{
 background:#2563eb;
-color:white;
 margin-top:10px;
 }
 
 .logout{
 background:#ff4567;
-color:white;
 margin-top:10px;
+}
+
+.edit{
+background:#2563eb;
+}
+
+.delete{
+background:#ff4567;
 }
 
 table{
@@ -120,22 +124,22 @@ text-align:left;
 }
 
 th{
-background:#161d35;
+background:#18203a;
 }
 
 td{
-background:#11172a;
-border-top:1px solid #1e2747;
+background:#10172c;
+border-top:1px solid #1f2947;
 }
 
-.edit{
-background:#2563eb;
-color:white;
+.status-active{
+color:#37ff8b;
+font-weight:bold;
 }
 
-.delete{
-background:#ff4567;
-color:white;
+.status-expired{
+color:#ff4567;
+font-weight:bold;
 }
 
 </style>
@@ -150,7 +154,7 @@ VYROVA ADMIN PANEL
 
 <div class="card">
 
-<h2>
+<h2 style="margin-bottom:20px;">
 Create User
 </h2>
 
@@ -230,7 +234,7 @@ LOGOUT
 
 <div class="card">
 
-<h2>
+<h2 style="margin-bottom:20px;">
 Users
 </h2>
 
@@ -240,7 +244,7 @@ Users
 
 <tr>
 
-<th>User</th>
+<th>Username</th>
 <th>Password</th>
 <th>Device</th>
 <th>Days</th>
@@ -261,64 +265,86 @@ Users
 
 </div>
 
-<script>
+<script type="module">
 
-let users=
+import {
 
-JSON.parse(
-
-localStorage.getItem(
-"vyrovaUsers"
-)
-
-)||[]
-
-function save(){
-
-localStorage.setItem(
-
-"vyrovaUsers",
-
-JSON.stringify(users)
-
-)
+initializeApp
 
 }
 
+from
+
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+import {
+
+getFirestore,
+collection,
+addDoc,
+getDocs,
+deleteDoc,
+doc,
+updateDoc
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+const firebaseConfig={
+
+apiKey:"AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
+
+authDomain:"vyrova-2eb4d.firebaseapp.com",
+
+projectId:"vyrova-2eb4d",
+
+storageBucket:"vyrova-2eb4d.firebasestorage.app",
+
+messagingSenderId:"136436344218",
+
+appId:"1:136436344218:web:0efa47a4da3f20b7bc8623",
+
+measurementId:"G-1TNRGDFL4M"
+
+}
+
+const app=
+initializeApp(firebaseConfig)
+
+const db=
+getFirestore(app)
+
 /* ADD USER */
 
-function addUser(){
+window.addUser=
+
+async function(){
 
 let username=
-
 document.getElementById(
 "username"
 ).value.trim()
 
 let password=
-
 document.getElementById(
 "password"
 ).value.trim()
 
 let device=
-
-parseInt(
-
+Number(
 document.getElementById(
 "device"
 ).value
-
 )
 
 let days=
-
-parseInt(
-
+Number(
 document.getElementById(
 "days"
 ).value
-
 )
 
 if(
@@ -335,22 +361,33 @@ return
 
 }
 
-let exists=
+let users=
 
-users.find(
+await getDocs(
 
-u=>
-
-String(
-u.username
-).trim()
-
-===
-
-String(username)
-.trim()
+collection(
+db,
+"users"
+)
 
 )
+
+let exists=false
+
+users.forEach((d)=>{
+
+let u=
+d.data()
+
+if(
+u.username===username
+){
+
+exists=true
+
+}
+
+})
 
 if(exists){
 
@@ -362,19 +399,19 @@ return
 
 }
 
-users.push({
+await addDoc(
 
-username:
-String(username),
+collection(
+db,
+"users"
+),
 
-password:
-String(password),
+{
 
-device:
-Number(device),
-
-days:
-Number(days),
+username,
+password,
+device,
+days,
 
 expiry:
 
@@ -383,26 +420,26 @@ Date.now()
 +
 
 (
-Number(days)
+days
 *
 86400000
 )
 
-})
+}
 
-save()
-
-render()
+)
 
 alert(
 "User Created"
 )
 
+loadUsers()
+
 }
 
-/* RENDER */
+/* LOAD USERS */
 
-function render(){
+async function loadUsers(){
 
 let table=
 
@@ -412,21 +449,37 @@ document.getElementById(
 
 table.innerHTML=""
 
-users.forEach((u,i)=>{
+const snapshot=
+
+await getDocs(
+
+collection(
+db,
+"users"
+)
+
+)
+
+snapshot.forEach((d)=>{
+
+let u=
+d.data()
 
 let status=
 
-Date.now()>
+Date.now()
+
+>
 
 u.expiry
 
 ?
 
-"Expired"
+'<span class="status-expired">Expired</span>'
 
 :
 
-"Active"
+'<span class="status-active">Active</span>'
 
 table.innerHTML+=`
 
@@ -446,7 +499,7 @@ table.innerHTML+=`
 
 <button
 class="edit"
-onclick="editUser(${i})">
+onclick="editUser('${d.id}')">
 
 Edit
 
@@ -454,7 +507,7 @@ Edit
 
 <button
 class="delete"
-onclick="removeUser(${i})">
+onclick="removeUser('${d.id}')">
 
 Delete
 
@@ -472,7 +525,9 @@ Delete
 
 /* EDIT */
 
-function editUser(i){
+window.editUser=
+
+async function(id){
 
 let mode=
 
@@ -501,21 +556,50 @@ prompt(
 if(isNaN(amount))
 return
 
+let snap=
+
+await getDocs(
+
+collection(
+db,
+"users"
+)
+
+)
+
+let user=null
+
+snap.forEach((d)=>{
+
+if(
+d.id===id
+){
+
+user=d.data()
+
+}
+
+})
+
+if(!user)
+return
+
+let device=
+Number(user.device)
+
 if(mode==="1"){
 
-users[i].device+=amount
+device+=amount
 
 }
 
 if(mode==="2"){
 
-users[i].device-=amount
+device-=amount
 
-if(
-users[i].device<1
-){
+if(device<1){
 
-users[i].device=1
+device=1
 
 }
 
@@ -535,44 +619,65 @@ prompt(
 if(isNaN(addDays))
 addDays=0
 
-users[i].days+=addDays
+await updateDoc(
 
-users[i].expiry+=
+doc(
+db,
+"users",
+id
+),
 
+{
+
+device:device,
+
+days:
+Number(user.days)
++
+addDays,
+
+expiry:
+Number(user.expiry)
++
 (
-addDays*
+addDays
+*
 86400000
 )
 
-save()
+}
 
-render()
+)
+
+loadUsers()
 
 }
 
 /* DELETE */
 
-function removeUser(i){
+window.removeUser=
 
-if(
-confirm(
-"Delete User?"
+async function(id){
+
+await deleteDoc(
+
+doc(
+db,
+"users",
+id
 )
-){
 
-users.splice(i,1)
+)
 
-save()
-
-render()
-
-}
+loadUsers()
 
 }
 
 /* TOOLS */
 
-function openTools(){
+window.openTools=
+
+function(){
 
 localStorage.setItem(
 
@@ -595,7 +700,9 @@ window.location=
 
 /* LOGOUT */
 
-function logout(){
+window.logout=
+
+function(){
 
 localStorage.removeItem(
 "activeUser"
@@ -606,7 +713,7 @@ window.location=
 
 }
 
-render()
+loadUsers()
 
 </script>
 
