@@ -1,12 +1,9 @@
 <!-- admin.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>VYROVA ADMIN</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -23,79 +20,55 @@ body{
 font-family:'DM Sans',sans-serif;
 background:#07080f;
 color:white;
-overflow-x:hidden;
+overflow:hidden;
 }
-
-/* BG */
 
 .bg{
 position:fixed;
 inset:0;
-z-index:0;
-
 background:
-
-radial-gradient(circle at 15% 20%,rgba(109,40,217,.28),transparent 35%),
-
+radial-gradient(circle at 15% 20%,rgba(109,40,217,.30),transparent 35%),
 radial-gradient(circle at 80% 80%,rgba(37,99,235,.25),transparent 35%),
-
 radial-gradient(circle at 50% 40%,rgba(13,148,136,.14),transparent 40%);
+z-index:0;
 }
-
-.grid{
-position:fixed;
-inset:0;
-
-background-image:
-
-linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
-
-linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
-
-background-size:55px 55px;
-}
-
-/* LAYOUT */
 
 .container{
 position:relative;
-z-index:10;
+z-index:5;
 display:flex;
-min-height:100vh;
+height:100vh;
 }
 
 /* SIDEBAR */
 
 .sidebar{
 
-width:280px;
+width:270px;
 
-background:rgba(14,18,30,.80);
+background:rgba(18,22,36,.85);
 
-backdrop-filter:blur(24px);
+backdrop-filter:blur(18px);
 
-border-right:1px solid rgba(255,255,255,.06);
+border-right:1px solid rgba(255,255,255,.05);
 
 padding:30px;
 
 }
 
 .logo{
-
 display:flex;
 align-items:center;
-gap:14px;
-
-margin-bottom:50px;
-
+gap:15px;
+margin-bottom:45px;
 }
 
 .mark{
 
-width:60px;
-height:60px;
+width:65px;
+height:65px;
 
-border-radius:18px;
+border-radius:20px;
 
 background:linear-gradient(135deg,#6d28d9,#2563eb);
 
@@ -104,9 +77,7 @@ justify-content:center;
 align-items:center;
 
 font-size:28px;
-
 font-family:'Syne';
-
 font-weight:800;
 
 }
@@ -118,15 +89,13 @@ letter-spacing:2px;
 
 .logo p{
 font-size:12px;
-color:#8e96b9;
+color:#8891b4;
 }
 
 .nav{
-
 display:flex;
 flex-direction:column;
-gap:15px;
-
+gap:14px;
 }
 
 .nav button{
@@ -137,15 +106,15 @@ border:none;
 
 border-radius:18px;
 
-cursor:pointer;
-
 background:#151a2c;
 
 color:white;
 
+cursor:pointer;
+
 font-size:15px;
 
-font-weight:600;
+font-weight:700;
 
 transition:.25s;
 
@@ -163,11 +132,11 @@ background:#6d28d9;
 
 flex:1;
 
-padding:40px;
+padding:35px;
+
+overflow:auto;
 
 }
-
-/* HEADER */
 
 .top{
 
@@ -181,15 +150,15 @@ margin-bottom:35px;
 
 .title{
 
-font-family:'Syne';
-
 font-size:42px;
+
+font-family:'Syne';
 
 }
 
 .logout{
 
-height:56px;
+height:58px;
 
 padding:0 30px;
 
@@ -197,17 +166,17 @@ border:none;
 
 border-radius:18px;
 
-cursor:pointer;
-
-font-weight:700;
-
 background:linear-gradient(135deg,#6d28d9,#2563eb);
 
 color:white;
 
+cursor:pointer;
+
+font-weight:800;
+
 }
 
-/* CARDS */
+/* STATS */
 
 .cards{
 
@@ -215,19 +184,17 @@ display:grid;
 
 grid-template-columns:repeat(3,1fr);
 
-gap:25px;
+gap:22px;
 
-margin-bottom:35px;
+margin-bottom:30px;
 
 }
 
 .card{
 
-background:rgba(18,22,36,.72);
+background:rgba(18,22,36,.80);
 
-border:1px solid rgba(255,255,255,.06);
-
-backdrop-filter:blur(22px);
+border:1px solid rgba(255,255,255,.05);
 
 padding:28px;
 
@@ -237,7 +204,7 @@ border-radius:28px;
 
 .card h2{
 
-font-size:38px;
+font-size:42px;
 
 font-family:'Syne';
 
@@ -246,32 +213,30 @@ margin-bottom:8px;
 }
 
 .card p{
-
-color:#8d95b9;
-
+color:#8f97bc;
 }
 
-/* FORM */
+/* PANEL */
 
 .panel{
 
 display:grid;
 
-grid-template-columns:420px 1fr;
+grid-template-columns:430px 1fr;
 
-gap:30px;
+gap:25px;
 
 }
 
+/* FORM */
+
 .formbox{
 
-background:rgba(18,22,36,.75);
+background:rgba(18,22,36,.82);
 
 padding:35px;
 
-border-radius:28px;
-
-border:1px solid rgba(255,255,255,.06);
+border-radius:30px;
 
 }
 
@@ -279,23 +244,21 @@ border:1px solid rgba(255,255,255,.06);
 
 font-family:'Syne';
 
-margin-bottom:25px;
+margin-bottom:28px;
 
 }
 
 .group{
-
 margin-bottom:18px;
-
 }
 
-.group label{
+label{
 
 display:block;
 
 margin-bottom:10px;
 
-color:#9aa3c9;
+color:#99a3ca;
 
 }
 
@@ -303,21 +266,21 @@ input,select{
 
 width:100%;
 
-height:60px;
+height:62px;
 
-background:#14192d;
+background:#14192c;
 
-border:1px solid #262d48;
+border:1px solid #252d49;
 
 border-radius:18px;
 
 padding:0 18px;
 
+outline:none;
+
 color:white;
 
 font-size:15px;
-
-outline:none;
 
 }
 
@@ -325,15 +288,15 @@ outline:none;
 
 width:100%;
 
-height:64px;
+height:65px;
+
+margin-top:10px;
 
 border:none;
 
-cursor:pointer;
-
-margin-top:15px;
-
 border-radius:20px;
+
+cursor:pointer;
 
 background:linear-gradient(135deg,#6d28d9,#2563eb);
 
@@ -341,21 +304,17 @@ font-weight:800;
 
 color:white;
 
-font-size:15px;
-
 }
 
 /* TABLE */
 
 .tablebox{
 
-background:rgba(18,22,36,.75);
+background:rgba(18,22,36,.82);
 
 padding:35px;
 
-border-radius:28px;
-
-border:1px solid rgba(255,255,255,.06);
+border-radius:30px;
 
 overflow:auto;
 
@@ -383,7 +342,7 @@ text-align:left;
 
 padding-bottom:18px;
 
-color:#9aa2c8;
+color:#9ca5cb;
 
 }
 
@@ -397,15 +356,15 @@ border-top:1px solid rgba(255,255,255,.05);
 
 .delete{
 
-padding:12px 18px;
-
 border:none;
+
+padding:12px 18px;
 
 border-radius:14px;
 
 cursor:pointer;
 
-background:#ff4d6d;
+background:#ff4567;
 
 color:white;
 
@@ -414,13 +373,11 @@ font-weight:700;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="bg"></div>
-<div class="grid"></div>
 
 <div class="container">
 
@@ -428,7 +385,9 @@ font-weight:700;
 
 <div class="logo">
 
-<div class="mark">V</div>
+<div class="mark">
+V
+</div>
 
 <div>
 
@@ -449,9 +408,7 @@ font-weight:700;
 <button>Settings</button>
 
 <button onclick="logout()">
-
 Logout
-
 </button>
 
 </div>
@@ -463,15 +420,11 @@ Logout
 <div class="top">
 
 <div class="title">
-
 Admin Dashboard
-
 </div>
 
 <button class="logout" onclick="logout()">
-
 Logout
-
 </button>
 
 </div>
@@ -481,9 +434,7 @@ Logout
 <div class="card">
 
 <h2 id="usersCount">
-
 0
-
 </h2>
 
 <p>Total Users</p>
@@ -493,24 +444,20 @@ Logout
 <div class="card">
 
 <h2>
-
-∞
-
+LIVE
 </h2>
 
-<p>Premium Access</p>
+<p>System Status</p>
 
 </div>
 
 <div class="card">
 
 <h2>
-
-LIVE
-
+∞
 </h2>
 
-<p>System Status</p>
+<p>Premium Access</p>
 
 </div>
 
@@ -521,9 +468,7 @@ LIVE
 <div class="formbox">
 
 <h2>
-
 Create User
-
 </h2>
 
 <div class="group">
@@ -559,7 +504,7 @@ Create User
 
 <div class="group">
 
-<label>Days Access</label>
+<label>Access Days</label>
 
 <select id="days">
 
@@ -583,9 +528,7 @@ CREATE USER
 <div class="tablebox">
 
 <h2>
-
 User Management
-
 </h2>
 
 <table>
@@ -595,13 +538,9 @@ User Management
 <tr>
 
 <th>Username</th>
-
 <th>Password</th>
-
-<th>Devices</th>
-
+<th>Device</th>
 <th>Days</th>
-
 <th>Action</th>
 
 </tr>
@@ -624,7 +563,22 @@ User Management
 
 <script>
 
-let users=[]
+let users=
+
+JSON.parse(
+localStorage.getItem(
+"vyrovaUsers"
+)
+)||[]
+
+function saveUsers(){
+
+localStorage.setItem(
+"vyrovaUsers",
+JSON.stringify(users)
+)
+
+}
 
 function render(){
 
@@ -676,55 +630,94 @@ users.length
 
 function addUser(){
 
-let user={
-
-username:
+let username=
 document.getElementById(
 "username"
-).value,
+).value.trim()
 
-password:
+let password=
 document.getElementById(
 "password"
-).value,
+).value.trim()
 
-device:
+let device=
 document.getElementById(
 "device"
-).value,
+).value
 
-days:
+let days=
 document.getElementById(
 "days"
 ).value
 
-}
-
 if(
-!user.username
+!username
 ||
-!user.password
+!password
 ){
 
 alert(
-"Fill Fields"
+"Fill All Fields"
 )
 
 return
 
 }
 
-users.push(user)
+let exists=
+
+users.find(
+u=>u.username===username
+)
+
+if(exists){
+
+alert(
+"Username Already Exists"
+)
+
+return
+
+}
+
+users.push({
+
+username,
+password,
+device,
+days
+
+})
+
+saveUsers()
 
 render()
+
+document.getElementById(
+"username"
+).value=""
+
+document.getElementById(
+"password"
+).value=""
 
 }
 
 function removeUser(i){
 
+if(
+confirm(
+"Delete User?"
+)
+){
+
 users.splice(i,1)
 
+saveUsers()
+
 render()
+
+}
 
 }
 
