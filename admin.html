@@ -1,5 +1,4 @@
 <!-- admin.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,8 +27,8 @@ overflow:hidden;
 position:fixed;
 inset:0;
 background:
-radial-gradient(circle at 20% 20%,rgba(109,40,217,.30),transparent 35%),
-radial-gradient(circle at 80% 80%,rgba(37,99,235,.25),transparent 35%);
+radial-gradient(circle at 20% 20%,rgba(109,40,217,.28),transparent 35%),
+radial-gradient(circle at 80% 80%,rgba(37,99,235,.22),transparent 35%);
 }
 
 .container{
@@ -116,12 +115,6 @@ font-weight:700;
 
 cursor:pointer;
 
-transition:.25s;
-
-}
-
-.nav button:hover{
-background:#6d28d9;
 }
 
 .main{
@@ -149,27 +142,6 @@ margin-bottom:30px;
 font-family:'Syne';
 
 font-size:42px;
-
-}
-
-.logout{
-
-height:58px;
-
-padding:0 30px;
-
-border:none;
-
-border-radius:18px;
-
-cursor:pointer;
-
-font-weight:800;
-
-background:
-linear-gradient(135deg,#6d28d9,#2563eb);
-
-color:#fff;
 
 }
 
@@ -205,12 +177,6 @@ margin-bottom:8px;
 
 }
 
-.card p{
-
-color:#9099be;
-
-}
-
 .panel{
 
 display:grid;
@@ -232,27 +198,14 @@ border-radius:30px;
 
 }
 
-.formbox h2,
-.tablebox h2{
-
-font-family:'Syne';
-
-margin-bottom:25px;
-
-}
-
 .group{
 margin-bottom:18px;
 }
 
 label{
-
 display:block;
-
 margin-bottom:10px;
-
 color:#9aa2c8;
-
 }
 
 input,
@@ -386,18 +339,16 @@ V
 
 <div class="nav">
 
-<button>Dashboard</button>
+<button>
+Dashboard
+</button>
 
 <button onclick="openTools()">
-
 Use Tools
-
 </button>
 
 <button onclick="logout()">
-
 Logout
-
 </button>
 
 </div>
@@ -409,16 +360,8 @@ Logout
 <div class="header">
 
 <div class="title">
-
 Admin Dashboard
-
 </div>
-
-<button class="logout" onclick="logout()">
-
-Logout
-
-</button>
 
 </div>
 
@@ -427,9 +370,7 @@ Logout
 <div class="card">
 
 <h2 id="usersCount">
-
 0
-
 </h2>
 
 <p>Total Users</p>
@@ -442,7 +383,7 @@ Logout
 LIVE
 </h2>
 
-<p>System Status</p>
+<p>Status</p>
 
 </div>
 
@@ -452,7 +393,7 @@ LIVE
 VIP
 </h2>
 
-<p>Premium Access</p>
+<p>Premium</p>
 
 </div>
 
@@ -462,7 +403,7 @@ VIP
 ∞
 </h2>
 
-<p>Admin Control</p>
+<p>Control</p>
 
 </div>
 
@@ -473,14 +414,14 @@ VIP
 <div class="formbox">
 
 <h2>
-
 Create User
-
 </h2>
 
 <div class="group">
 
-<label>Username</label>
+<label>
+Username
+</label>
 
 <input id="username">
 
@@ -488,7 +429,9 @@ Create User
 
 <div class="group">
 
-<label>Password</label>
+<label>
+Password
+</label>
 
 <input id="password">
 
@@ -496,7 +439,9 @@ Create User
 
 <div class="group">
 
-<label>Device Limit</label>
+<label>
+Device
+</label>
 
 <select id="device">
 
@@ -511,7 +456,9 @@ Create User
 
 <div class="group">
 
-<label>Access Days</label>
+<label>
+Days
+</label>
 
 <select id="days">
 
@@ -524,7 +471,9 @@ Create User
 
 </div>
 
-<button class="create" onclick="addUser()">
+<button
+class="create"
+onclick="addUser()">
 
 CREATE USER
 
@@ -535,9 +484,7 @@ CREATE USER
 <div class="tablebox">
 
 <h2>
-
 User Management
-
 </h2>
 
 <table>
@@ -576,33 +523,29 @@ User Management
 let users=
 
 JSON.parse(
+
 localStorage.getItem(
 "vyrovaUsers"
 )
+
 )||[]
 
 function save(){
 
 localStorage.setItem(
+
 "vyrovaUsers",
+
 JSON.stringify(users)
+
 )
-
-}
-
-function getStatus(user){
-
-return Date.now()>user.expiry
-?
-"Expired"
-:
-"Active"
 
 }
 
 function render(){
 
 let table=
+
 document.getElementById(
 "usersTable"
 )
@@ -610,6 +553,18 @@ document.getElementById(
 table.innerHTML=""
 
 users.forEach((u,i)=>{
+
+let status=
+
+Date.now()>u.expiry
+
+?
+
+"Expired"
+
+:
+
+"Active"
 
 table.innerHTML+=`
 
@@ -619,7 +574,7 @@ table.innerHTML+=`
 <td>${u.password}</td>
 <td>${u.device}</td>
 <td>${u.days}</td>
-<td>${getStatus(u)}</td>
+<td>${status}</td>
 
 <td>
 
@@ -661,27 +616,35 @@ users.length
 function addUser(){
 
 let username=
+
 document.getElementById(
 "username"
 ).value.trim()
 
 let password=
+
 document.getElementById(
 "password"
 ).value.trim()
 
 let device=
+
 parseInt(
+
 document.getElementById(
 "device"
 ).value
+
 )
 
 let days=
+
 parseInt(
+
 document.getElementById(
 "days"
 ).value
+
 )
 
 if(
@@ -691,7 +654,23 @@ if(
 ){
 
 alert(
-"Fill All Fields"
+"Fill Fields"
+)
+
+return
+
+}
+
+let exists=
+
+users.find(
+u=>u.username===username
+)
+
+if(exists){
+
+alert(
+"Username Exists"
 )
 
 return
@@ -707,12 +686,13 @@ days,
 
 expiry:
 
-Date.now()+(
+Date.now()
+
++
+
+(
 days*
-24*
-60*
-60*
-1000
+86400000
 )
 
 })
@@ -725,7 +705,7 @@ render()
 
 function editUser(i){
 
-let mode=
+let action=
 
 prompt(
 
@@ -735,10 +715,10 @@ prompt(
 
 )
 
-if(mode===null)
+if(action===null)
 return
 
-let deviceValue=
+let amount=
 
 parseInt(
 
@@ -749,17 +729,15 @@ prompt(
 
 )
 
-if(mode==="1"){
+if(action==="1"){
 
-users[i].device+=
-deviceValue
+users[i].device+=amount
 
 }
 
-if(mode==="2"){
+if(action==="2"){
 
-users[i].device-=
-deviceValue
+users[i].device-=amount
 
 if(
 users[i].device<1
@@ -782,17 +760,13 @@ prompt(
 
 )
 
-users[i].days+=
-addDays
+users[i].days+=addDays
 
 users[i].expiry+=
 
 (
 addDays*
-24*
-60*
-60*
-1000
+86400000
 )
 
 save()
