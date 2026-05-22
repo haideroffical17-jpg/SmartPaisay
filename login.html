@@ -1,3 +1,5 @@
+<!-- login.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,17 +22,12 @@ box-sizing:border-box;
 body{
 
 font-family:'DM Sans',sans-serif;
-
 background:#07080f;
-
 min-height:100vh;
-
 display:flex;
 justify-content:center;
 align-items:center;
-
 overflow:hidden;
-
 color:#fff;
 
 }
@@ -405,9 +402,7 @@ Username
 </div>
 
 <input
-
 id="username"
-
 placeholder="Enter Username">
 
 </div>
@@ -431,17 +426,12 @@ Password
 </div>
 
 <input
-
 id="password"
-
 type="password"
-
 placeholder="Enter Password">
 
 <div
-
 class="eye"
-
 onclick="toggle()">
 
 👁️
@@ -473,44 +463,36 @@ Secure Login • VYROVA Workspace
 function toggle(){
 
 let p=
-
 document.getElementById(
-
 "password"
-
 )
 
 p.type=
-
 p.type==="password"
-
 ?
-
 "text"
-
 :
-
 "password"
 
 }
+
+/* LOGIN SYSTEM */
 
 function login(){
 
 let username=
 
 document.getElementById(
-
 "username"
-
-).value
+).value.trim()
 
 let password=
 
 document.getElementById(
-
 "password"
+).value.trim()
 
-).value
+/* ADMIN LOGIN */
 
 if(
 
@@ -523,17 +505,49 @@ password==="HaiderAli000"
 ){
 
 window.location=
-
 "admin.html"
+
+return
+
+}
+
+/* USER LOGIN */
+
+let users=
+
+JSON.parse(
+
+localStorage.getItem(
+"vyrovaUsers"
+)
+
+)||[]
+
+let found=
+
+users.find(
+
+u=>
+
+u.username===username
+
+&&
+
+u.password===password
+
+)
+
+if(found){
+
+window.location=
+"index.html"
 
 }
 
 else{
 
 document.getElementById(
-
 "error"
-
 ).innerText=
 
 "Invalid Username Or Password"
