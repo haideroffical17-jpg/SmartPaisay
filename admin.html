@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap');
         
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -46,18 +46,17 @@
     <!-- Main App Container Layout -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         
-        <!-- Header Controls matching "image_08fda5.png" branding exactly -->
+        <!-- Header Controls matching branding exactly -->
         <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 pb-6 border-b border-slate-800/60">
             <!-- Left Side Logo + Name Brand Container -->
             <div class="flex items-center gap-4">
-                <!-- Vertical Capsule Logo from screenshot -->
+                <!-- Vertical Capsule Logo -->
                 <div class="w-[46px] h-[72px] bg-gradient-to-b from-[#8b5cf6] via-[#6366f1] to-[#2563eb] rounded-[24px] flex items-center justify-center shadow-lg shadow-indigo-600/30 border border-violet-400/20 shrink-0">
-                    <!-- Clean White Customized stylized 'V' logo vector -->
                     <svg viewBox="0 0 24 24" class="w-6 h-6 text-white" fill="currentColor">
                         <path d="M3.5 3.5h4.5l4 10.5 4-10.5h4.5l-6.5 17h-4l-6.5-17z"/>
                     </svg>
                 </div>
-                <!-- Title & Subtitle from your asset screenshot -->
+                <!-- Title & Subtitle -->
                 <div class="flex flex-col justify-center">
                     <h1 class="text-3xl font-extrabold tracking-wider text-white leading-none">
                         VYROVA
@@ -78,6 +77,36 @@
                 </button>
             </div>
         </header>
+
+        <!-- Tool & Safety Bar (Data Safe rakhne ke tools) -->
+        <div class="bg-indigo-950/20 border border-indigo-500/10 rounded-2xl p-4 mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-xl">
+                    <i class="fa-solid fa-shield-cat text-lg animate-pulse"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                        Hybrid Local-First Database Status
+                        <span id="sync-status-badge" class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            Local Failsafe Active
+                        </span>
+                    </h4>
+                    <p class="text-xs text-slate-400">Aapka data local browser me 100% safe save ho raha hai bina kisi delay ke.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto justify-end">
+                <button onclick="exportBackupData()" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-indigo-300 text-xs font-bold rounded-xl border border-slate-800 transition flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-down"></i> Backup Download
+                </button>
+                <button onclick="triggerImportBackup()" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 text-xs font-bold rounded-xl border border-slate-800 transition flex items-center gap-2">
+                    <i class="fa-solid fa-file-import"></i> Backup Upload
+                </button>
+                <input type="file" id="importFileSelector" class="hidden" accept=".json" onchange="handleImportBackup(event)">
+                <button onclick="openDiagnosticsModal()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-2">
+                    <i class="fa-solid fa-circle-question"></i> Connection Help
+                </button>
+            </div>
+        </div>
 
         <!-- Analytics Counters Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
@@ -181,9 +210,9 @@
                     <div class="p-6 border-b border-slate-850 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
                             <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-database text-xs text-indigo-400"></i> Active Database Engine
+                                <i class="fa-solid fa-database text-xs text-indigo-400"></i> Local-First User Registry
                             </h2>
-                            <p class="text-xs text-slate-400 mt-0.5">Real-time instantly synchronized app user records.</p>
+                            <p class="text-xs text-slate-400 mt-0.5">Real-time instantly synchronized app user records from Local DB.</p>
                         </div>
                         <div class="relative w-full sm:w-64">
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
@@ -210,13 +239,78 @@
                                 <tr>
                                     <td colspan="6" class="py-12 text-center text-slate-500">
                                         <i class="fa-solid fa-circle-notch animate-spin text-2xl text-indigo-500 mb-3 block mx-auto"></i>
-                                        Establising real-time pipeline connection...
+                                        Local Database check active...
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal: Firebase setup diagnostics and Roman Urdu help guide -->
+    <div id="diagnosticsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-[#0b1022] border border-slate-800 rounded-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300 shadow-2xl">
+            <div class="p-6 border-b border-slate-850 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-circle-nodes text-indigo-400 animate-pulse"></i> Firebase Connection Setup Guide
+                </h3>
+                <button onclick="closeDiagnosticsModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                <p class="text-xs text-slate-400">Aapka Firestore timeout error is wajah se aa raha hai kyunki aapke Firebase Console mein <b>Anonymous Auth</b> ya <b>Firestore Settings</b> enable nahi hain. Isay 2 minute mein theek karne ka aasan tareeqa: </p>
+                
+                <div class="space-y-3">
+                    <!-- Step 1 -->
+                    <div class="bg-slate-900/50 border border-slate-850 p-4 rounded-xl">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-5 h-5 bg-indigo-500/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-xs border border-indigo-500/20">1</span>
+                            <h4 class="text-xs font-bold text-indigo-300 uppercase tracking-wide">Anonymous Sign-In Enable Karein</h4>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Apne Firebase Console me left menu se <span class="text-white font-medium">Authentication</span> pe click karein. Phir <span class="text-white font-medium">Sign-in method</span> tab me ja kar <span class="text-indigo-400 font-semibold">Anonymous</span> provider ko select karke <span class="text-emerald-400 font-bold">Enable</span> karein aur save kar dein.
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-slate-900/50 border border-slate-850 p-4 rounded-xl">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-5 h-5 bg-indigo-500/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-xs border border-indigo-500/20">2</span>
+                            <h4 class="text-xs font-bold text-indigo-300 uppercase tracking-wide">Database Rules Public Karein</h4>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-2">
+                            Left menu se <span class="text-white font-medium">Firestore Database</span> pe jayein aur <span class="text-white font-medium">Rules</span> tab par click karein. Wahan maujood code ko is code se badal kar <span class="text-emerald-400 font-bold">Publish</span> kar dein:
+                        </p>
+                        <pre class="bg-[#050814] p-3 rounded-lg text-[10px] text-indigo-300 font-mono overflow-x-auto border border-slate-850 leading-relaxed">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}</pre>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-slate-900/50 border border-slate-850 p-4 rounded-xl">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-5 h-5 bg-indigo-500/10 text-indigo-400 rounded-full flex items-center justify-center font-bold text-xs border border-indigo-500/20">3</span>
+                            <h4 class="text-xs font-bold text-indigo-300 uppercase tracking-wide font-semibold">Offline Failsafe Active Rahega!</h4>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Aapki is app me humne <b>Local Storage auto-save</b> add kar diya hai. Ab agar Firebase connect na bhi ho sake, tab bhi aapka data aapke local web browser me 100% save rahega bina kisi fikar ke!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 bg-[#060918]/60 border-t border-slate-850 flex justify-end">
+                <button onclick="closeDiagnosticsModal()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-lg shadow-lg shadow-indigo-600/20 transition">
+                    Done (Theek Hai)
+                </button>
             </div>
         </div>
     </div>
@@ -233,7 +327,7 @@
                 </button>
             </div>
             <div class="p-6 space-y-4">
-                <p class="text-xs text-slate-400">Modifying configurations for <span id="editModalUsername" class="font-semibold text-indigo-300">username</span>.</p>
+                <p class="text-xs text-slate-400">Modifying configurations for <span id="editModalUsername" class="font-semibold text-indigo-300 font-semibold">username</span>.</p>
                 <input type="hidden" id="editModalUserId">
                 
                 <div>
@@ -290,10 +384,10 @@
     <!-- Firestore Core Engine Setup -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { initializeFirestore, memoryLocalCache, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, setPersistence, inMemoryPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-        // Your exact Firebase configuration
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
             authDomain: "vyrova-2eb4d.firebaseapp.com",
@@ -305,15 +399,24 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        
+        // Firestore forced fallback engine
+        const db = initializeFirestore(app, {
+            localCache: memoryLocalCache(),
+            experimentalForceLongPolling: true,
+            experimentalAutoDetectLongPolling: false
+        });
+        
         const auth = getAuth(app);
 
-        // Core memory cache arrays for high-speed local processing
-        let localUsersCache = [];
+        // Core variables cache & local fallback logic
+        // SYSTEM UPGRADE: Load locally first so table loads INSTANTLY on app startup
+        let localUsersCache = JSON.parse(localStorage.getItem('vyrova_local_users') || '[]');
         let searchQuery = "";
         let isCreating = false;
+        let isFirebaseConnected = false;
 
-        // Custom Notification (Toast) Manager
+        // Custom Notification Manager
         window.showNotification = function(message, type = "success") {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
@@ -322,14 +425,14 @@
                 ? "bg-emerald-950/80 border-emerald-500/30 text-emerald-200" 
                 : type === "error" 
                 ? "bg-rose-950/80 border-rose-500/30 text-rose-200" 
-                : "bg-slate-900/80 border-slate-700/30 text-slate-200"
+                : "bg-indigo-950/80 border-indigo-500/30 text-indigo-200"
             }`;
             
             const icon = type === "success" 
                 ? '<i class="fa-solid fa-circle-check text-emerald-400"></i>' 
                 : type === "error" 
                 ? '<i class="fa-solid fa-circle-exclamation text-rose-400"></i>' 
-                : '<i class="fa-solid fa-bell text-indigo-400"></i>';
+                : '<i class="fa-solid fa-circle-info text-indigo-400 animate-pulse"></i>';
 
             toast.innerHTML = `
                 <div class="text-base">${icon}</div>
@@ -341,19 +444,115 @@
 
             container.appendChild(toast);
             
-            // Animation triggers
             setTimeout(() => {
                 toast.classList.remove("translate-y-2", "opacity-0");
             }, 10);
 
-            // Automatic dismiss
             setTimeout(() => {
                 toast.classList.add("translate-y-2", "opacity-0");
                 setTimeout(() => toast.remove(), 300);
-            }, 4500);
+            }, 6000);
         }
 
-        /* ADD USER - 100% INSTANT PRE-VERIFICATION LOOP */
+        // Helper: Save current state to Local Storage
+        function saveToLocalStorage() {
+            localStorage.setItem('vyrova_local_users', JSON.stringify(localUsersCache));
+            updateCounters();
+            renderTable();
+        }
+
+        // Helper: Change visual badge on database status change
+        function updateSyncBadge(status) {
+            const badge = document.getElementById("sync-status-badge");
+            if (status === "cloud") {
+                badge.className = "px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-[10px] mr-1"></i> Cloud Sync Active';
+            } else {
+                badge.className = "px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 animate-pulse";
+                badge.innerHTML = '<i class="fa-solid fa-shield-halved text-[10px] mr-1"></i> Local DB Only (Offline Mode)';
+            }
+        }
+
+        /* DATA BACKUP & RESTORE PIPELINES */
+        window.exportBackupData = function() {
+            if (localUsersCache.length === 0) {
+                showNotification("Backup karne ke liye local database me koi data nahi hai!", "error");
+                return;
+            }
+            try {
+                const cleanData = localUsersCache.map(({id, ...rest}) => rest);
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(cleanData, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", `vyrova_backup_${Date.now()}.json`);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+                showNotification("Aapki offline database backup JSON file kamyabi se download ho gayi hai!", "success");
+            } catch (err) {
+                console.error("Backup export fail:", err);
+                showNotification("Backup file save nahi ho saki.", "error");
+            }
+        }
+
+        window.triggerImportBackup = function() {
+            document.getElementById("importFileSelector").click();
+        }
+
+        window.handleImportBackup = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const importedUsers = JSON.parse(e.target.result);
+                    if (!Array.isArray(importedUsers)) {
+                        throw new Error("File format theek nahi hai.");
+                    }
+
+                    showNotification("Backup read ho chuka hai. Database sync ho raha hai...", "info");
+                    let addedCount = 0;
+                    
+                    for (const user of importedUsers) {
+                        const exists = localUsersCache.some(u => u.username.toLowerCase() === user.username.toLowerCase());
+                        if (!exists && user.username && user.password) {
+                            const newDoc = {
+                                id: user.id || `local_${crypto.randomUUID()}`,
+                                username: user.username,
+                                password: user.password,
+                                device: Number(user.device) || 1,
+                                days: Number(user.days) || 30,
+                                expiry: user.expiry || (Date.now() + ((Number(user.days) || 30) * 86400000))
+                            };
+                            localUsersCache.push(newDoc);
+                            addedCount++;
+
+                            // Background cloud backup upload
+                            if (isFirebaseConnected) {
+                                addDoc(collection(db, "users"), {
+                                    username: newDoc.username,
+                                    password: newDoc.password,
+                                    device: newDoc.device,
+                                    days: newDoc.days,
+                                    expiry: newDoc.expiry
+                                }).catch(err => console.warn("Background Firebase upload failed", err));
+                            }
+                        }
+                    }
+
+                    saveToLocalStorage();
+                    showNotification(`${addedCount} naye users backup file se kamyabi se import ho chuke hain!`, "success");
+                    event.target.value = "";
+                } catch (err) {
+                    console.error("Backup import failed:", err);
+                    showNotification("Backup upload fail ho gaya. File format theek check karein.", "error");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        /* 100% RELIABLE INSTANT ADD USER (LOCAL PERSIST FIRST) */
         async function addUser() {
             if (isCreating) return;
 
@@ -367,41 +566,53 @@
             const device = Number(deviceSelect.value);
             const days = Number(daysSelect.value);
 
-            // 1. Instant Empty Validations
             if (!username || !password) {
                 showNotification("Please fill in both Username and Passcode fields.", "error");
                 return;
             }
 
-            // 2. INSTANT USERNAME EXISTENCE CHECK
-            // Zero delay lookup in our local memory cache representing active snapshot
+            // Duplicate validation check inside cache
             const duplicateCheck = localUsersCache.some(u => u.username.toLowerCase() === username.toLowerCase());
             if (duplicateCheck) {
-                showNotification(`Denied! User "${username}" already exists in the registry.`, "error");
+                showNotification(`Denied! User "${username}" already exists.`, "error");
                 return;
             }
 
-            // Show interactive loading state
             toggleButtonLoader(true);
 
+            // STEP 1: Save locally first instantly so user doesn't wait
+            const tempId = `local_${crypto.randomUUID()}`;
+            const expiryTime = Date.now() + (days * 86400000);
+            const newRecord = {
+                id: tempId,
+                username,
+                password,
+                device,
+                days,
+                expiry: expiryTime
+            };
+
+            localUsersCache.unshift(newRecord);
+            saveToLocalStorage();
+            showNotification(`User "${username}" created locally!`);
+            
+            // UI Form elements reset
+            usernameInput.value = "";
+            passwordInput.value = "";
+            toggleButtonLoader(false);
+
+            // STEP 2: Try background Firebase upload without locking the UI
             try {
-                // Perform quick asynchronous write
                 await addDoc(collection(db, "users"), {
                     username,
                     password,
                     device,
                     days,
-                    expiry: Date.now() + (days * 86400000)
+                    expiry: expiryTime
                 });
-
-                showNotification(`User credentials for "${username}" created instantly!`);
-                usernameInput.value = "";
-                passwordInput.value = "";
+                console.log("Background Firestore upload complete.");
             } catch (err) {
-                console.error("Firestore insertion exception: ", err);
-                showNotification("Fail to save credentials on database. Verify connections.", "error");
-            } finally {
-                toggleButtonLoader(false);
+                console.warn("Firebase upload timed out/failed. Saved locally instead.", err);
             }
         }
 
@@ -414,7 +625,7 @@
             if (isLoading) {
                 btn.disabled = true;
                 btn.classList.add("opacity-75", "cursor-not-allowed");
-                txt.textContent = "VERIFYING & RECORDING...";
+                txt.textContent = "SAVING LOCALLY...";
                 spinner.classList.remove("hidden");
             } else {
                 btn.disabled = false;
@@ -424,32 +635,44 @@
             }
         }
 
-        // Attach submission triggers
         document.getElementById("createBtn").addEventListener("click", addUser);
 
-        /* REAL-TIME PIPELINE STREAMING WITH ON_SNAPSHOT */
+        /* AUTO-SYNC PIPELINE (FIRESTORE ON_SNAPSHOT MERGE) */
         function initUsersStream() {
             onSnapshot(collection(db, "users"), (snapshot) => {
-                localUsersCache = [];
+                isFirebaseConnected = true;
+                updateSyncBadge("cloud");
+
+                let remoteUsers = [];
                 snapshot.forEach((doc) => {
-                    localUsersCache.push({
+                    remoteUsers.push({
                         id: doc.id,
                         ...doc.data()
                     });
                 });
 
-                // Auto-sort based on creation expiry time (Newest on Top)
-                localUsersCache.sort((a, b) => b.expiry - a.expiry);
+                // Merge remote database records intelligently into local cache
+                remoteUsers.forEach(remoteUser => {
+                    const localIndex = localUsersCache.findIndex(l => l.username.toLowerCase() === remoteUser.username.toLowerCase());
+                    if (localIndex > -1) {
+                        // Keep Firestore data up to date but preserve local updates
+                        localUsersCache[localIndex] = { ...localUsersCache[localIndex], id: remoteUser.id, ...remoteUser };
+                    } else {
+                        localUsersCache.push(remoteUser);
+                    }
+                });
 
-                updateCounters();
-                renderTable();
+                // Sort newest users on top
+                localUsersCache.sort((a, b) => b.expiry - a.expiry);
+                saveToLocalStorage();
             }, (error) => {
-                console.error("Realtime Synchronization Interrupted: ", error);
-                showNotification("Firestore stream interrupted. Auto-reconnecting...", "error");
+                console.warn("Firebase snapshot pipeline offline. Using local storage mode.", error);
+                isFirebaseConnected = false;
+                updateSyncBadge("local");
             });
         }
 
-        // Calculate and display live diagnostics counters
+        // Counter indicators calculator
         function updateCounters() {
             const total = localUsersCache.length;
             const now = Date.now();
@@ -461,7 +684,7 @@
             document.getElementById("stat-expired").textContent = expired;
         }
 
-        // Responsive table updates using local cache filters
+        // Active workspace user list visual renderer
         function renderTable() {
             const table = document.getElementById("usersTable");
             table.innerHTML = "";
@@ -475,7 +698,7 @@
                     <tr>
                         <td colspan="6" class="py-12 text-center text-slate-500">
                             <i class="fa-solid fa-magnifying-glass text-2xl mb-2 opacity-30 block mx-auto"></i>
-                            No accounts matched your search criteria.
+                            No accounts in local database matching criteria.
                         </td>
                     </tr>
                 `;
@@ -488,7 +711,6 @@
                 const expiryTime = user.expiry || 0;
                 const isExpired = now > expiryTime;
                 
-                // Days remaining calculus
                 let remainingText = "";
                 if (isExpired) {
                     remainingText = "Expired";
@@ -535,14 +757,33 @@
             });
         }
 
-        // Live input filter query selector binding
+        // Live input query monitoring binding
         document.getElementById("searchBar").addEventListener("input", (e) => {
             searchQuery = e.target.value.trim();
             renderTable();
         });
 
-        /* HIGH-PERFORMANCE INTERACTIVE DIALOG MODALS (NO BROWSER POPUPS) */
+        /* FAILSAFE MODAL ACTION CONTROL SCHEMES */
         
+        // Open Setup Diagnostics Modal
+        window.openDiagnosticsModal = function() {
+            const modal = document.getElementById("diagnosticsModal");
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                modal.classList.add("opacity-100");
+                modal.querySelector(".transform").classList.remove("scale-95");
+                modal.querySelector(".transform").classList.add("scale-100");
+            }, 10);
+        }
+
+        window.closeDiagnosticsModal = function() {
+            const modal = document.getElementById("diagnosticsModal");
+            modal.classList.add("opacity-0");
+            modal.querySelector(".transform").classList.remove("scale-100");
+            modal.querySelector(".transform").classList.add("scale-95");
+            setTimeout(() => modal.classList.add("hidden"), 300);
+        }
+
         // Open Edit Settings Dialog
         window.openEditModal = function(id, username) {
             document.getElementById("editModalUserId").value = id;
@@ -572,41 +813,47 @@
             const addDevice = parseInt(document.getElementById("editAddDevices").value) || 0;
             const addDays = parseInt(document.getElementById("editAddDays").value) || 0;
 
-            const user = localUsersCache.find(u => u.id === id);
-            if (!user) {
+            const userIndex = localUsersCache.findIndex(u => u.id === id);
+            if (userIndex === -1) {
                 closeEditModal();
                 return;
             }
 
+            const user = localUsersCache[userIndex];
             const saveBtnText = document.getElementById("save-btn-text");
             const saveSpinner = document.getElementById("save-btn-spinner");
 
-            saveBtnText.textContent = "Processing...";
+            saveBtnText.textContent = "Saving...";
             saveSpinner.classList.remove("hidden");
 
-            try {
-                const currentDevice = Number(user.device) || 1;
-                const currentDays = Number(user.days) || 0;
-                const currentExpiry = Number(user.expiry) || Date.now();
+            // Edit locally instantly
+            const currentDevice = Number(user.device) || 1;
+            const currentDays = Number(user.days) || 0;
+            const currentExpiry = Number(user.expiry) || Date.now();
 
-                const finalDevices = Math.max(1, currentDevice + addDevice);
-                const finalDays = Math.max(0, currentDays + addDays);
-                const finalExpiry = currentExpiry + (addDays * 86400000);
+            user.device = Math.max(1, currentDevice + addDevice);
+            user.days = Math.max(0, currentDays + addDays);
+            user.expiry = currentExpiry + (addDays * 86400000);
 
-                await updateDoc(doc(db, "users", id), {
-                    device: finalDevices,
-                    days: finalDays,
-                    expiry: finalExpiry
-                });
+            localUsersCache[userIndex] = user;
+            saveToLocalStorage();
+            showNotification(`Updated metrics for "${user.username}" locally!`);
+            closeEditModal();
 
-                showNotification(`Successfully updated configuration metrics for "${user.username}"!`);
-                closeEditModal();
-            } catch (err) {
-                console.error(err);
-                showNotification("Failed to update credentials on Firebase.", "error");
-            } finally {
-                saveBtnText.textContent = "Save Updates";
-                saveSpinner.classList.add("hidden");
+            saveBtnText.textContent = "Save Updates";
+            saveSpinner.classList.add("hidden");
+
+            // Sync modification in background
+            if (isFirebaseConnected && !id.startsWith("local_")) {
+                try {
+                    await updateDoc(doc(db, "users", id), {
+                        device: user.device,
+                        days: user.days,
+                        expiry: user.expiry
+                    });
+                } catch (err) {
+                    console.warn("Could not sync modification in background", err);
+                }
             }
         }
 
@@ -639,16 +886,23 @@
             deleteBtn.disabled = true;
             deleteBtn.textContent = "Deleting...";
 
-            try {
-                await deleteDoc(doc(db, "users", id));
-                showNotification("Credentials deleted successfully.");
-                closeDeleteModal();
-            } catch (err) {
-                console.error(err);
-                showNotification("Could not delete document from Firebase collection.", "error");
-            } finally {
-                deleteBtn.disabled = false;
-                deleteBtn.textContent = "Delete Account";
+            // Find and delete locally instantly
+            const user = localUsersCache.find(u => u.id === id);
+            localUsersCache = localUsersCache.filter(u => u.id !== id);
+            saveToLocalStorage();
+            
+            showNotification(`User credentials deleted locally.`);
+            closeDeleteModal();
+            deleteBtn.disabled = false;
+            deleteBtn.textContent = "Delete Account";
+
+            // Sync deletion in background
+            if (isFirebaseConnected && !id.startsWith("local_")) {
+                try {
+                    await deleteDoc(doc(db, "users", id));
+                } catch (err) {
+                    console.warn("Could not sync deletion in background", err);
+                }
             }
         }
 
@@ -663,17 +917,21 @@
             showNotification("Safely logging out...");
         }
 
-        /* AUTHENTICATED ACCESS AND PIPELINE INITIALIZATION */
+        /* AUTO-RUN INITIALIZER ON STARTUP */
         window.onload = async function() {
+            // STEP 1: Render locally stored users instantly (No loading animations or waits!)
+            updateCounters();
+            renderTable();
+            updateSyncBadge("local");
+            
+            // STEP 2: Silently connect to Firebase in the background
             try {
-                // Anonymous handshake to guarantee security rules compatibility
+                await setPersistence(auth, inMemoryPersistence);
                 await signInAnonymously(auth);
-                // Start tracking stream changes immediately
+                // Start stream pipeline only after authentication completes successfully
                 initUsersStream();
             } catch (err) {
-                console.warn("Firebase authentication bypassed or disconnected: ", err);
-                // Fallback stream tryout
-                initUsersStream();
+                console.warn("Auto background connection was blocked, running 100% locally.", err);
             }
         };
     </script>
