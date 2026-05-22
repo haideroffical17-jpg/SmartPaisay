@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VYROVA LOGIN</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
@@ -16,6 +16,7 @@ box-sizing:border-box;
 }
 
 body{
+
 font-family:'DM Sans',sans-serif;
 background:#07080f;
 min-height:100vh;
@@ -24,30 +25,46 @@ justify-content:center;
 align-items:center;
 overflow:hidden;
 color:#fff;
+
 }
 
 .bg{
+
 position:fixed;
 inset:0;
+
 background:
-radial-gradient(circle at 20% 20%,rgba(109,40,217,.25),transparent 35%),
-radial-gradient(circle at 80% 80%,rgba(37,99,235,.25),transparent 35%),
-radial-gradient(circle at 60% 40%,rgba(13,148,136,.15),transparent 40%);
-animation:move 8s infinite alternate ease-in-out;
+radial-gradient(circle at 20% 20%,rgba(109,40,217,.22),transparent 35%),
+radial-gradient(circle at 80% 80%,rgba(37,99,235,.22),transparent 35%),
+radial-gradient(circle at 50% 40%,rgba(13,148,136,.15),transparent 40%);
+
+animation:bgmove 8s infinite alternate ease-in-out;
+
 }
 
-@keyframes move{
-from{transform:scale(1);}
-to{transform:scale(1.12);}
+@keyframes bgmove{
+
+from{
+transform:scale(1);
+}
+
+to{
+transform:scale(1.15);
+}
+
 }
 
 .grid{
+
 position:fixed;
 inset:0;
+
 background-image:
 linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
 linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
-background-size:50px 50px;
+
+background-size:55px 55px;
+
 }
 
 .card{
@@ -55,21 +72,21 @@ background-size:50px 50px;
 position:relative;
 z-index:5;
 
-width:470px;
-
-background:rgba(17,20,33,.65);
-
-border:1px solid rgba(255,255,255,.08);
-
-backdrop-filter:blur(24px);
-
-border-radius:30px;
+width:500px;
 
 padding:45px;
 
+border-radius:32px;
+
+background:rgba(18,22,37,.72);
+
+backdrop-filter:blur(28px);
+
+border:1px solid rgba(255,255,255,.08);
+
 box-shadow:
-0 25px 80px rgba(0,0,0,.45),
-0 0 60px rgba(109,40,217,.18);
+0 35px 90px rgba(0,0,0,.45),
+0 0 55px rgba(109,40,217,.18);
 
 }
 
@@ -78,14 +95,15 @@ box-shadow:
 display:flex;
 align-items:center;
 gap:14px;
-margin-bottom:35px;
+
+margin-bottom:30px;
 
 }
 
 .mark{
 
-width:58px;
-height:58px;
+width:62px;
+height:62px;
 
 border-radius:18px;
 
@@ -96,10 +114,11 @@ justify-content:center;
 align-items:center;
 
 font-family:'Syne';
-font-size:26px;
+
+font-size:28px;
 font-weight:800;
 
-box-shadow:0 0 35px rgba(109,40,217,.45);
+box-shadow:0 0 40px rgba(109,40,217,.5);
 
 }
 
@@ -114,8 +133,7 @@ letter-spacing:2px;
 .sub{
 
 font-size:12px;
-color:#8f97bb;
-margin-top:3px;
+color:#8b94bb;
 letter-spacing:1px;
 
 }
@@ -123,31 +141,38 @@ letter-spacing:1px;
 .title{
 
 font-family:'Syne';
+
 font-size:42px;
+
 line-height:1.1;
+
 margin-bottom:12px;
 
 }
 
 .desc{
 
-color:#8e96b7;
-line-height:1.7;
+color:#8f98bf;
+
+line-height:1.8;
+
 margin-bottom:35px;
 
 }
 
 .group{
 
-margin-bottom:20px;
+margin-bottom:22px;
 
 }
 
 .label{
 
 font-size:13px;
+
 margin-bottom:10px;
-color:#9ba4ca;
+
+color:#9ba3cb;
 
 }
 
@@ -156,11 +181,13 @@ color:#9ba4ca;
 display:flex;
 align-items:center;
 
-background:#151a2c;
+height:64px;
 
-border:1px solid #232944;
+background:#14192b;
 
-border-radius:16px;
+border:1px solid #252d49;
+
+border-radius:18px;
 
 padding:0 18px;
 
@@ -171,13 +198,15 @@ transition:.25s;
 .inputbox:focus-within{
 
 border-color:#8b5cf6;
-box-shadow:0 0 25px rgba(109,40,217,.25);
+
+box-shadow:0 0 25px rgba(109,40,217,.22);
 
 }
 
 .icon{
 
 font-size:18px;
+
 margin-right:12px;
 
 }
@@ -185,20 +214,24 @@ margin-right:12px;
 input{
 
 width:100%;
-height:60px;
+height:100%;
 
 background:none;
+
 border:none;
+
 outline:none;
 
-font-size:15px;
 color:#fff;
+
+font-size:15px;
 
 }
 
 .eye{
 
 cursor:pointer;
+
 font-size:18px;
 
 }
@@ -206,24 +239,26 @@ font-size:18px;
 button{
 
 width:100%;
-height:62px;
+
+height:65px;
 
 border:none;
 
-border-radius:18px;
+border-radius:20px;
+
+cursor:pointer;
+
+margin-top:10px;
 
 background:linear-gradient(135deg,#6d28d9,#2563eb);
+
+color:#fff;
 
 font-family:'Syne';
 
 font-size:16px;
+
 font-weight:700;
-
-color:#fff;
-
-cursor:pointer;
-
-margin-top:14px;
 
 transition:.25s;
 
@@ -233,24 +268,29 @@ button:hover{
 
 transform:translateY(-2px);
 
-box-shadow:0 14px 35px rgba(109,40,217,.45);
+box-shadow:0 15px 40px rgba(109,40,217,.45);
 
 }
 
-.footer{
+.secure{
 
-margin-top:22px;
+margin-top:20px;
+
 text-align:center;
+
 font-size:13px;
-color:#7680a7;
+
+color:#7782ab;
 
 }
 
 #error{
 
 margin-top:18px;
+
 text-align:center;
-color:#ff5376;
+
+color:#ff5a7d;
 
 }
 
@@ -288,9 +328,7 @@ Welcome Back.
 
 <div class="desc">
 
-Secure access to your creative workspace.
-
-Login to continue.
+Secure login to access your dashboard, tools, and premium workspace.
 
 </div>
 
@@ -308,7 +346,7 @@ Username
 
 <input
 id="username"
-placeholder="Enter username">
+placeholder="Enter Username">
 
 </div>
 
@@ -329,7 +367,7 @@ Password
 <input
 id="password"
 type="password"
-placeholder="Enter password">
+placeholder="Enter Password">
 
 <div
 class="eye"
@@ -342,14 +380,16 @@ onclick="toggle()">
 </div>
 
 <button onclick="login()">
+
 LOGIN TO VYROVA
+
 </button>
 
 <div id="error"></div>
 
-<div class="footer">
+<div class="secure">
 
-Protected Login • Device Secure
+Protected Access • Device Safe • Admin Controlled
 
 </div>
 
@@ -360,7 +400,9 @@ Protected Login • Device Secure
 function toggle(){
 
 let p=
-document.getElementById("password")
+document.getElementById(
+"password"
+)
 
 p.type=
 p.type==="password"
@@ -371,71 +413,37 @@ p.type==="password"
 
 }
 
-async function login(){
+function login(){
 
 let username=
-document.getElementById("username").value
+document.getElementById(
+"username"
+).value
 
 let password=
-document.getElementById("password").value
+document.getElementById(
+"password"
+).value
 
-try{
+if(
 
-let res=
-await fetch(
-"http://localhost:3000/login",
-{
+username==="923220498935"
+&&
+password==="HaiderAli000"
 
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-username,
-password
-})
-
-})
-
-let data=
-await res.json()
-
-if(data.success){
-
-localStorage.setItem(
-"token",
-data.token
-)
-
-if(data.role==="admin"){
+){
 
 window.location=
 "admin.html"
 
-}else{
-
-window.location=
-"index.html"
-
 }
 
-}else{
+else{
 
 document.getElementById(
 "error"
 ).innerText=
-data.message
-
-}
-
-}catch{
-
-document.getElementById(
-"error"
-).innerText=
-"Server Offline"
+"Invalid Username Or Password"
 
 }
 
