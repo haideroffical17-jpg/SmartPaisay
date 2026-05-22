@@ -143,7 +143,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Local Storage Base Seed Setup (Safe Fallback to ensure instantaneous testing)
         if (!localStorage.getItem('ai_users')) {
@@ -177,6 +177,7 @@
 
         // Safe Bypass Mode status variables
         window.isOfflineMode = false;
+        window.liveUsers = []; // In-memory fast cache storage
 
         // RULE 1: Strict paths used precisely
         const usersCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'users');
@@ -196,6 +197,7 @@
                         usersList.push({ id: doc.id, ...doc.data() });
                     });
                     localStorage.setItem('ai_users', JSON.stringify(usersList));
+                    window.liveUsers = usersList; // Update in-memory copy instantly
                     console.log("Real-time background sync completed. Active DB size:", usersList.length);
                     
                     document.getElementById('syncStatusText').innerText = "Live Sync Connected";
@@ -327,8 +329,24 @@
             }
 
             // 2. Validate using live real-time cache (Instantly up-to-date in background)
-            const cachedUsers = JSON.parse(localStorage.getItem('ai_users')) || [];
-            const matchedUser = cachedUsers.find(u => u.username === usernameInput && u.password === passwordInput);
+            let cachedUsers = window.liveUsers || JSON.parse(localStorage.getItem('ai_users')) || [];
+            let matchedUser = cachedUsers.find(u => u.username === usernameInput && u.password === passwordInput);
+
+            // Double check: Agar naya user just register hua ho aur socket stream delay ho, toh direct dynamic cloud fetch se try karein
+            if (!matchedUser && !window.isOfflineMode) {
+                try {
+                    const snapshot = await getDocs(usersCollectionRef);
+                    const usersList = [];
+                    snapshot.forEach((doc) => {
+                        usersList.push({ id: doc.id, ...doc.data() });
+                    });
+                    localStorage.setItem('ai_users', JSON.stringify(usersList));
+                    window.liveUsers = usersList; // Force update latest copy in memory
+                    matchedUser = usersList.find(u => u.username === usernameInput && u.password === passwordInput);
+                } catch (fetchError) {
+                    console.log("Instant fetch fallback error:", fetchError);
+                }
+            }
 
             if (matchedUser) {
                 window.showToast(`Khushamdeed ${matchedUser.name}! Workspace loading...`, "success");
