@@ -1,542 +1,447 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="https://i.ibb.co/q42kpqz/PrimeDrop-Logo.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrimeDrop VIP Store</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
-                    colors: { vip: { dark: '#050505', card: '#0f0f0f', border: '#1f1f1f' } },
-                    backgroundImage: {
-                        'gold-text': 'linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)',
-                        'gold-card': 'linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(0,0,0,0) 100%)',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #000000; color: #ffffff; background-image: radial-gradient(circle at top center, #1a1a1a 0%, #000000 70%); min-height: 100vh; }
-        .text-gold-gradient { background: linear-gradient(to right, #bf953f, #e3c472, #b38728, #aa771c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; }
-        .glass-nav { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .glass-card { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 215, 0, 0.1); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
-        .gold-glow:hover { border-color: rgba(212, 175, 55, 0.5); box-shadow: 0 0 20px rgba(212, 175, 55, 0.15); }
-        .btn-gold { background: linear-gradient(to bottom right, #bf953f, #aa771c); color: black; font-weight: 600; text-shadow: 0 1px 0 rgba(255,255,255,0.4); }
-        .btn-gold:hover { filter: brightness(1.1); }
-        .selected-pill { background: #bf953f !important; color: black !important; border-color: #bf953f !important; font-weight: bold; }
-        .size-btn.selected { background: #bf953f; color: black; border-color: #bf953f; font-weight: bold; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #111; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #bf953f; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-        .modal-animate { animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-        .input-group input:focus ~ label, .input-group input:not(:placeholder-shown) ~ label,
-        .input-group textarea:focus ~ label, .input-group textarea:not(:placeholder-shown) ~ label,
-        .input-group select:focus ~ label, .input-group select:not(:placeholder-shown) ~ label {
-            top: -8px; font-size: 10px; color: #bf953f; background: #000; padding: 0 4px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VYROVA LOGIN</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'DM Sans',sans-serif;
+background:#07080f;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+color:#fff;
+}
+
+.bg{
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 20% 20%,rgba(109,40,217,.25),transparent 35%),
+radial-gradient(circle at 80% 80%,rgba(37,99,235,.25),transparent 35%),
+radial-gradient(circle at 60% 40%,rgba(13,148,136,.15),transparent 40%);
+animation:move 8s infinite alternate ease-in-out;
+}
+
+@keyframes move{
+from{transform:scale(1);}
+to{transform:scale(1.12);}
+}
+
+.grid{
+position:fixed;
+inset:0;
+background-image:
+linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+background-size:50px 50px;
+}
+
+.card{
+
+position:relative;
+z-index:5;
+
+width:470px;
+
+background:rgba(17,20,33,.65);
+
+border:1px solid rgba(255,255,255,.08);
+
+backdrop-filter:blur(24px);
+
+border-radius:30px;
+
+padding:45px;
+
+box-shadow:
+0 25px 80px rgba(0,0,0,.45),
+0 0 60px rgba(109,40,217,.18);
+
+}
+
+.logo{
+
+display:flex;
+align-items:center;
+gap:14px;
+margin-bottom:35px;
+
+}
+
+.mark{
+
+width:58px;
+height:58px;
+
+border-radius:18px;
+
+background:linear-gradient(135deg,#6d28d9,#2563eb);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-family:'Syne';
+font-size:26px;
+font-weight:800;
+
+box-shadow:0 0 35px rgba(109,40,217,.45);
+
+}
+
+.logo h1{
+
+font-family:'Syne';
+font-size:28px;
+letter-spacing:2px;
+
+}
+
+.sub{
+
+font-size:12px;
+color:#8f97bb;
+margin-top:3px;
+letter-spacing:1px;
+
+}
+
+.title{
+
+font-family:'Syne';
+font-size:42px;
+line-height:1.1;
+margin-bottom:12px;
+
+}
+
+.desc{
+
+color:#8e96b7;
+line-height:1.7;
+margin-bottom:35px;
+
+}
+
+.group{
+
+margin-bottom:20px;
+
+}
+
+.label{
+
+font-size:13px;
+margin-bottom:10px;
+color:#9ba4ca;
+
+}
+
+.inputbox{
+
+display:flex;
+align-items:center;
+
+background:#151a2c;
+
+border:1px solid #232944;
+
+border-radius:16px;
+
+padding:0 18px;
+
+transition:.25s;
+
+}
+
+.inputbox:focus-within{
+
+border-color:#8b5cf6;
+box-shadow:0 0 25px rgba(109,40,217,.25);
+
+}
+
+.icon{
+
+font-size:18px;
+margin-right:12px;
+
+}
+
+input{
+
+width:100%;
+height:60px;
+
+background:none;
+border:none;
+outline:none;
+
+font-size:15px;
+color:#fff;
+
+}
+
+.eye{
+
+cursor:pointer;
+font-size:18px;
+
+}
+
+button{
+
+width:100%;
+height:62px;
+
+border:none;
+
+border-radius:18px;
+
+background:linear-gradient(135deg,#6d28d9,#2563eb);
+
+font-family:'Syne';
+
+font-size:16px;
+font-weight:700;
+
+color:#fff;
+
+cursor:pointer;
+
+margin-top:14px;
+
+transition:.25s;
+
+}
+
+button:hover{
+
+transform:translateY(-2px);
+
+box-shadow:0 14px 35px rgba(109,40,217,.45);
+
+}
+
+.footer{
+
+margin-top:22px;
+text-align:center;
+font-size:13px;
+color:#7680a7;
+
+}
+
+#error{
+
+margin-top:18px;
+text-align:center;
+color:#ff5376;
+
+}
+
+</style>
 </head>
-<body class="flex flex-col font-sans pb-20 md:pb-0">
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 w-full z-50 glass-nav">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 md:h-20">
-                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-full btn-gold flex items-center justify-center shadow-lg shadow-yellow-900/40">
-                        <i class="fa-solid fa-crown text-sm md:text-lg"></i>
-                    </div>
-                    <div class="leading-tight">
-                        <h1 class="text-xl md:text-2xl tracking-tighter text-white font-light">PRIME<span class="text-gold-gradient font-bold">DROP</span></h1>
-                    </div>
-                </div>
-                <div class="hidden md:flex items-center bg-white/5 rounded-full px-4 py-2 border border-white/10 focus-within:border-yellow-600/50 transition-colors w-96">
-                    <i class="fa-solid fa-search text-gray-500"></i>
-                    <input type="text" id="searchInputDesktop" placeholder="Search (e.g. Watches)..." class="bg-transparent border-none outline-none text-sm ml-3 w-full text-white placeholder-gray-600" onkeyup="renderProducts(this.value)">
-                </div>
-                <div class="flex items-center gap-4">
-                    <div id="liveStatus" class="hidden items-center gap-1 bg-red-500/10 px-2 py-1 rounded-full border border-red-500/20" title="Connection Status">
-                        <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse" id="statusDot"></div>
-                        <span class="text-[10px] text-red-400 font-bold" id="statusText">CONNECTING</span>
-                    </div>
+<body>
 
-                    <div id="guestControls" class="flex items-center gap-3">
-                        <button onclick="openLoginModal()" class="hidden md:block text-sm text-gray-400 hover:text-white transition">Login</button>
-                        <button onclick="openSignupModal()" class="btn-gold px-5 py-1.5 rounded-full text-xs md:text-sm shadow-lg shadow-yellow-500/10 hover:shadow-yellow-500/30 transition-all transform hover:-translate-y-0.5">JOIN VIP</button>
-                    </div>
-                    <div id="authControls" class="hidden flex items-center gap-3"></div>
-                </div>
-            </div>
-        </div>
-    </nav>
+<div class="bg"></div>
+<div class="grid"></div>
 
-    <!-- Mobile Search -->
-    <div class="md:hidden pt-20 px-4 pb-2">
-        <div class="flex items-center bg-[#111] rounded-xl px-4 py-3 border border-white/5 focus-within:border-yellow-600/50">
-            <i class="fa-solid fa-search text-gray-500"></i>
-            <input type="text" id="searchInputMobile" placeholder="Search..." class="bg-transparent border-none outline-none text-sm ml-3 w-full text-white placeholder-gray-600" onkeyup="filterProducts(this.value)">
-        </div>
-    </div>
+<div class="card">
 
-    <!-- Hero -->
-    <div class="pt-4 md:pt-28 pb-6 px-4">
-        <div class="max-w-7xl mx-auto rounded-[2rem] overflow-hidden relative min-h-[220px] md:h-80 bg-[#111] border border-white/5 flex items-center shadow-2xl group">
-            <div class="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1550953936-a60d03b0c960?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"></div>
-            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
-            <div class="relative z-10 px-6 md:px-16 w-full">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-yellow-500/30 bg-yellow-500/10 backdrop-blur-md mb-4">
-                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                    <span class="text-[10px] md:text-xs font-bold text-yellow-500 tracking-widest uppercase">New Drops Live</span>
-                </div>
-                <h2 class="text-3xl md:text-6xl font-extrabold text-white mb-2 tracking-tight">LUXURY <br class="md:hidden"> <span class="text-gold-gradient">REDEFINED</span></h2>
-                <button onclick="document.getElementById('categoryContainer').scrollIntoView({behavior: 'smooth'})" class="text-white text-xs md:text-sm border-b border-yellow-500 pb-1 hover:text-yellow-400 transition-colors">Explore Categories <i class="fa-solid fa-arrow-down ml-1 text-[10px]"></i></button>
-            </div>
-        </div>
-    </div>
+<div class="logo">
 
-    <!-- Categories -->
-    <div id="categoryContainer" class="max-w-7xl mx-auto px-4 mb-8 overflow-x-auto hide-scrollbar">
-        <div id="categoriesList" class="flex gap-3 whitespace-nowrap pb-2"></div>
-    </div>
+<div class="mark">V</div>
 
-    <!-- Products -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 w-full">
-        <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg md:text-2xl font-light text-white"><span id="currentCategoryTitle" class="font-bold text-white">All Products</span></h3>
-        </div>
-        
-        <div id="loadingState" class="text-center py-20">
-            <div class="w-10 h-10 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p class="text-gray-500 text-sm">Synchronizing with Global Database...</p>
-        </div>
+<div>
 
-        <div id="errorState" class="hidden text-center py-20 bg-red-500/5 rounded-2xl border border-red-500/20 mx-4">
-            <i class="fa-solid fa-triangle-exclamation text-4xl text-red-500 mb-4"></i>
-            <h3 class="text-lg font-medium text-red-400">Connection Failed</h3>
-            <p class="text-gray-500 text-sm mt-2">Cannot connect to Private Server.</p>
-        </div>
+<h1>VYROVA</h1>
 
-        <div id="emptyState" class="hidden flex flex-col items-center justify-center py-20 opacity-50">
-            <i class="fa-solid fa-crown text-4xl text-gray-600 mb-4"></i>
-            <h3 class="text-lg font-medium text-gray-300">No items found</h3>
-        </div>
-        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"></div>
-    </main>
+<div class="sub">
+AI CREATIVE SUITE
+</div>
 
-    <footer class="mt-20 border-t border-white/5 bg-black py-10 pb-24 md:pb-10 text-center">
-        <p class="text-gray-600 text-xs">&copy; 2026 PrimeDrop VIP.</p>
-    </footer>
+</div>
 
-    <!-- Mobile Nav -->
-    <div class="md:hidden fixed bottom-0 w-full z-50 glass-nav border-t border-white/5 pb-safe">
-        <div class="flex justify-around items-center h-16 px-2">
-            <button onclick="window.scrollTo(0,0)" class="flex flex-col items-center justify-center w-full h-full text-yellow-500"><i class="fa-solid fa-house text-lg mb-1"></i><span class="text-[10px]">Home</span></button>
-            <button onclick="document.getElementById('searchInputMobile').focus()" class="flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-white transition"><i class="fa-solid fa-search text-lg mb-1"></i><span class="text-[10px]">Search</span></button>
-            <button onclick="handleProfileClick()" class="flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-white transition">
-                <div class="relative"><i class="fa-regular fa-user text-lg mb-1"></i></div>
-                <span class="text-[10px]">Account</span>
-            </button>
-        </div>
-    </div>
+</div>
 
-    <!-- AUTH MODALS -->
-    <div id="loginModal" class="fixed inset-0 z-[60] hidden bg-black/95 backdrop-blur-md flex items-end md:items-center justify-center sm:p-4">
-        <div class="bg-[#111] w-full md:w-[400px] rounded-t-3xl md:rounded-3xl border border-white/10 p-8 modal-animate shadow-2xl relative">
-            <button onclick="closeLoginModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white"><i class="fa-solid fa-times text-lg"></i></button>
-            <div class="mb-8"><h2 class="text-3xl font-bold text-white mb-2">Secure Login</h2></div>
-            <form id="loginForm" class="space-y-6">
-                <div class="input-group relative"><input type="email" id="loginEmail" required class="w-full bg-transparent border border-gray-700 rounded-lg px-4 py-3.5 text-sm text-white peer" placeholder=" "><label class="absolute left-4 top-3.5 text-gray-500 text-sm peer-placeholder-shown:text-base pointer-events-none">Email</label></div>
-                <div class="input-group relative"><input type="password" id="loginPass" required class="w-full bg-transparent border border-gray-700 rounded-lg px-4 py-3.5 text-sm text-white peer" placeholder=" "><label class="absolute left-4 top-3.5 text-gray-500 text-sm peer-placeholder-shown:text-base pointer-events-none">Password</label></div>
-                <button type="submit" class="w-full btn-gold py-4 rounded-xl text-sm font-bold uppercase">Access VIP</button>
-            </form>
-        </div>
-    </div>
+<div class="title">
 
-    <div id="signupModal" class="fixed inset-0 z-[60] hidden bg-black/95 backdrop-blur-md flex items-end md:items-center justify-center sm:p-4">
-        <div class="bg-[#111] w-full md:w-[400px] rounded-t-3xl md:rounded-3xl border border-white/10 p-8 modal-animate shadow-2xl relative">
-            <button onclick="closeSignupModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white"><i class="fa-solid fa-times text-lg"></i></button>
-            <div class="mb-8"><h2 class="text-2xl font-bold text-white mb-2">Join VIP</h2></div>
-            <form id="signupForm" class="space-y-5">
-                <div class="input-group relative"><input type="text" id="signupName" required class="w-full bg-transparent border border-gray-700 rounded-lg px-4 py-3.5 text-sm text-white peer" placeholder=" "><label class="absolute left-4 top-3.5 text-gray-500 text-sm peer-placeholder-shown:text-base pointer-events-none">Full Name</label></div>
-                <div class="input-group relative"><input type="email" id="signupEmail" required class="w-full bg-transparent border border-gray-700 rounded-lg px-4 py-3.5 text-sm text-white peer" placeholder=" "><label class="absolute left-4 top-3.5 text-gray-500 text-sm peer-placeholder-shown:text-base pointer-events-none">Email</label></div>
-                <div class="input-group relative"><input type="password" id="signupPass" required class="w-full bg-transparent border border-gray-700 rounded-lg px-4 py-3.5 text-sm text-white peer" placeholder=" "><label class="absolute left-4 top-3.5 text-gray-500 text-sm peer-placeholder-shown:text-base pointer-events-none">Password</label></div>
-                <button type="submit" class="w-full btn-gold py-4 rounded-xl text-sm font-bold uppercase">Create Account</button>
-            </form>
-        </div>
-    </div>
+Welcome Back.
 
-    <!-- ADMIN MODAL -->
-    <div id="addModal" class="fixed inset-0 z-[60] hidden bg-black/95 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-[#111] w-full max-w-lg rounded-2xl border border-white/10 flex flex-col max-h-[90vh] modal-animate shadow-2xl">
-            <div class="flex justify-between items-center p-6 border-b border-white/5 bg-[#111] rounded-t-2xl">
-                <h2 class="text-xl font-bold text-white"><span class="text-gold-gradient">Admin</span> Dashboard</h2>
-                <button onclick="closeAddModal()" class="text-gray-500 hover:text-white"><i class="fa-solid fa-times"></i></button>
-            </div>
-            
-            <div class="overflow-y-auto p-6 custom-scrollbar flex-1">
-                <div class="grid grid-cols-3 gap-3 mb-6">
-                    <div class="bg-gray-900/50 border border-white/10 rounded-xl p-3 text-center">
-                        <p class="text-[10px] text-gray-400 uppercase tracking-widest">Today</p>
-                        <p id="statToday" class="text-xl font-bold text-white mt-1">0</p>
-                    </div>
-                    <div class="bg-gray-900/50 border border-white/10 rounded-xl p-3 text-center">
-                        <p class="text-[10px] text-gray-400 uppercase tracking-widest">Month</p>
-                        <p id="statMonth" class="text-xl font-bold text-gold-gradient mt-1">0</p>
-                    </div>
-                    <div class="bg-gray-900/50 border border-white/10 rounded-xl p-3 text-center">
-                        <p class="text-[10px] text-gray-400 uppercase tracking-widest">All Time</p>
-                        <p id="statTotal" class="text-xl font-bold text-white mt-1">0</p>
-                    </div>
-                </div>
+</div>
 
-                <form id="addProductForm" class="space-y-4">
-                    <div class="input-group relative mt-1">
-                        <select id="pCategory" required class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-yellow-500 outline-none text-white peer appearance-none"></select>
-                        <label class="absolute left-4 top-3.5 text-gray-500 text-sm px-1 pointer-events-none">Category</label>
-                        <i class="fa-solid fa-chevron-down absolute right-4 top-4 text-gray-500 text-xs pointer-events-none"></i>
-                    </div>
-                    <div class="input-group relative"><input type="text" id="pTitle" required class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-yellow-500 outline-none text-white peer" placeholder=" "><label class="absolute left-4 top-3.5 text-gray-500 text-sm px-1 pointer-events-none">Product Title</label></div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="input-group relative"><input type="number" step="0.01" id="pPrice" required class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-yellow-500 outline-none text-white peer" placeholder=" "><label class="absolute left-4 top-3.5 text-gray-500 text-sm px-1 pointer-events-none">Price</label></div>
-                        <div class="input-group relative"><input type="number" step="0.01" id="pOldPrice" class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-yellow-500 outline-none text-white peer" placeholder=" "><label class="absolute left-4 top-3.5 text-gray-500 text-sm px-1 pointer-events-none">Old Price</label></div>
-                    </div>
-                    <div class="input-group relative"><input type="text" id="pSizes" class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-yellow-500 outline-none text-white peer" placeholder=" "><label class="absolute left-4 top-3.5 text-gray-500 text-sm px-1 pointer-events-none">Sizes (S, M, L)</label></div>
-                    <div class="border-2 border-dashed border-white/10 rounded-xl p-4 text-center hover:border-yellow-500/50 transition">
-                        <p class="text-sm text-gray-400 mb-2">Upload Photos & Videos</p>
-                        <div class="flex gap-2 justify-center mb-2">
-                            <label class="cursor-pointer bg-gray-800 px-3 py-1 rounded text-xs hover:bg-gray-700">Photos
-                                <input type="file" id="multiImageInput" accept="image/*" multiple class="hidden" onchange="handleMultiFiles(this, 'image')">
-                            </label>
-                            <label class="cursor-pointer bg-gray-800 px-3 py-1 rounded text-xs hover:bg-gray-700">Videos
-                                <input type="file" id="multiVideoInput" accept="video/*" multiple class="hidden" onchange="handleMultiFiles(this, 'video')">
-                            </label>
-                        </div>
-                        <div id="mediaPreviewList" class="flex flex-wrap gap-2 mt-2 justify-center empty:hidden"></div>
-                    </div>
-                    <div class="input-group relative"><input type="url" id="pLink" required class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-yellow-500 outline-none text-white peer" placeholder=" "><label class="absolute left-4 top-3.5 text-gray-500 text-sm px-1 pointer-events-none">Affiliate Link</label></div>
-                    <div class="input-group relative"><textarea id="pDesc" rows="2" class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-yellow-500 outline-none text-white peer" placeholder=" "></textarea><label class="absolute left-4 top-3.5 text-gray-500 text-sm px-1 pointer-events-none">Description</label></div>
-                </form>
-            </div>
-            <div class="p-6 border-t border-white/5 bg-[#111] rounded-b-2xl">
-                <button id="publishBtn" type="submit" form="addProductForm" class="w-full btn-gold text-black font-bold py-3 rounded-xl transition shadow-lg shadow-yellow-900/20 hover:scale-[1.02]"><i class="fa-solid fa-paper-plane mr-2"></i> Publish Product</button>
-            </div>
-        </div>
-    </div>
+<div class="desc">
 
-    <!-- VIEW MODAL -->
-    <div id="viewModal" class="fixed inset-0 z-[70] hidden bg-black/98 backdrop-blur-xl flex items-center justify-center p-0 md:p-4">
-        <div class="bg-[#050505] w-full md:max-w-4xl h-full md:h-auto md:rounded-3xl border-0 md:border border-white/10 overflow-hidden modal-animate flex flex-col md:flex-row relative">
-            <button onclick="closeViewModal()" class="absolute top-4 right-4 z-20 w-10 h-10 bg-black/50 backdrop-blur rounded-full flex items-center justify-center text-white hover:bg-white/20 transition"><i class="fa-solid fa-times"></i></button>
-            <div class="w-full md:w-1/2 h-[45vh] md:h-[500px] bg-[#111] flex items-center justify-center relative group">
-                <div id="sliderDisplay" class="w-full h-full flex items-center justify-center relative z-10"></div>
-                <button onclick="changeSlide(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-gold z-20"><i class="fa-solid fa-chevron-left"></i></button>
-                <button onclick="changeSlide(1)" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-gold z-20"><i class="fa-solid fa-chevron-right"></i></button>
-                <div id="sliderDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1 z-20"></div>
-            </div>
-            <div class="w-full md:w-1/2 p-6 md:p-10 flex flex-col h-full overflow-y-auto">
-                <div class="mb-auto">
-                    <span id="mCategoryBadge" class="bg-white/10 text-gray-300 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Category</span>
-                    <h2 id="mTitle" class="text-2xl md:text-3xl font-light text-white mb-2 mt-2 leading-tight"></h2>
-                    <div class="flex items-baseline gap-3 mb-4"><span id="mPrice" class="text-3xl font-bold text-gold-gradient"></span><span id="mOldPrice" class="text-sm text-gray-600 line-through"></span></div>
-                    <div id="mSizesContainer" class="hidden mb-6"><p class="text-xs text-gray-500 uppercase tracking-widest mb-2">Select Size</p><div id="mSizesList" class="flex flex-wrap gap-2"></div></div>
-                    <p id="mDesc" class="text-gray-400 text-sm leading-relaxed mb-8 font-light"></p>
-                </div>
-                <a id="mLink" href="#" target="_blank" class="w-full btn-gold text-black font-bold text-base py-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] shadow-2xl"><span>Purchase Now</span> <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
-            </div>
-        </div>
-    </div>
+Secure access to your creative workspace.
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, getDoc, getDocs, setDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+Login to continue.
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCta8jzYrib54xK4SXJ7oLlVp1_LBLRFHg",
-            authDomain: "primedropvip.firebaseapp.com",
-            projectId: "primedropvip",
-            storageBucket: "primedropvip.firebasestorage.app",
-            messagingSenderId: "581115848208",
-            appId: "1:581115848208:web:ea566faec4c92035b7cc95"
-        };
+</div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = "primedropvip";
+<div class="group">
 
-        let products = [];
-        let currentCategory = "All";
-        const ADMIN_EMAIL = "Haideroffical16@gmail.com";
-        let tempMedia = [];
-        let currentProductMedia = [];
-        let currentSlideIndex = 0;
+<div class="label">
+Username
+</div>
 
-        // --- AUTH & LISTENER ---
-        onAuthStateChanged(auth, (user) => {
-            updateUI(user);
-            initDataListener();
-        });
+<div class="inputbox">
 
-        function initDataListener() {
-            const q = collection(db, 'artifacts', appId, 'public', 'data', 'products');
-            onSnapshot(q, (snapshot) => {
-                products = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
-                products.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-                updateConnectionStatus(true);
-                renderProducts();
-            }, (error) => {
-                updateConnectionStatus(false);
-            });
-        }
+<div class="icon">
+👤
+</div>
 
-        // --- CORE UI FUNCTIONS ---
-        const CATEGORIES = ["Home Appliances","Computer & Office","Home Improvement","Home & Garden","Sports & Entertainment","Office & School Supplies","Toys & Hobbies","Security & Protection","Automobiles, Parts & Accessories","Jewelry & Accessories","Lights & Lighting","Consumer Electronics","Beauty & Health","Weddings & Events","Shoes","Electronic Components & Supplies","Phones & Telecommunications","Tools","Mother & Kids","Furniture","Watches","Luggage & Bags","Underwear","Virtual Products","Industrial & Business","Sports Shoes,Clothing&Accessories","Phones & Telecommunications Accessories","Women's Clothing","Men's Clothing","Apparel Accessories","Hair Extensions & Wigs","Special Category","Books & Cultural Merchandise","Novelty & Special Use","Motorcycle Equipments & Parts"];
+<input
+id="username"
+placeholder="Enter username">
 
-        window.renderCategories = function() {
-            const list = document.getElementById('categoriesList');
-            let html = `<button onclick="filterByCategory('All')" id="cat-All" class="selected-pill bg-white/10 text-white px-5 py-2 rounded-full text-xs">All Categories</button>`;
-            CATEGORIES.forEach(cat => {
-                const id = cat.replace(/[^a-zA-Z0-9]/g, '');
-                html += `<button onclick="filterByCategory('${cat}')" id="cat-${id}" class="bg-black/50 text-gray-400 px-5 py-2 rounded-full text-xs border border-white/5 hover:text-white transition">${cat}</button>`;
-            });
-            list.innerHTML = html;
-        }
+</div>
 
-        window.filterByCategory = function(cat) {
-            currentCategory = cat;
-            document.querySelectorAll('#categoriesList button').forEach(b => b.classList.remove('selected-pill'));
-            const safeId = cat === 'All' ? 'All' : cat.replace(/[^a-zA-Z0-9]/g, '');
-            document.getElementById(`cat-${safeId}`).classList.add('selected-pill');
-            document.getElementById('currentCategoryTitle').innerText = cat === 'All' ? 'All Products' : cat;
-            renderProducts();
-        }
+</div>
 
-        window.renderProducts = function() {
-            const grid = document.getElementById('productGrid');
-            const empty = document.getElementById('emptyState');
-            document.getElementById('loadingState').classList.add('hidden');
-            grid.innerHTML = "";
-            
-            let filtered = products.filter(p => currentCategory === "All" || p.category === currentCategory);
-            
-            if(filtered.length === 0) empty.classList.remove('hidden');
-            else {
-                empty.classList.add('hidden');
-                filtered.forEach(p => {
-                    const isAdmin = auth.currentUser?.email === ADMIN_EMAIL;
-                    const mainImg = p.media?.[0]?.src || 'https://placehold.co/400x500/111/gold?text=No+Image';
-                    grid.innerHTML += `
-                        <div class="glass-card rounded-2xl overflow-hidden relative group cursor-pointer gold-glow transition-all duration-300">
-                            <div onclick="openViewModal('${p.id}')">
-                                <div class="relative aspect-[4/5] bg-[#0a0a0a] overflow-hidden p-6 flex items-center justify-center">
-                                    <img src="${mainImg}" class="w-full h-full object-contain opacity-90 group-hover:scale-110 transition-transform duration-500">
-                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                                        <span class="bg-white/10 text-white px-4 py-2 rounded-full text-xs border border-white/20">View Details</span>
-                                    </div>
-                                </div>
-                                <div class="p-4 bg-gradient-to-b from-[#151515] to-[#0f0f0f]">
-                                    <div class="text-[10px] text-gray-500 uppercase truncate">${p.category}</div>
-                                    <h3 class="text-gray-300 font-light text-xs md:text-sm line-clamp-1 mb-1">${p.title}</h3>
-                                    <p class="text-gold-gradient font-bold text-sm md:text-lg">$${parseFloat(p.price).toLocaleString()}</p>
-                                </div>
-                            </div>
-                            ${isAdmin ? `<button onclick="deleteProduct('${p.id}')" class="absolute top-3 right-3 bg-red-500 w-8 h-8 rounded-full flex items-center justify-center shadow-lg z-20"><i class="fa-solid fa-trash text-xs"></i></button>` : ''}
-                        </div>`;
-                });
-            }
-        }
+<div class="group">
 
-        // --- ADMIN ACTIONS ---
-        document.getElementById('addProductForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('publishBtn');
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Uploading...`;
-            btn.disabled = true;
+<div class="label">
+Password
+</div>
 
-            const data = {
-                title: document.getElementById('pTitle').value,
-                category: document.getElementById('pCategory').value,
-                price: document.getElementById('pPrice').value,
-                oldPrice: document.getElementById('pOldPrice').value || "0",
-                link: document.getElementById('pLink').value,
-                description: document.getElementById('pDesc').value,
-                sizes: document.getElementById('pSizes').value.split(',').map(s=>s.trim()).filter(s=>s),
-                media: tempMedia.length > 0 ? tempMedia : [{type:'image', src:'https://placehold.co/400x500/111/gold?text=No+Image'}],
-                createdAt: serverTimestamp()
-            };
+<div class="inputbox">
 
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), data);
-                closeAddModal();
-                e.target.reset();
-            } catch (err) { alert("Permission Denied: Unauthorized."); }
-            btn.innerHTML = `Publish Product`; btn.disabled = false;
-        };
+<div class="icon">
+🔒
+</div>
 
-        window.deleteProduct = async (id) => {
-            if(confirm("Delete item?")) {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id));
-            }
-        };
+<input
+id="password"
+type="password"
+placeholder="Enter password">
 
-        // --- AUTH HANDLERS ---
-        document.getElementById('loginForm').onsubmit = async (e) => {
-            e.preventDefault();
-            try {
-                await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPass').value);
-                closeLoginModal();
-            } catch(err) { alert("Login Failed: " + err.message); }
-        };
+<div
+class="eye"
+onclick="toggle()">
+👁️
+</div>
 
-        document.getElementById('signupForm').onsubmit = async (e) => {
-            e.preventDefault();
-            try {
-                await createUserWithEmailAndPassword(auth, document.getElementById('signupEmail').value, document.getElementById('signupPass').value);
-                closeSignupModal();
-            } catch(err) { alert("Signup Failed: " + err.message); }
-        };
+</div>
 
-        window.logoutUser = () => signOut(auth);
+</div>
 
-        function updateUI(user) {
-            const guest = document.getElementById('guestControls');
-            const authDiv = document.getElementById('authControls');
-            const status = document.getElementById('liveStatus');
+<button onclick="login()">
+LOGIN TO VYROVA
+</button>
 
-            if(!user) {
-                guest.classList.remove('hidden'); authDiv.classList.add('hidden'); status.classList.add('hidden');
-            } else {
-                guest.classList.add('hidden'); authDiv.classList.remove('hidden'); authDiv.classList.add('flex');
-                const isAdmin = user.email === ADMIN_EMAIL;
-                if(isAdmin) {
-                    status.classList.remove('hidden');
-                    authDiv.innerHTML = `<span class="hidden lg:inline text-[10px] text-green-400 font-bold border border-green-500/20 px-2 py-1 rounded">ADMIN</span><button onclick="openAddModal()" class="btn-gold w-8 h-8 flex items-center justify-center rounded-lg shadow-lg text-black"><i class="fa-solid fa-plus"></i></button><button onclick="logoutUser()" class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400 border border-red-500/20"><i class="fa-solid fa-power-off"></i></button>`;
-                } else {
-                    authDiv.innerHTML = `<div class="w-8 h-8 rounded-full bg-yellow-700 flex items-center justify-center text-xs font-bold text-white">${user.email[0].toUpperCase()}</div><button onclick="logoutUser()" class="text-xs text-gray-500 hover:text-white">Logout</button>`;
-                }
-            }
-        }
+<div id="error"></div>
 
-        // --- UTILS (Slider, Modals, Stats) ---
-        window.handleMultiFiles = (input, type) => {
-            Array.from(input.files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => { tempMedia.push({type, src: e.target.result}); renderMediaPreview(); };
-                reader.readAsDataURL(file);
-            });
-        };
+<div class="footer">
 
-        window.renderMediaPreview = () => {
-            const container = document.getElementById('mediaPreviewList');
-            container.innerHTML = tempMedia.map((m, i) => `
-                <div class="w-16 h-16 rounded border border-white/20 relative overflow-hidden group">
-                    ${m.type==='image' ? `<img src="${m.src}" class="w-full h-full object-cover">` : `<video src="${m.src}" class="w-full h-full object-cover"></video>`}
-                </div>`).join('');
-        };
+Protected Login • Device Secure
 
-        async function loadStats() {
-            if(auth.currentUser?.email !== ADMIN_EMAIL) return;
-            const today = new Date().toISOString().split('T')[0];
-            const q = collection(db, 'artifacts', appId, 'public', 'data', 'stats');
-            const snap = await getDocs(q);
-            let tot = 0, mon = 0, td = 0;
-            snap.forEach(d => {
-                const c = d.data().count || 0; tot += c;
-                if(d.id === today) td = c;
-                if(d.id.startsWith(today.substring(0,7))) mon += c;
-            });
-            document.getElementById('statToday').innerText = td;
-            document.getElementById('statMonth').innerText = mon;
-            document.getElementById('statTotal').innerText = tot;
-        }
+</div>
 
-        async function trackVisit() {
-            if (sessionStorage.getItem('v_today')) return;
-            sessionStorage.setItem('v_today', 'true');
-            const today = new Date().toISOString().split('T')[0];
-            const ref = doc(db, 'artifacts', appId, 'public', 'data', 'stats', today);
-            const snap = await getDoc(ref);
-            await setDoc(ref, { count: (snap.exists() ? snap.data().count : 0) + 1 }, { merge: true });
-        }
+</div>
 
-        window.openViewModal = (id) => {
-            const p = products.find(x => x.id === id);
-            if(!p) return;
-            document.getElementById('mTitle').innerText = p.title;
-            document.getElementById('mCategoryBadge').innerText = p.category;
-            document.getElementById('mPrice').innerText = "$" + parseFloat(p.price).toLocaleString();
-            document.getElementById('mOldPrice').innerText = p.oldPrice != "0" ? "$" + parseFloat(p.oldPrice).toLocaleString() : "";
-            document.getElementById('mDesc').innerText = p.description;
-            document.getElementById('mLink').href = p.link;
-            
-            const slist = document.getElementById('mSizesList');
-            slist.innerHTML = "";
-            if(p.sizes?.length > 0) {
-                document.getElementById('mSizesContainer').classList.remove('hidden');
-                p.sizes.forEach(s => slist.innerHTML += `<button class="size-btn w-10 h-10 rounded border border-white/20 text-gray-400">${s}</button>`);
-            } else document.getElementById('mSizesContainer').classList.add('hidden');
+<script>
 
-            currentProductMedia = p.media; currentSlideIndex = 0; renderSlider();
-            document.getElementById('viewModal').classList.remove('hidden');
-        };
+function toggle(){
 
-        window.renderSlider = () => {
-            const display = document.getElementById('sliderDisplay');
-            const media = currentProductMedia[currentSlideIndex];
-            if(media.type === 'image') display.innerHTML = `<img src="${media.src}" class="max-h-full max-w-full object-contain modal-animate">`;
-            else display.innerHTML = `<video controls autoplay class="max-h-full max-w-full object-contain"><source src="${media.src}"></video>`;
-            
-            document.getElementById('sliderDots').innerHTML = currentProductMedia.map((_, i) => `<div class="${i===currentSlideIndex?'bg-yellow-500 w-6':'bg-gray-600 w-2'} h-1 rounded-full transition-all"></div>`).join('');
-        };
+let p=
+document.getElementById("password")
 
-        window.changeSlide = (dir) => {
-            currentSlideIndex = (currentSlideIndex + dir + currentProductMedia.length) % currentProductMedia.length;
-            renderSlider();
-        };
+p.type=
+p.type==="password"
+?
+"text"
+:
+"password"
 
-        function updateConnectionStatus(isLive) {
-            const dot = document.getElementById('statusDot');
-            const text = document.getElementById('statusText');
-            if(isLive) {
-                dot.className = "w-2 h-2 rounded-full bg-green-500 animate-pulse";
-                text.innerText = "LIVE"; text.className = "text-[10px] text-green-400 font-bold";
-            } else {
-                dot.className = "w-2 h-2 rounded-full bg-red-500";
-                text.innerText = "OFFLINE";
-            }
-        }
+}
 
-        // Global Init
-        window.onload = () => { 
-            renderCategories(); 
-            const sel = document.getElementById('pCategory');
-            CATEGORIES.forEach(c => sel.innerHTML += `<option value="${c}">${c}</option>`);
-            trackVisit();
-        };
+async function login(){
 
-        // Modal Controls
-        window.openLoginModal = () => document.getElementById('loginModal').classList.remove('hidden');
-        window.closeLoginModal = () => document.getElementById('loginModal').classList.add('hidden');
-        window.openSignupModal = () => document.getElementById('signupModal').classList.remove('hidden');
-        window.closeSignupModal = () => document.getElementById('signupModal').classList.add('hidden');
-        window.openAddModal = () => { document.getElementById('addModal').classList.remove('hidden'); loadStats(); };
-        window.closeAddModal = () => document.getElementById('addModal').classList.add('hidden');
-        window.closeViewModal = () => document.getElementById('viewModal').classList.add('hidden');
-        window.handleProfileClick = () => { if(!auth.currentUser) openLoginModal(); else if(auth.currentUser.email === ADMIN_EMAIL) openAddModal(); };
-    </script>
+let username=
+document.getElementById("username").value
+
+let password=
+document.getElementById("password").value
+
+try{
+
+let res=
+await fetch(
+"http://localhost:3000/login",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+username,
+password
+})
+
+})
+
+let data=
+await res.json()
+
+if(data.success){
+
+localStorage.setItem(
+"token",
+data.token
+)
+
+if(data.role==="admin"){
+
+window.location=
+"admin.html"
+
+}else{
+
+window.location=
+"index.html"
+
+}
+
+}else{
+
+document.getElementById(
+"error"
+).innerText=
+data.message
+
+}
+
+}catch{
+
+document.getElementById(
+"error"
+).innerText=
+"Server Offline"
+
+}
+
+}
+
+</script>
+
 </body>
 </html>
