@@ -26,7 +26,7 @@ margin:auto;
 }
 
 h1{
-font-size:48px;
+font-size:42px;
 margin-bottom:25px;
 }
 
@@ -37,8 +37,7 @@ border-radius:22px;
 margin-bottom:25px;
 }
 
-input,
-select{
+input,select{
 
 width:100%;
 
@@ -62,7 +61,7 @@ font-size:15px;
 
 button{
 
-height:52px;
+height:55px;
 
 padding:0 20px;
 
@@ -86,11 +85,13 @@ width:100%;
 .tools{
 background:#2563eb;
 margin-top:10px;
+width:100%;
 }
 
 .logout{
 background:#ff4567;
 margin-top:10px;
+width:100%;
 }
 
 .edit{
@@ -167,8 +168,8 @@ placeholder="Password">
 </select>
 
 <button
-class="create"
-onclick="addUser()">
+id="createBtn"
+class="create">
 
 CREATE USER
 
@@ -223,9 +224,7 @@ LOGOUT
 
 <script type="module">
 
-import {
-initializeApp
-}
+import { initializeApp }
 
 from
 
@@ -247,6 +246,8 @@ from
 
 "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
+/* FIREBASE */
+
 const firebaseConfig={
 
 apiKey:"AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
@@ -254,10 +255,9 @@ authDomain:"vyrova-2eb4d.firebaseapp.com",
 projectId:"vyrova-2eb4d",
 storageBucket:"vyrova-2eb4d.firebasestorage.app",
 messagingSenderId:"136436344218",
-appId:"1:136436344218:web:0efa47a4da3f20b7bc8623",
-measurementId:"G-1TNRGDFL4M"
+appId:"1:136436344218:web:0efa47a4da3f20b7bc8623"
 
-}
+};
 
 const app=
 initializeApp(firebaseConfig)
@@ -265,26 +265,21 @@ initializeApp(firebaseConfig)
 const db=
 getFirestore(app)
 
-/* ADD USER */
+/* CREATE USER */
 
-window.addUser=
-
-async function(){
+async function addUser(){
 
 let username=
-
 document.getElementById(
 "username"
 ).value.trim()
 
 let password=
-
 document.getElementById(
 "password"
 ).value.trim()
 
 let device=
-
 Number(
 document.getElementById(
 "device"
@@ -292,7 +287,6 @@ document.getElementById(
 )
 
 let days=
-
 Number(
 document.getElementById(
 "days"
@@ -313,6 +307,8 @@ return
 
 }
 
+try{
+
 const snap=
 
 await getDocs(
@@ -332,9 +328,7 @@ let u=
 d.data()
 
 if(
-String(u.username).trim()
-===
-String(username).trim()
+u.username===username
 ){
 
 exists=true
@@ -383,6 +377,10 @@ days
 
 )
 
+alert(
+"User Created Successfully"
+)
+
 document.getElementById(
 "username"
 ).value=""
@@ -391,19 +389,38 @@ document.getElementById(
 "password"
 ).value=""
 
-alert(
-"User Created"
-)
-
 loadUsers()
 
 }
+
+catch(e){
+
+console.error(e)
+
+alert(
+"Firebase Error"
+)
+
+}
+
+}
+
+/* BUTTON FIX */
+
+document.getElementById(
+"createBtn"
+)
+
+.addEventListener(
+"click",
+addUser
+)
 
 /* LOAD USERS */
 
 async function loadUsers(){
 
-let table=
+const table=
 
 document.getElementById(
 "usersTable"
@@ -429,9 +446,7 @@ d.data()
 
 let status=
 
-Date.now()>
-
-u.expiry
+Date.now()>u.expiry
 
 ?
 
@@ -446,13 +461,9 @@ table.innerHTML+=`
 <tr>
 
 <td>${u.username}</td>
-
 <td>${u.password}</td>
-
 <td>${u.device}</td>
-
 <td>${u.days}</td>
-
 <td>${status}</td>
 
 <td>
@@ -489,6 +500,34 @@ window.editUser=
 
 async function(id){
 
+let addDevice=
+
+parseInt(
+
+prompt(
+"Device Change",
+"1"
+)
+
+)
+
+if(isNaN(addDevice))
+return
+
+let addDays=
+
+parseInt(
+
+prompt(
+"Increase Days",
+"7"
+)
+
+)
+
+if(isNaN(addDays))
+addDays=0
+
 const snap=
 
 await getDocs(
@@ -515,65 +554,6 @@ user=d.data()
 if(!user)
 return
 
-let mode=
-
-prompt(
-"1 Increase Device\n2 Decrease Device",
-"1"
-)
-
-if(mode===null)
-return
-
-let amount=
-
-parseInt(
-
-prompt(
-"Device Amount",
-"1"
-)
-
-)
-
-if(isNaN(amount))
-return
-
-let device=
-Number(user.device)
-
-if(mode==="1"){
-
-device+=amount
-
-}
-
-if(mode==="2"){
-
-device-=amount
-
-if(device<1){
-
-device=1
-
-}
-
-}
-
-let addDays=
-
-parseInt(
-
-prompt(
-"Increase Days",
-"7"
-)
-
-)
-
-if(isNaN(addDays))
-addDays=0
-
 await updateDoc(
 
 doc(
@@ -584,7 +564,10 @@ id
 
 {
 
-device,
+device:
+Number(user.device)
++
+addDevice,
 
 days:
 Number(user.days)
@@ -633,20 +616,6 @@ loadUsers()
 window.openTools=
 
 function(){
-
-localStorage.setItem(
-
-"activeUser",
-
-JSON.stringify({
-
-username:"ADMIN",
-
-role:"admin"
-
-})
-
-)
 
 window.location=
 "index.html"
