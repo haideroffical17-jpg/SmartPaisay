@@ -5,186 +5,88 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>VYROVA LOGIN</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-
 <style>
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
+font-family:Arial,sans-serif;
 }
 
 body{
-font-family:'DM Sans',sans-serif;
-background:#07080f;
+background:#070b16;
+color:#fff;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-overflow:hidden;
-color:#fff;
-}
-
-.bg{
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at 20% 20%,rgba(109,40,217,.30),transparent 35%),
-radial-gradient(circle at 80% 80%,rgba(37,99,235,.22),transparent 35%);
 }
 
 .card{
 
-position:relative;
-z-index:2;
+width:520px;
 
-width:540px;
+padding:40px;
 
-padding:45px;
+background:#10172c;
 
-border-radius:32px;
-
-background:rgba(18,22,36,.88);
-
-backdrop-filter:blur(18px);
-
-border:1px solid rgba(255,255,255,.05);
+border-radius:25px;
 
 }
 
-.logo{
-
-display:flex;
-align-items:center;
-gap:15px;
-
-margin-bottom:30px;
-
-}
-
-.mark{
-
-width:70px;
-height:70px;
-
-border-radius:22px;
-
-background:
-linear-gradient(135deg,#6d28d9,#2563eb);
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-font-family:'Syne';
-font-size:30px;
-font-weight:800;
-
-}
-
-.logo h1{
-font-family:'Syne';
-}
-
-.sub{
-font-size:12px;
-color:#8f98bc;
-}
-
-.title{
-
-font-family:'Syne';
-
+h1{
 font-size:52px;
-
 margin-bottom:10px;
-
 }
 
-.desc{
-
-color:#8e97bc;
-
-margin-bottom:35px;
-
-}
-
-.group{
-margin-bottom:22px;
-}
-
-label{
-
-display:block;
-
-margin-bottom:10px;
-
-color:#9ca5cb;
-
-}
-
-.inputbox{
-
-display:flex;
-align-items:center;
-
-height:70px;
-
-padding:0 18px;
-
-border-radius:20px;
-
-background:#13192d;
-
+p{
+color:#9099be;
+margin-bottom:30px;
 }
 
 input{
 
 width:100%;
-height:100%;
 
-background:none;
+height:65px;
+
+margin-bottom:20px;
+
+padding:0 20px;
 
 border:none;
 
-outline:none;
+border-radius:16px;
 
-font-size:16px;
+background:#161d35;
 
 color:white;
 
-}
+font-size:16px;
 
-.eye{
-cursor:pointer;
-font-size:20px;
 }
 
 button{
 
 width:100%;
 
-height:70px;
+height:65px;
 
 border:none;
 
-border-radius:22px;
+border-radius:18px;
 
 cursor:pointer;
 
-font-family:'Syne';
-
 font-size:16px;
 
-font-weight:800;
+font-weight:bold;
 
 background:
 linear-gradient(135deg,#6d28d9,#2563eb);
 
 color:white;
-
-margin-top:12px;
 
 }
 
@@ -194,99 +96,32 @@ margin-top:18px;
 
 text-align:center;
 
-color:#ff4d75;
-
-font-size:15px;
-
-}
-
-.footer{
-
-margin-top:24px;
-
-text-align:center;
-
-font-size:13px;
-
-color:#7d87af;
+color:#ff4567;
 
 }
 
 </style>
 </head>
-
 <body>
-
-<div class="bg"></div>
 
 <div class="card">
 
-<div class="logo">
-
-<div class="mark">
-V
-</div>
-
-<div>
-
-<h1>VYROVA</h1>
-
-<div class="sub">
-AI CREATIVE SUITE
-</div>
-
-</div>
-
-</div>
-
-<div class="title">
+<h1>
 Welcome Back
-</div>
+</h1>
 
-<div class="desc">
+<p>
 Login to continue into your premium workspace.
-</div>
-
-<div class="group">
-
-<label>
-Username
-</label>
-
-<div class="inputbox">
+</p>
 
 <input
 id="username"
-placeholder="Enter Username">
-
-</div>
-
-</div>
-
-<div class="group">
-
-<label>
-Password
-</label>
-
-<div class="inputbox">
+placeholder="Username">
 
 <input
 id="password"
 type="password"
-placeholder="Enter Password">
-
-<div
-class="eye"
-onclick="togglePassword()">
-
-👁️
-
-</div>
-
-</div>
-
-</div>
+placeholder="Password">
 
 <button onclick="login()">
 
@@ -296,41 +131,70 @@ LOGIN TO VYROVA
 
 <div id="error"></div>
 
-<div class="footer">
-
-Secure Login • VYROVA Workspace
-
 </div>
 
-</div>
+<script type="module">
 
-<script>
+import {
 
-function togglePassword(){
-
-let p=
-
-document.getElementById(
-"password"
-)
-
-p.type=
-
-p.type==="password"
-
-?
-
-"text"
-
-:
-
-"password"
+initializeApp
 
 }
 
+from
+
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+import {
+
+getFirestore,
+collection,
+getDocs
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+
+apiKey:
+"AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
+
+authDomain:
+"vyrova-2eb4d.firebaseapp.com",
+
+projectId:
+"vyrova-2eb4d",
+
+storageBucket:
+"vyrova-2eb4d.firebasestorage.app",
+
+messagingSenderId:
+"136436344218",
+
+appId:
+"1:136436344218:web:0efa47a4da3f20b7bc8623",
+
+measurementId:
+"G-1TNRGDFL4M"
+
+};
+
+const app=
+initializeApp(firebaseConfig)
+
+const db=
+getFirestore(app)
+
 /* LOGIN */
 
-function login(){
+window.login=
+
+async function(){
 
 let username=
 
@@ -385,47 +249,51 @@ return
 
 }
 
-/* USERS */
+/* FIREBASE USERS */
 
-let users=
+const snapshot=
 
-JSON.parse(
+await getDocs(
 
-localStorage.getItem(
-"vyrovaUsers"
+collection(
+db,
+"users"
 )
 
-)||[]
+)
 
-/* MATCH USER */
+let found=null
 
-let found=
+snapshot.forEach((doc)=>{
 
-users.find(
+let user=
+doc.data()
 
-u=>
+if(
 
-String(
-u.username
-).trim()
+String(user.username)
+.trim()
 
 ===
 
-String(username)
-.trim()
+username
 
 &&
 
-String(
-u.password
-).trim()
+String(user.password)
+.trim()
 
 ===
 
-String(password)
-.trim()
+password
 
-)
+){
+
+found=user
+
+}
+
+})
 
 if(!found){
 
@@ -437,7 +305,7 @@ return
 
 }
 
-/* EXPIRY CHECK */
+/* EXPIRY */
 
 if(
 
