@@ -667,28 +667,30 @@
   <span id="toast-msg"></span>
 </div>
 
-<!-- FIREBASE -->
+<!-- FIREBASE — Realtime Database (fast) -->
 <script type="module">
-  import { initializeApp }    from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-  import { getAnalytics }     from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
-  import { getAuth, createUserWithEmailAndPassword, updatePassword, signInWithEmailAndPassword }
-                              from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-  import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, Timestamp }
-                              from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+  import { initializeApp }   from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  import { getAnalytics }    from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
+  import { getAuth, createUserWithEmailAndPassword }
+                             from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+  import { getDatabase, ref, set, get, update, remove, onValue, child }
+                             from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
 
   const firebaseConfig = {
-    apiKey:"AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
-    authDomain:"vyrova-2eb4d.firebaseapp.com",
-    projectId:"vyrova-2eb4d",
-    storageBucket:"vyrova-2eb4d.firebasestorage.app",
-    messagingSenderId:"136436344218",
-    appId:"1:136436344218:web:0efa47a4da3f20b7bc8623",
-    measurementId:"G-1TNRGDFL4M"
+    apiKey:            "AIzaSyB_ifbshi2ZGcK0nhq6UiLZsUYRlxyxk1U",
+    authDomain:        "vyrova-860b3.firebaseapp.com",
+    databaseURL:       "https://vyrova-860b3-default-rtdb.firebaseio.com",
+    projectId:         "vyrova-860b3",
+    storageBucket:     "vyrova-860b3.firebasestorage.app",
+    messagingSenderId: "1084760988508",
+    appId:             "1:1084760988508:web:6959662c20638278783f99",
+    measurementId:     "G-RVM3PB40TW"
   };
 
   const app  = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
   const auth = getAuth(app);
-  const db   = getFirestore(app);
+  const db   = getDatabase(app);
 
   /* ── Global state ── */
   let allUsers = [];
@@ -699,21 +701,20 @@
   /* ── Helpers ── */
   function daysLeft(planEnd) {
     if(!planEnd) return 0;
-    const end = planEnd.toDate ? planEnd.toDate() : new Date(planEnd);
+    const end = new Date(planEnd);
     const diff = Math.ceil((end - new Date()) / 86400000);
     return Math.max(0, diff);
   }
 
   function planStatus(days) {
-    if(days > 7)  return {label:'Active', cls:'badge-active'};
+    if(days > 7)  return {label:'Active',   cls:'badge-active'};
     if(days > 0)  return {label:'Expiring', cls:'badge-warn'};
-    return {label:'Expired', cls:'badge-expired'};
+    return              {label:'Expired',  cls:'badge-expired'};
   }
 
   function formatDate(ts) {
     if(!ts) return '—';
-    const d = ts.toDate ? ts.toDate() : new Date(ts);
-    return d.toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'});
+    return new Date(ts).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
   }
 
   window.showToast = function(msg, type='success') {
@@ -734,9 +735,10 @@
   function renderRow(u, forDash=false) {
     const days = daysLeft(u.planEnd);
     const st   = planStatus(days);
-    const pct  = Math.min(100, (days/30)*100);
+    const pct  = Math.min(100, (days / (u.planDays||30)) * 100);
     const barColor = days>7?'#34d399':days>0?'#fbbf24':'#f87171';
     const init = (u.username||'?')[0].toUpperCase();
+    const safeUser = (u.username||'').replace(/'/g,"\\'");
 
     return `<tr id="row-${u.id}">
       <td><div class="user-cell">
@@ -753,29 +755,25 @@
       </td>
       ${!forDash ? `<td><span class="plan-text">${formatDate(u.createdAt)}</span></td>` : ''}
       <td><div class="action-btns">
-        <button class="btn-sm btn-edit" onclick="openEditModal('${u.id}')">Edit</button>
-        <button class="btn-sm btn-device" onclick="openDeviceModal('${u.id}','${u.username}',${u.deviceLimit||1})">Devices</button>
-        <button class="btn-sm btn-delete" onclick="deleteUser('${u.id}','${u.username}')">Delete</button>
+        <button class="btn-sm btn-edit"   onclick="openEditModal('${u.id}')">Edit</button>
+        <button class="btn-sm btn-device" onclick="openDeviceModal('${u.id}','${safeUser}',${u.deviceLimit||1})">Devices</button>
+        <button class="btn-sm btn-delete" onclick="deleteUser('${u.id}','${safeUser}')">Delete</button>
       </div></td>
     </tr>`;
   }
 
   function renderAll() {
-    const tbody = document.getElementById('users-tbody');
-    const empty = document.getElementById('users-empty');
+    const tbody  = document.getElementById('users-tbody');
+    const empty  = document.getElementById('users-empty');
     const dTbody = document.getElementById('dash-tbody');
 
     const q = (document.getElementById('search-input')?.value||'').toLowerCase();
     const filtered = q ? allUsers.filter(u=>(u.username||'').toLowerCase().includes(q)) : allUsers;
 
-    tbody.innerHTML = filtered.map(u=>renderRow(u,false)).join('');
+    tbody.innerHTML  = filtered.map(u=>renderRow(u,false)).join('');
     empty.style.display = filtered.length ? 'none' : 'block';
+    dTbody.innerHTML = allUsers.slice(0,5).map(u=>renderRow(u,true)).join('');
 
-    // Dashboard — latest 5
-    const latest = [...allUsers].slice(0,5);
-    dTbody.innerHTML = latest.map(u=>renderRow(u,true)).join('');
-
-    // Stats
     const total   = allUsers.length;
     const active  = allUsers.filter(u=>daysLeft(u.planEnd)>0).length;
     const expired = total - active;
@@ -786,55 +784,62 @@
     document.getElementById('stat-devices').textContent = devices;
   }
 
-  /* ── Real-time listener ── */
-  onSnapshot(collection(db,'users'), snap => {
-    allUsers = snap.docs.map(d=>({id:d.id,...d.data()}))
-      .filter(u=>u.username)  // only real users
-      .sort((a,b)=>{
-        const ta = a.createdAt?.toDate?.()|| new Date(a.createdAt||0);
-        const tb = b.createdAt?.toDate?.()|| new Date(b.createdAt||0);
-        return tb-ta;
-      });
+  /* ── Real-time listener (Realtime DB — instant!) ── */
+  onValue(ref(db,'users'), snap => {
+    const data = snap.val() || {};
+    allUsers = Object.entries(data)
+      .map(([id, u]) => ({id, ...u}))
+      .filter(u => u.username)
+      .sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
     renderAll();
   });
 
-  /* ── Filter ── */
   window.filterUsers = renderAll;
 
-  /* ── Create user (shared logic) ── */
+  /* ── showMsg helper ── */
+  function showMsg(el, txt, type) {
+    el.style.display    = 'block';
+    el.textContent      = txt;
+    el.style.background = type==='success'?'rgba(52,211,153,0.1)':'rgba(248,113,113,0.1)';
+    el.style.border     = `1px solid ${type==='success'?'rgba(52,211,153,0.3)':'rgba(248,113,113,0.3)'}`;
+    el.style.color      = type==='success'?'#34d399':'#f87171';
+    el.style.borderRadius = '8px';
+  }
+
+  /* ── Create user — Auth + Realtime DB ── */
   async function doCreateUser(username, password, deviceLimit, planDays, btnEl, msgEl) {
-    if(!username||!password) { showMsg(msgEl,'Please fill all fields.','error'); return; }
+    if(!username||!password) { showMsg(msgEl,'Please fill all fields.','error'); return false; }
     btnEl.disabled = true;
     btnEl.innerHTML = '<span class="spin"></span> Creating...';
 
     try {
-      const email = username.toLowerCase().replace(/\s+/g,'_') + '@vyrova.com';
+      const email   = username.toLowerCase().replace(/\s+/g,'_') + '@vyrova.com';
       const planEnd = new Date();
       planEnd.setDate(planEnd.getDate() + parseInt(planDays));
 
-      // Create Firebase Auth user
+      /* Step 1 — Firebase Auth */
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       const uid  = cred.user.uid;
 
-      // Save to Firestore
-      await setDoc(doc(db,'users',uid),{
+      /* Step 2 — Realtime Database (super fast) */
+      await set(ref(db, `users/${uid}`), {
         username,
         email,
         passwordPlain: password,
-        deviceLimit: parseInt(deviceLimit),
-        planDays: parseInt(planDays),
-        planEnd: Timestamp.fromDate(planEnd),
-        createdAt: serverTimestamp(),
-        active: true,
-        registeredIP: null,
-        lockedIP: false
+        deviceLimit:   parseInt(deviceLimit),
+        planDays:      parseInt(planDays),
+        planEnd:       planEnd.toISOString(),
+        createdAt:     Date.now(),
+        active:        true,
+        registeredIP:  null
       });
 
-      showMsg(msgEl, `✓ User "${username}" created! Plan active for ${planDays} days.`, 'success');
-      showToast(`User "${username}" created successfully!`, 'success');
+      showMsg(msgEl, `✓ "${username}" created! Active for ${planDays} days.`, 'success');
+      showToast(`User "${username}" created!`, 'success');
       btnEl.disabled = false;
       btnEl.textContent = 'Create User';
       return true;
+
     } catch(err) {
       const msg = err.code==='auth/email-already-in-use'
         ? 'Username already exists.'
@@ -844,15 +849,6 @@
       btnEl.textContent = 'Create User';
       return false;
     }
-  }
-
-  function showMsg(el, txt, type) {
-    el.style.display = 'block';
-    el.textContent   = txt;
-    el.style.background = type==='success' ? 'rgba(52,211,153,0.1)' : 'rgba(248,113,113,0.1)';
-    el.style.border  = `1px solid ${type==='success'?'rgba(52,211,153,0.3)':'rgba(248,113,113,0.3)'}`;
-    el.style.color   = type==='success' ? '#34d399' : '#f87171';
-    el.style.borderRadius = '8px';
   }
 
   /* ── Page create ── */
@@ -865,10 +861,7 @@
       document.getElementById('create-btn'),
       document.getElementById('create-msg')
     );
-    if(ok){
-      document.getElementById('new-username').value='';
-      document.getElementById('new-password').value='';
-    }
+    if(ok){ document.getElementById('new-username').value=''; document.getElementById('new-password').value=''; }
   };
 
   /* ── Modal create ── */
@@ -884,7 +877,7 @@
     if(ok){
       document.getElementById('m-username').value='';
       document.getElementById('m-password').value='';
-      setTimeout(()=>closeModal('create-modal'), 1800);
+      setTimeout(()=>closeModal('create-modal'), 1600);
     }
   };
 
@@ -892,20 +885,20 @@
   window.deleteUser = async function(uid, name) {
     if(!confirm(`Delete user "${name}"? This cannot be undone.`)) return;
     try {
-      await deleteDoc(doc(db,'users',uid));
-      showToast(`User "${name}" deleted.`, 'info');
+      await remove(ref(db, `users/${uid}`));
+      showToast(`"${name}" deleted.`, 'info');
     } catch(e) { showToast('Delete failed: '+e.message,'error'); }
   };
 
-  /* ── Open edit modal ── */
+  /* ── Edit modal ── */
   window.openEditModal = function(uid) {
     const u = allUsers.find(x=>x.id===uid);
     if(!u) return;
     editingUID = uid;
-    document.getElementById('edit-uid').value = uid;
+    document.getElementById('edit-uid').value      = uid;
     document.getElementById('edit-password').value = '';
-    document.getElementById('edit-devices').value = u.deviceLimit||2;
-    document.getElementById('edit-plan').value = '0';
+    document.getElementById('edit-devices').value  = u.deviceLimit||2;
+    document.getElementById('edit-plan').value     = '0';
     document.getElementById('edit-modal').classList.add('open');
   };
 
@@ -918,20 +911,18 @@
     const updates = { deviceLimit: devices };
 
     if(addDays > 0) {
-      const u = allUsers.find(x=>x.id===uid);
-      const current = u?.planEnd?.toDate?.() || new Date();
-      const base = current > new Date() ? current : new Date();
+      const u    = allUsers.find(x=>x.id===uid);
+      const base = u?.planEnd ? new Date(u.planEnd) : new Date();
+      if(base < new Date()) base.setTime(new Date().getTime());
       base.setDate(base.getDate() + addDays);
-      updates.planEnd = Timestamp.fromDate(base);
+      updates.planEnd  = base.toISOString();
+      updates.planDays = (u?.planDays||30) + addDays;
     }
-
-    if(newPwd) {
-      updates.passwordPlain = newPwd;
-    }
+    if(newPwd) updates.passwordPlain = newPwd;
 
     try {
-      await updateDoc(doc(db,'users',uid), updates);
-      showToast('User updated successfully!','success');
+      await update(ref(db, `users/${uid}`), updates);
+      showToast('User updated!','success');
       closeModal('edit-modal');
     } catch(e) { showToast('Update failed: '+e.message,'error'); }
   };
@@ -947,7 +938,7 @@
     document.getElementById('device-options').innerHTML = opts.map(n=>`
       <div class="device-option ${n===current?'selected':''}" onclick="selectDevice(${n},this)">
         <div><div class="device-opt-label">${n} Device${n>1?'s':''}</div>
-        <div class="device-opt-sub">${n===1?'Single device only':n===2?'Dual login':n===3?'Triple login':'Multi login'}</div></div>
+        <div class="device-opt-sub">${n===1?'Single device':n===2?'Dual login':n===3?'Triple login':'Multi login'}</div></div>
         <div class="device-check">${n===current?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>
       </div>`).join('');
 
@@ -968,32 +959,28 @@
     const custom = parseInt(document.getElementById('custom-device').value);
     const final  = custom > 0 ? custom : deviceEditCurrent;
     try {
-      await updateDoc(doc(db,'users',deviceEditUID),{ deviceLimit: final });
-      showToast(`Device limit updated to ${final}!`,'success');
+      await update(ref(db,`users/${deviceEditUID}`), { deviceLimit: final });
+      showToast(`Devices updated to ${final}!`,'success');
       closeModal('device-modal');
     } catch(e) { showToast('Failed: '+e.message,'error'); }
   };
 
-  /* ── Auto-expire check (run on load) ── */
-  async function checkExpiredUsers() {
-    const snap = await getDocs(collection(db,'users'));
-    snap.forEach(async d => {
-      const data = d.data();
-      if(!data.planEnd) return;
-      const days = daysLeft(data.planEnd);
-      if(days<=0 && data.active) {
-        await updateDoc(doc(db,'users',d.id),{ active:false, registeredIP: null });
+  /* ── Auto-expire on load ── */
+  onValue(ref(db,'users'), snap => {
+    const data = snap.val()||{};
+    Object.entries(data).forEach(([uid,u])=>{
+      if(!u.planEnd) return;
+      if(daysLeft(u.planEnd)<=0 && u.active) {
+        update(ref(db,`users/${uid}`),{ active:false, registeredIP:null });
       }
     });
-  }
-  checkExpiredUsers();
+  }, { onlyOnce: true });
 
-  /* ── Expose helpers ── */
+  /* ── Modal helpers ── */
   window.openCreateModal = function() {
     document.getElementById('modal-msg').style.display='none';
     document.getElementById('create-modal').classList.add('open');
   };
-
   window.closeModal = function(id) {
     document.getElementById(id).classList.remove('open');
   };
