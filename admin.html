@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full select-none">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VYROVA AI - Admin Control Suite</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            900: '#4c1d95',
+                            950: '#1e1b4b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #03050a;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(8, 10, 20, 0.75);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(139, 92, 246, 0.12);
+        }
+        .neon-glow {
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.1);
+        }
+        .animated-mesh {
+            background: radial-gradient(circle at 10% 20%, rgba(76, 29, 149, 0.12) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(37, 99, 235, 0.1) 0%, transparent 45%),
+                        radial-gradient(circle at 50% 50%, rgba(10, 12, 22, 1) 0%, rgba(3, 5, 10, 1) 100%);
+        }
+        input:focus, select:focus {
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.25);
+            border-color: #8b5cf6 !important;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen animated-mesh text-slate-100 flex flex-col justify-between relative">
+
+    <!-- Glowing Background Ambiance -->
+    <div class="absolute top-10 left-1/4 w-96 h-96 rounded-full bg-brand-600/10 blur-[120px] pointer-events-none"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-blue-600/5 blur-[100px] pointer-events-none"></div>
+
+    <!-- MAIN ADMIN HEADER -->
+    <header class="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-20">
+        <div class="flex items-center gap-3">
+            <img src="https://i.ibb.co/5XQLZbcm/Tool-Logo.png" alt="VYROVA Logo" class="h-10 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(139,92,246,0.2)]"/>
+            <span class="h-6 w-px bg-slate-800"></span>
+            <div class="flex flex-col">
+                <span class="text-xs font-black tracking-widest text-brand-400 uppercase">Admin Control Room</span>
+                <span class="text-[10px] text-slate-500 font-medium font-mono">Live Session Status</span>
+            </div>
+        </div>
+
+        <!-- Safe navigation redirection link -->
+        <div class="flex bg-slate-900/80 p-1 rounded-xl border border-slate-800/80">
+            <button class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-brand-600 text-white">
+                <i class="fa-solid fa-users mr-1.5"></i> Users Database
+            </button>
+            <button onclick="safeRedirect('index.html')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white">
+                <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Use AI Tools
+            </button>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex flex-col text-right">
+                <span class="text-xs font-bold text-slate-200">Haider Ali</span>
+                <span class="text-[9px] text-emerald-400 font-mono font-bold">Admin Verified (923220498935)</span>
+            </div>
+            <button onclick="handleLogout()" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-red-950/40 border border-slate-800 hover:border-red-900 text-white text-xs font-bold transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-right-from-bracket text-red-400"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- ADMIN PANEL WORKSPACE -->
+    <div class="flex-1 w-full max-w-7xl mx-auto p-4 sm:p-6 space-y-6 relative z-10">
+        
+        <!-- Metrics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-950/60 border border-slate-900 p-5 rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">Total Active Users</span>
+                    <span id="totalUsersCount" class="text-2xl font-black text-white">0</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-brand-600/10 text-brand-400 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </div>
+            <div class="bg-slate-950/60 border border-slate-900 p-5 rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">Total System Devices</span>
+                    <span id="totalDeviceAllocation" class="text-2xl font-black text-emerald-400">0</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-laptop-code"></i>
+                </div>
+            </div>
+            <div class="bg-slate-950/60 border border-slate-900 p-5 rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">Standard Active Plan</span>
+                    <span class="text-lg font-black text-indigo-300">30 Days Fixed</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Management Area Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Left Panel: Create or Edit Form -->
+            <section class="lg:col-span-5">
+                <div class="glass-panel p-6 rounded-2xl neon-glow">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div id="formAccentIcon" class="w-8 h-8 rounded-lg bg-brand-600/20 text-brand-400 flex items-center justify-center">
+                            <i class="fa-solid fa-user-plus text-sm"></i>
+                        </div>
+                        <h2 id="formTitleText" class="text-sm font-extrabold text-white">Naya Account Active Karein</h2>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-5">User banate hi 30 days ka plan dynamic cloud server par active ho jayega.</p>
+
+                    <form id="userForm" class="space-y-4">
+                        <input type="hidden" id="editUserId">
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">User Ka Naam</label>
+                            <input type="text" id="newFullName" required placeholder="e.g., Haider Ali"
+                                   class="block w-full px-3.5 py-3 rounded-xl border border-slate-800/80 bg-slate-950/90 text-white text-xs placeholder-slate-600 focus:outline-none focus:border-brand-500 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Phone / Username</label>
+                            <input type="text" id="newPhone" required placeholder="e.g., 923220000000"
+                                   class="block w-full px-3.5 py-3 rounded-xl border border-slate-800/80 bg-slate-950/90 text-white text-xs placeholder-slate-600 focus:outline-none focus:border-brand-500 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Password</label>
+                            <div class="relative">
+                                <input type="password" id="newPassword" required placeholder="Set Password"
+                                       class="block w-full pl-3.5 pr-10 py-3 rounded-xl border border-slate-800/80 bg-slate-950/90 text-white text-xs placeholder-slate-600 focus:outline-none focus:border-brand-500 transition-all">
+                                <button type="button" onclick="togglePasswordVisibility('newPassword')" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-500 hover:text-slate-300">
+                                    <i class="fa-solid fa-eye" id="newPasswordEye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Allowed Devices (1 - 5)</label>
+                            <select id="userDevices" class="block w-full px-3.5 py-3 rounded-xl border border-slate-800 bg-slate-950 text-white text-xs focus:outline-none focus:border-brand-500 transition-all">
+                                <option value="1">1 Device Limit</option>
+                                <option value="2">2 Devices Limit</option>
+                                <option value="3">3 Devices Limit</option>
+                                <option value="4">4 Devices Limit</option>
+                                <option value="5">5 Devices Limit</option>
+                            </select>
+                        </div>
+                        
+                        <div class="pt-2 flex items-center gap-3">
+                            <button type="submit" id="formSubmitBtn" class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-brand-600 via-indigo-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-500/15">
+                                <i class="fa-solid fa-circle-notch animate-spin hidden" id="formLoader"></i>
+                                <span id="formSubmitText">Register & Activate Plan</span>
+                            </button>
+                            <button type="button" id="cancelEditBtn" onclick="resetFormState()" class="hidden py-3.5 px-4 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white font-bold text-xs transition-all">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Right Panel: Profiles Data Table -->
+            <section class="lg:col-span-7 flex flex-col">
+                <div class="glass-panel p-6 rounded-2xl flex-1 flex flex-col justify-between overflow-hidden">
+                    <div>
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-sm font-extrabold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-database text-brand-400"></i>
+                                <span>Live Users Database</span>
+                            </h2>
+                            <span id="syncStatusBadge" class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">
+                                <span id="syncStatusDot" class="w-1.5 h-1.5 inline-block bg-emerald-500 rounded-full animate-ping mr-1"></span> <span id="syncStatusText">Live Sync</span>
+                            </span>
+                        </div>
+
+                        <!-- Table Container -->
+                        <div class="overflow-x-auto w-full max-h-[460px] overflow-y-auto">
+                            <table class="w-full text-left text-xs min-w-[500px]">
+                                <thead class="border-b border-slate-800/80 text-slate-400 uppercase text-[10px] tracking-wider font-bold sticky top-0 bg-slate-950/90 backdrop-blur z-10">
+                                    <tr>
+                                        <th class="py-3 px-3">Profile Details</th>
+                                        <th class="py-3 px-3">Username & Password</th>
+                                        <th class="py-3 px-3 text-center">Allowed Devices</th>
+                                        <th class="py-3 px-3 text-center">Plan Remaining</th>
+                                        <th class="py-3 px-3 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody" class="divide-y divide-slate-900 text-slate-300">
+                                    <!-- Rows will be injected by Firestore stream below -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Empty Database Warning -->
+                        <div id="noUsersMessage" class="hidden flex flex-col items-center justify-center text-center p-12">
+                            <i class="fa-solid fa-users-slash text-slate-800 text-5xl mb-3"></i>
+                            <p class="text-sm text-slate-400 font-semibold">Koi bhi profile register nahi mili!</p>
+                            <p class="text-[10px] text-slate-600 mt-1">Naya account create karne ke liye form ka use karein.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-900 text-[10px] text-slate-600 flex items-center justify-between">
+                        <span><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> Data automatically stored in Firebase Cloud</span>
+                        <span>Click credentials to copy instantly</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-950 bg-slate-950 py-4 px-6 text-center text-[10px] text-slate-600 relative z-10">
+        &copy; 2026 Vyrova AI Creative Corp. Built safely utilizing secure cloud synchronization.
+    </footer>
+
+    <!-- Floating Toast Notifications System Container -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full px-4 sm:px-0"></div>
+
+    <!-- Firebase SDK Modules & Application logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Safe redirection helper to avoid blob URL sandbox failures in preview mode
+        window.safeRedirect = function(targetPage) {
+            if (window.location.protocol === 'blob:' || window.location.href.startsWith('blob:')) {
+                console.warn(`[VYROVA Sandbox] Redirection to '${targetPage}' bypassed in preview.`);
+                if (window.showToast) {
+                    window.showToast(`[Sandbox Mode] Redirection to '${targetPage}' successfully simulated.`, "info");
+                }
+                if (targetPage === 'login.html') {
+                    localStorage.removeItem('vyrova_session');
+                }
+            } else {
+                try {
+                    window.location.href = targetPage;
+                } catch (err) {
+                    window.location.replace(targetPage);
+                }
+            }
+        };
+
+        // Firebase Web App configuration matching platform specifications
+        const firebaseConfig = {
+            apiKey: "AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
+            authDomain: "vyrova-2eb4d.firebaseapp.com",
+            projectId: "vyrova-2eb4d",
+            storageBucket: "vyrova-2eb4d.firebasestorage.app",
+            messagingSenderId: "136436344218",
+            appId: "1:136436344218:web:0efa47a4da3f20b7bc8623",
+            measurementId: "G-1TNRGDFL4M"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'vyrova-2eb4d';
+
+        // RULE 1: Strict Firestore path used precisely
+        const usersCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'users');
+
+        // Security session check with safe redirection fallback
+        const session = JSON.parse(localStorage.getItem('vyrova_session'));
+        if (!session || session.role !== 'admin') {
+            safeRedirect('login.html');
+        }
+
+        window.localUsersArray = [];
+        window.isEditMode = false;
+        window.isOfflineMode = false;
+
+        // Toast notifications system launcher
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const icons = {
+                success: '<i class="fa-solid fa-circle-check text-emerald-500"></i>',
+                error: '<i class="fa-solid fa-circle-xmark text-red-500"></i>',
+                info: '<i class="fa-solid fa-circle-info text-blue-500"></i>',
+                warning: '<i class="fa-solid fa-triangle-exclamation text-amber-500"></i>'
+            };
+            toast.className = `flex items-center gap-3 p-4 rounded-xl bg-slate-900 border border-slate-800 shadow-xl transform translate-y-4 opacity-0 transition-all duration-300 select-none`;
+            toast.innerHTML = `
+                <div class="text-xl">${icons[type] || icons.success}</div>
+                <div class="flex-1 text-xs font-semibold text-slate-200">${message}</div>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+            }, 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
+        // Render metrics cards data
+        function renderMetrics() {
+            document.getElementById('totalUsersCount').innerText = window.localUsersArray.length;
+            let totalDevices = 0;
+            window.localUsersArray.forEach(u => {
+                totalDevices += parseInt(u.devices || 1);
+            });
+            document.getElementById('totalDeviceAllocation').innerText = totalDevices;
+        }
+
+        // Render dynamic table rows from synchronised memory state
+        function renderUsersTable() {
+            const tbody = document.getElementById('usersTableBody');
+            const noMsg = document.getElementById('noUsersMessage');
+            tbody.innerHTML = "";
+
+            if (window.localUsersArray.length === 0) {
+                noMsg.classList.remove('hidden');
+                return;
+            } else {
+                noMsg.classList.add('hidden');
+            }
+
+            window.localUsersArray.forEach((u) => {
+                const createdDate = new Date(u.createdAt || Date.now());
+                const expirationDate = new Date(u.expiresAt || (createdDate.getTime() + 30 * 24 * 60 * 60 * 1000));
+                const timeDiff = expirationDate.getTime() - Date.now();
+                const daysRemaining = Math.max(0, Math.ceil(timeDiff / (1000 * 60 * 60 * 24)));
+                
+                let daysBadgeColor = "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+                if (daysRemaining <= 5) {
+                    daysBadgeColor = "bg-rose-500/10 text-rose-400 border-rose-500/20 animate-pulse";
+                } else if (daysRemaining <= 15) {
+                    daysBadgeColor = "bg-amber-500/10 text-amber-400 border-amber-500/20";
+                }
+
+                const registeredList = u.registeredDevices || [];
+                const currentCount = registeredList.length;
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-900/40 border-b border-slate-900/80 transition-colors";
+                tr.innerHTML = `
+                    <td class="py-3 px-3">
+                        <div class="font-bold text-white text-xs">${u.name}</div>
+                        <div class="text-[9px] text-slate-500 mt-0.5">Joined: ${new Date(u.createdAt).toLocaleDateString()}</div>
+                    </td>
+                    <td class="py-3 px-3">
+                        <div class="font-mono text-indigo-400 text-xs cursor-pointer hover:text-indigo-300 flex items-center gap-1" onclick="copyValue('${u.username}', 'Username copied!')">
+                            <i class="fa-solid fa-copy text-[10px]"></i>${u.username}
+                        </div>
+                        <div class="font-mono text-slate-400 text-[10px] mt-0.5 cursor-pointer hover:text-slate-300 flex items-center gap-1" onclick="copyValue('${u.password}', 'Password copied!')">
+                            <i class="fa-solid fa-key text-[9px]"></i>${u.password}
+                        </div>
+                    </td>
+                    <td class="py-3 px-3 text-center">
+                        <div class="flex flex-col items-center justify-center gap-1">
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button onclick="changeDeviceLimit('${u.id}', -1)" class="w-5 h-5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-850 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                                    <i class="fa-solid fa-minus text-[9px]"></i>
+                                </button>
+                                <span class="font-mono font-bold text-slate-200 text-xs w-6">${u.devices || 1}</span>
+                                <button onclick="changeDeviceLimit('${u.id}', 1)" class="w-5 h-5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-850 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                                    <i class="fa-solid fa-plus text-[9px]"></i>
+                                </button>
+                            </div>
+                            <div class="text-[9px] text-slate-500 font-bold mt-1 flex items-center gap-1">
+                                <span>Locked: ${currentCount}/${u.devices || 1}</span>
+                                ${currentCount > 0 ? `
+                                    <button onclick="resetUserDevices('${u.id}')" class="text-rose-400 hover:text-rose-300 transition-all font-semibold flex items-center gap-0.5 ml-1">
+                                        <i class="fa-solid fa-rotate-left text-[8px]"></i>Reset
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3 px-3 text-center">
+                        <span class="px-2.5 py-1 rounded border text-[10px] font-bold ${daysBadgeColor}">
+                            <i class="fa-solid fa-hourglass-half mr-1 text-[8px]"></i>${daysRemaining} Days left
+                        </span>
+                    </td>
+                    <td class="py-3 px-3 text-right">
+                        <div class="flex items-center justify-end gap-1.5">
+                            <button onclick="loadUserIntoEditForm('${u.id}')" class="w-8 h-8 rounded-lg bg-indigo-600/10 hover:bg-indigo-600 border border-indigo-500/20 text-indigo-400 hover:text-white transition-all flex items-center justify-center">
+                                <i class="fa-solid fa-user-pen text-xs"></i>
+                            </button>
+                            <button onclick="deleteUserAccount('${u.id}')" class="w-8 h-8 rounded-lg bg-rose-600/10 hover:bg-rose-600 border border-rose-500/20 text-rose-400 hover:text-white transition-all flex items-center justify-center">
+                                <i class="fa-solid fa-trash text-xs"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Live Realtime sync switcher
+        window.enableLocalSafeBypass = function() {
+            window.isOfflineMode = true;
+            const badge = document.getElementById('syncStatusBadge');
+            const dot = document.getElementById('syncStatusDot');
+            const text = document.getElementById('syncStatusText');
+            if (badge && dot && text) {
+                badge.className = "text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold animate-pulse";
+                dot.className = "w-1.5 h-1.5 inline-block bg-amber-500 rounded-full mr-1";
+                text.innerText = "Sandbox Active";
+            }
+        };
+
+        // RULE 3 - Auth Before Queries with custom mismatch and sandbox protection
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } catch (tokErr) {
+                        console.warn("Custom token mismatch, falling back to anonymous.");
+                        await signInAnonymously(auth);
+                    }
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.warn("Auth failed entirely. Launching local sandbox state.", err.message);
+                enableLocalSafeBypass();
+            }
+        };
+
+        // Initialize table from safe local cache instantly to maintain 0ms lag
+        window.localUsersArray = JSON.parse(localStorage.getItem('ai_users')) || [];
+        renderMetrics();
+        renderUsersTable();
+
+        // Listen for Auth Completion to trigger dynamic snapshot queries safely
+        onAuthStateChanged(auth, (user) => {
+            if (user && !window.isOfflineMode) {
+                startUsersRealtimeListener();
+            } else {
+                enableLocalSafeBypass();
+            }
+        });
+
+        // Trigger safe Auth flow execution
+        initAuth();
+
+        // Realtime snapshots listener configuration
+        function startUsersRealtimeListener() {
+            try {
+                onSnapshot(usersCollectionRef, (snapshot) => {
+                    const fetchedList = [];
+                    snapshot.forEach((doc) => {
+                        fetchedList.push({ id: doc.id, ...doc.data() });
+                    });
+                    window.localUsersArray = fetchedList;
+                    localStorage.setItem('ai_users', JSON.stringify(fetchedList));
+                    renderMetrics();
+                    renderUsersTable();
+                }, (error) => {
+                    console.warn("Sync interrupted, using cache backup.");
+                    enableLocalSafeBypass();
+                });
+            } catch (e) {
+                console.warn("Firestore snapshot subscription failed:", e);
+                enableLocalSafeBypass();
+            }
+        }
+
+        // Form Submit Handler (Covers inserts and updates)
+        window.handleFormSubmit = async function(e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('newFullName').value.trim();
+            const phone = document.getElementById('newPhone').value.trim();
+            const password = document.getElementById('newPassword').value;
+            const devices = parseInt(document.getElementById('userDevices').value);
+            const editId = document.getElementById('editUserId').value;
+
+            if (phone === "923220498935") {
+                window.showToast("Cannot utilize restricted admin phone identifier.", "error");
+                return;
+            }
+
+            document.getElementById('formLoader').classList.remove('hidden');
+            document.getElementById('formSubmitBtn').disabled = true;
+
+            const now = new Date();
+            const thirtyDaysLater = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+            if (window.isEditMode && editId) {
+                // Edit/Update Mode
+                const existingUser = window.localUsersArray.find(u => u.id === editId);
+                const updatedPayload = {
+                    ...existingUser,
+                    name: fullName,
+                    username: phone,
+                    password: password,
+                    devices: devices
+                };
+
+                window.localUsersArray = window.localUsersArray.map(u => u.id === editId ? updatedPayload : u);
+                localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+                renderUsersTable();
+                resetFormState();
+                window.showToast("Profile details updated successfully!", "success");
+
+                try {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', editId), updatedPayload);
+                } catch (err) {
+                    console.error("Cloud update failed:", err);
+                }
+            } else {
+                // Register/Create Mode
+                if (window.localUsersArray.some(u => u.username === phone)) {
+                    window.showToast("Username already exists!", "warning");
+                    document.getElementById('formLoader').classList.add('hidden');
+                    document.getElementById('formSubmitBtn').disabled = false;
+                    return;
+                }
+
+                const newUserId = crypto.randomUUID();
+                const newUserPayload = {
+                    id: newUserId,
+                    name: fullName,
+                    username: phone,
+                    password: password,
+                    devices: devices,
+                    tier: "Pro Creator",
+                    createdAt: now.toISOString(),
+                    expiresAt: thirtyDaysLater.toISOString(),
+                    registeredDevices: [], // Empty device list ready for hardware lock
+                    isActive: true
+                };
+
+                window.localUsersArray.push(newUserPayload);
+                localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+                renderUsersTable();
+                renderMetrics();
+                
+                document.getElementById('userForm').reset();
+                window.showToast("Profile active for 30 days!", "success");
+
+                try {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', newUserId), newUserPayload);
+                } catch (err) {
+                    console.error("Cloud insert failed:", err);
+                }
+            }
+
+            document.getElementById('formLoader').classList.add('hidden');
+            document.getElementById('formSubmitBtn').disabled = false;
+        };
+
+        // Form loader configuration (Edit Mode)
+        window.loadUserIntoEditForm = function(id) {
+            const user = window.localUsersArray.find(u => u.id === id);
+            if (!user) return;
+
+            window.isEditMode = true;
+            document.getElementById('editUserId').value = user.id;
+            document.getElementById('newFullName').value = user.name;
+            document.getElementById('newPhone').value = user.username;
+            document.getElementById('newPassword').value = user.password;
+            document.getElementById('userDevices').value = user.devices || 1;
+
+            document.getElementById('formTitleText').innerText = "Edit User Settings";
+            document.getElementById('formSubmitText').innerText = "Update User Profile";
+            document.getElementById('formAccentIcon').className = "w-8 h-8 rounded-lg bg-indigo-600/20 text-indigo-400 flex items-center justify-center";
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+        };
+
+        // Form state reset helper
+        window.resetFormState = function() {
+            window.isEditMode = false;
+            document.getElementById('editUserId').value = "";
+            document.getElementById('userForm').reset();
+            document.getElementById('formTitleText').innerText = "Naya Account Active Karein";
+            document.getElementById('formSubmitText').innerText = "Register & Activate Plan";
+            document.getElementById('formAccentIcon').className = "w-8 h-8 rounded-lg bg-brand-600/20 text-brand-400 flex items-center justify-center";
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+        };
+
+        // Clear registered devices to allow client login on a new machine
+        window.resetUserDevices = async function(id) {
+            const user = window.localUsersArray.find(u => u.id === id);
+            if (!user) return;
+
+            const updatedUser = {
+                ...user,
+                registeredDevices: [] // Cleared fingerprints array
+            };
+
+            window.localUsersArray = window.localUsersArray.map(u => u.id === id ? updatedUser : u);
+            localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+            renderUsersTable();
+            renderMetrics();
+            window.showToast("Device fingerprints cleared successfully!", "success");
+
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id), updatedUser);
+            } catch (err) {
+                console.error("Lock reset failed on cloud:", err);
+            }
+        };
+
+        // Allowed devices limit quick adjustments directly (+ / -)
+        window.changeDeviceLimit = async function(id, delta) {
+            const user = window.localUsersArray.find(u => u.id === id);
+            if (!user) return;
+
+            const currentDevices = parseInt(user.devices || 1);
+            const targetDevices = Math.max(1, Math.min(5, currentDevices + delta));
+
+            if (currentDevices === targetDevices) return;
+
+            const updatedUser = {
+                ...user,
+                devices: targetDevices
+            };
+
+            window.localUsersArray = window.localUsersArray.map(u => u.id === id ? updatedUser : u);
+            localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+            renderUsersTable();
+            renderMetrics();
+            window.showToast("Devices limit updated successfully!", "info");
+
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id), updatedUser);
+            } catch (err) {
+                console.error("Cloud limit update failed:", err);
+            }
+        };
+
+        // Terminate profile subscription
+        window.deleteUserAccount = async function(id) {
+            window.localUsersArray = window.localUsersArray.filter(u => u.id !== id);
+            localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+            renderUsersTable();
+            renderMetrics();
+            window.showToast("Revoking user account access...", "warning");
+
+            try {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id));
+                window.showToast("Account successfully removed from cloud.", "success");
+            } catch (err) {
+                console.error("Cloud deletion failed:", err);
+            }
+        };
+
+        // Clipboard Copy Utility
+        window.copyValue = function(val, successMsg) {
+            const el = document.createElement('input');
+            el.value = val;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            window.showToast(successMsg, "info");
+        };
+
+        document.getElementById('userForm').addEventListener('submit', window.handleFormSubmit);
+
+        window.handleLogout = function() {
+            localStorage.removeItem('vyrova_session');
+            safeRedirect('login.html');
+        };
+
+        window.togglePasswordVisibility = function(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const eyeIcon = document.getElementById(`${fieldId}Eye`);
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.className = "fa-solid fa-eye-slash";
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.className = "fa-solid fa-eye";
+            }
+        };
+    </script>
+</body>
+</html>
