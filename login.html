@@ -1,163 +1,634 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VYROVA AI | Enterprise Secure Access Gateway</title>
-    <!-- Professional Libraries -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020202; overflow: hidden; }
-        .glass-card { background: rgba(8, 8, 12, 0.95); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(50px); }
-        .gradient-text { background: linear-gradient(135deg, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .input-field:focus { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VYROVA – AI Creative Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080810;
+      --surface: #0f0f1a;
+      --border: rgba(120,80,255,0.18);
+      --accent: #7c3aed;
+      --accent2: #a855f7;
+      --glow: #c084fc;
+      --text: #f1f0ff;
+      --muted: #8b8aab;
+      --error: #f87171;
+      --success: #34d399;
+      --card: rgba(15,15,26,0.85);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── Background Canvas ── */
+    #bg-canvas {
+      position: fixed; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── Grid lines ── */
+    .grid-overlay {
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 0;
+    }
+
+    /* ── Glow blobs ── */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(124,58,237,0.3), transparent 70%);
+      top: -150px; left: -100px;
+      animation: float1 9s ease-in-out infinite;
+    }
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(168,85,247,0.2), transparent 70%);
+      bottom: -100px; right: -80px;
+      animation: float2 11s ease-in-out infinite;
+    }
+    .blob-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(192,132,252,0.12), transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      animation: pulse-blob 6s ease-in-out infinite;
+    }
+
+    @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,30px)} }
+    @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,-40px)} }
+    @keyframes pulse-blob { 0%,100%{opacity:0.5;transform:translate(-50%,-50%) scale(1)} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)} }
+
+    /* ── Main Card ── */
+    .login-wrapper {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 460px;
+      padding: 20px;
+      animation: slideUp 0.8s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(40px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 48px 44px 44px;
+      backdrop-filter: blur(24px);
+      box-shadow:
+        0 0 0 1px rgba(124,58,237,0.1),
+        0 30px 80px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 60%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--glow), transparent);
+    }
+
+    /* ── Logo ── */
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .logo-img {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      border: 1px solid rgba(168,85,247,0.3);
+      box-shadow: 0 0 20px rgba(124,58,237,0.4);
+      object-fit: cover;
+    }
+
+    .logo-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .logo-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 4px;
+      line-height: 1;
+      background: linear-gradient(135deg, #c084fc, #7c3aed, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* ── Heading ── */
+    .card-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    /* ── Form ── */
+    .form-group {
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 16px; top: 50%; transform: translateY(-50%);
+      color: var(--muted);
+      width: 16px; height: 16px;
+      pointer-events: none;
+      transition: color 0.3s;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 14px 16px 14px 44px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    input:focus {
+      border-color: var(--accent2);
+      background: rgba(124,58,237,0.08);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+    }
+
+    input:focus ~ .input-icon,
+    .input-wrap:focus-within .input-icon {
+      color: var(--accent2);
+    }
+
+    .eye-toggle {
+      position: absolute;
+      right: 14px; top: 50%; transform: translateY(-50%);
+      background: none; border: none;
+      color: var(--muted); cursor: pointer;
+      padding: 4px;
+      transition: color 0.3s;
+    }
+    .eye-toggle:hover { color: var(--accent2); }
+
+    /* ── Button ── */
+    .btn-login {
+      width: 100%;
+      padding: 15px;
+      margin-top: 8px;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+    }
+
+    .btn-login::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-login:hover::before { left: 100%; }
+    .btn-login:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(124,58,237,0.55);
+    }
+    .btn-login:active { transform: translateY(0); }
+
+    .btn-login:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── Spinner ── */
+    .spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Message ── */
+    .msg {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .msg.error   { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: var(--error); }
+    .msg.success { background: rgba(52,211,153,0.1);  border: 1px solid rgba(52,211,153,0.3);  color: var(--success); }
+    .msg.show { display: flex; animation: fadeIn 0.3s ease; }
+
+    @keyframes fadeIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ── Footer ── */
+    .card-footer {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .footer-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent2);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .footer-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* ── IP Badge ── */
+    .ip-badge {
+      position: absolute;
+      top: 16px; right: 16px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(124,58,237,0.1);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .ip-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 6px var(--success);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    /* ── Floating particles ── */
+    .particle {
+      position: fixed;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      background: var(--accent2);
+      pointer-events: none;
+      z-index: 1;
+      animation: particleFly linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes particleFly {
+      0%   { opacity:0; transform: translateY(100vh) scale(0); }
+      10%  { opacity:1; }
+      90%  { opacity:1; }
+      100% { opacity:0; transform: translateY(-100px) scale(1); }
+    }
+  </style>
 </head>
-<body class="h-screen w-screen flex items-center justify-center bg-[#020202]">
+<body>
 
-    <!-- Background Decoration -->
-    <div class="fixed inset-0 z-0 opacity-30">
-        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-indigo-900/20 blur-[150px] rounded-full"></div>
-        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-900/20 blur-[150px] rounded-full"></div>
-    </div>
+  <!-- Background -->
+  <div class="grid-overlay"></div>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
 
-    <!-- Main Container -->
-    <div class="glass-card z-10 w-full max-w-lg p-12 rounded-[3rem] shadow-2xl relative">
-        
-        <!-- Branding -->
-        <div class="text-center mb-12">
-            <h1 class="text-5xl font-extrabold text-white tracking-tighter mb-4">VYROVA <span class="gradient-text">AI</span></h1>
-            <p class="text-slate-500 font-medium tracking-widest text-xs uppercase">Enterprise Terminal Gateway v2.4</p>
+  <!-- Particles -->
+  <script>
+    for(let i=0;i<18;i++){
+      const p=document.createElement('div');
+      p.className='particle';
+      p.style.cssText=`left:${Math.random()*100}%;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation-duration:${6+Math.random()*10}s;animation-delay:${Math.random()*8}s;opacity:${Math.random()*0.5+0.2};`;
+      document.body.appendChild(p);
+    }
+  </script>
+
+  <!-- Login Card -->
+  <div class="login-wrapper">
+    <div class="card">
+
+      
+
+      <div class="logo-area">
+        <img
+          src="https://i.ibb.co/5XQLZbcm/Tool-Logo.png"
+          alt="VYROVA Logo"
+          class="logo-img"
+          onerror="this.style.display='none'"
+        />
+        <div class="logo-text-group">
+          <div class="logo-name">VYROVA</div>
+          <div class="logo-sub">AI Creative Center</div>
         </div>
+      </div>
 
-        <!-- Login Form -->
-        <form id="authForm" class="space-y-6">
-            
-            <!-- Phone Input Block -->
-            <div class="space-y-2">
-                <label class="text-slate-400 text-xs font-semibold uppercase ml-2">Phone / Username</label>
-                <div class="relative group">
-                    <i class="fa-solid fa-phone absolute left-5 top-5 text-slate-700 group-focus-within:text-indigo-400"></i>
-                    <input type="text" id="username" placeholder="923xxxxxxxxx" required 
-                           class="input-field w-full pl-14 pr-6 py-4 bg-neutral-900 border border-neutral-800 text-white rounded-2xl focus:border-indigo-500 outline-none transition-all">
-                </div>
-            </div>
+      <div class="card-title">Welcome Back</div>
+      <div class="card-desc">Sign in to access your creative workspace.</div>
 
-            <!-- Password Input Block -->
-            <div class="space-y-2">
-                <label class="text-slate-400 text-xs font-semibold uppercase ml-2">Secure Key</label>
-                <div class="relative group">
-                    <i class="fa-solid fa-key absolute left-5 top-5 text-slate-700 group-focus-within:text-indigo-400"></i>
-                    <input type="password" id="password" placeholder="••••••••" required 
-                           class="input-field w-full pl-14 pr-6 py-4 bg-neutral-900 border border-neutral-800 text-white rounded-2xl focus:border-indigo-500 outline-none transition-all">
-                </div>
-            </div>
-
-            <!-- Action Area -->
-            <div class="pt-6">
-                <button type="submit" id="submitBtn" 
-                        class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xl rounded-2xl shadow-xl shadow-indigo-500/20 transition-all flex items-center justify-center">
-                    <span id="btnText">Authenticate</span>
-                    <i id="loader" class="fa fa-circle-notch fa-spin ml-3 hidden"></i>
-                </button>
-            </div>
-        </form>
-
-        <!-- Status & Feedback Logger -->
-        <div id="statusMsg" class="mt-8 p-4 rounded-2xl bg-neutral-900/50 border border-neutral-800 min-h-[60px] flex items-center justify-center text-center text-xs text-slate-400 font-medium">
-            System status: Awaiting credentials...
+      <div class="form-group">
+        <label>Username / Phone</label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+          </svg>
+          <input type="text" id="email" placeholder="Phone or Email" autocomplete="username"/>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
+          <button class="eye-toggle" type="button" onclick="togglePwd()" title="Show/Hide">
+            <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-login" id="loginBtn" onclick="handleLogin()">
+        <span id="btn-text">Sign In</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+
+      <div class="msg error" id="error-msg">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+        </svg>
+        <span id="error-text">Invalid credentials.</span>
+      </div>
+
+      <div class="msg success" id="success-msg">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span id="success-text">Login successful! Redirecting...</span>
+      </div>
+
+      <div class="card-footer">
+        <img src="https://i.ibb.co/5XQLZbcm/Tool-Logo.png" alt="Logo" style="width:22px;height:22px;border-radius:6px;opacity:0.7;"/>
+        <span class="footer-text">Protected · IP Locked · V1</span>
+        <img src="https://i.ibb.co/5XQLZbcm/Tool-Logo.png" alt="Logo" style="width:22px;height:22px;border-radius:6px;opacity:0.7;"/>
+      </div>
+
     </div>
+  </div>
 
-    <!-- Scripting Engine -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp }    from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import { getAnalytics }     from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
+    import { getAuth, signInWithEmailAndPassword }
+                                from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc }
+                                from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-        // Firebase Configuration
-        const config = {
-            apiKey: "AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
-            projectId: "vyrova-2eb4d"
-        };
+    const firebaseConfig = {
+      apiKey:            "AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
+      authDomain:        "vyrova-2eb4d.firebaseapp.com",
+      projectId:         "vyrova-2eb4d",
+      storageBucket:     "vyrova-2eb4d.firebasestorage.app",
+      messagingSenderId: "136436344218",
+      appId:             "1:136436344218:web:0efa47a4da3f20b7bc8623",
+      measurementId:     "G-1TNRGDFL4M"
+    };
 
-        // Initialize Logging System
-        const logger = (msg, level = 'INFO') => console.log(`[VYROVA-${level}] ${new Date().toISOString()}: ${msg}`);
-        
-        logger("Initializing Firestore connection...");
-        const db = getFirestore(initializeApp(config));
-        
-        const form = document.getElementById('authForm');
-        const status = document.getElementById('statusMsg');
-        const btn = document.getElementById('submitBtn');
-        const btnText = document.getElementById('btnText');
-        const loader = document.getElementById('loader');
+    const app       = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth      = getAuth(app);
+    const db        = getFirestore(app);
 
-        // Main Login Pipeline
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // State: Loading
-            btn.disabled = true;
-            loader.classList.remove('hidden');
-            btnText.innerText = "Securing Session...";
-            status.innerText = "Requesting cloud validation...";
-            
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value.trim();
+    /* ── Get approximate public IP ── */
+    async function getPublicIP() {
+      try {
+        const r = await fetch('https://api.ipify.org?format=json');
+        const d = await r.json();
+        return d.ip;
+      } catch {
+        return null;
+      }
+    }
 
-            logger(`Processing request for ${user}`);
+    /* ── Show IP badge ── */
+    getPublicIP().then(ip => {
+      /* IP badge hidden — no display needed */
+    });
 
-            try {
-                // Admin Bypass Logic
-                if (user === "923220498935" && pass === "HaiderAli000") {
-                    logger("Admin bypass active");
-                    localStorage.setItem('vyrova_auth', JSON.stringify({role: 'admin', time: Date.now()}));
-                    window.location.href = "admin.html";
-                    return;
-                }
+    /* ── Helpers ── */
+    function showError(msg) {
+      const el = document.getElementById('error-msg');
+      document.getElementById('error-text').textContent = msg;
+      el.classList.add('show');
+      document.getElementById('success-msg').classList.remove('show');
+    }
 
-                // Database Retrieval
-                logger("Querying User Collection...");
-                const userRef = collection(db, "artifacts", "vyrova-2eb4d", "public", "data", "users");
-                const snapshot = await getDocs(query(userRef));
-                
-                let userFound = null;
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    if(data.username === user && data.password === pass) {
-                        userFound = data;
-                    }
-                });
+    function showSuccess(msg) {
+      const el = document.getElementById('success-msg');
+      document.getElementById('success-text').textContent = msg;
+      el.classList.add('show');
+      document.getElementById('error-msg').classList.remove('show');
+    }
 
-                if (userFound) {
-                    logger("User verified successfully");
-                    localStorage.setItem('vyrova_auth', JSON.stringify({
-                        role: 'user', 
-                        name: userFound.name, 
-                        uid: userFound.username
-                    }));
-                    window.location.href = "index.html";
-                } else {
-                    logger("Verification failed: Credential Mismatch", "WARN");
-                    status.innerHTML = "<span class='text-red-500 font-bold'>Error: Credentials rejected by cloud engine.</span>";
-                }
+    function setLoading(on) {
+      document.getElementById('loginBtn').disabled = on;
+      document.getElementById('btn-text').style.display  = on ? 'none' : 'block';
+      document.getElementById('spinner').style.display   = on ? 'block' : 'none';
+    }
 
-            } catch (error) {
-                logger(`System Failure: ${error.message}`, "ERROR");
-                status.innerHTML = `<span class='text-amber-500'>Error: ${error.message.substring(0, 45)}...</span>`;
-            } finally {
-                btn.disabled = false;
-                loader.classList.add('hidden');
-                btnText.innerText = "Authenticate";
-            }
-        });
+    /* ── ADMIN credentials ── */
+    const ADMIN_USER   = '923220498935';
+    const ADMIN_PWD    = 'HaiderAli000';
+    const ADMIN_EMAILS = ['923220498935@vyrova.com'];
 
-        // Debugging Hook for VS Code Terminal
-        window.onerror = (msg, url, line) => {
-            logger(`Browser Error: ${msg} at ${line}`, "CRITICAL");
-        };
-    </script>
+    /* ── Main login handler (exposed to window) ── */
+    window.handleLogin = async function () {
+      const emailOrPhone = document.getElementById('email').value.trim();
+      const password     = document.getElementById('password').value;
+
+      document.getElementById('error-msg').classList.remove('show');
+      document.getElementById('success-msg').classList.remove('show');
+
+      if (!emailOrPhone || !password) { showError('Please enter credentials.'); return; }
+
+      setLoading(true);
+
+      /* ── Admin direct login via phone number ── */
+      if (emailOrPhone === ADMIN_USER && password === ADMIN_PWD) {
+        showSuccess('Admin verified! Entering dashboard...');
+        setTimeout(() => { window.location.href = 'Admin.html'; }, 1400);
+        return;
+      }
+
+      try {
+        const currentIP  = await getPublicIP();
+        const loginEmail = emailOrPhone.includes('@') ? emailOrPhone : emailOrPhone + '@vyrova.com';
+
+        const cred = await signInWithEmailAndPassword(auth, loginEmail, password);
+        const uid  = cred.user.uid;
+
+        const userRef  = doc(db, 'users', uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          await setDoc(userRef, {
+            email: loginEmail,
+            registeredIP: currentIP,
+            lastLogin: new Date().toISOString()
+          });
+        } else {
+          const data    = userSnap.data();
+          const isAdmin = ADMIN_EMAILS.includes(loginEmail.toLowerCase());
+
+          if (!isAdmin && data.registeredIP && data.registeredIP !== currentIP) {
+            await auth.signOut();
+            setLoading(false);
+            showError('Access denied. This account is locked to a different IP address.');
+            return;
+          }
+          await updateDoc(userRef, { lastLogin: new Date().toISOString(), lastIP: currentIP });
+        }
+
+        const isAdmin = ADMIN_EMAILS.includes(loginEmail.toLowerCase());
+        showSuccess(isAdmin ? 'Admin verified! Entering dashboard...' : 'Welcome back! Loading workspace...');
+        setTimeout(() => { window.location.href = isAdmin ? 'Admin.html' : 'index.html'; }, 1400);
+
+      } catch (err) {
+        setLoading(false);
+        const code = err.code || '';
+        if      (code === 'auth/user-not-found')     showError('No account found.');
+        else if (code === 'auth/wrong-password')     showError('Incorrect password.');
+        else if (code === 'auth/invalid-email')      showError('Invalid credentials.');
+        else if (code === 'auth/too-many-requests')  showError('Too many attempts. Try later.');
+        else if (code === 'auth/invalid-credential') showError('Invalid username or password.');
+        else showError('Login failed: ' + (err.message || 'Unknown error.'));
+      }
+    };
+
+    /* ── Enter key support ── */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') window.handleLogin();
+    });
+  </script>
+
+  <!-- Password toggle (non-module) -->
+  <script>
+    function togglePwd() {
+      const inp  = document.getElementById('password');
+      const icon = document.getElementById('eye-icon');
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+      } else {
+        inp.type = 'password';
+        icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+      }
+    }
+  </script>
+
 </body>
 </html>
