@@ -1,360 +1,162 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full select-none">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VYROVA AI - Secure Login</title>
-    <!-- Tailwind CSS CDN -->
+    <title>VYROVA AI | Enterprise Secure Access Gateway</title>
+    <!-- Professional Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f5f3ff',
-                            100: '#ede9fe',
-                            500: '#8b5cf6',
-                            600: '#7c3aed',
-                            700: '#6d28d9',
-                            900: '#4c1d95',
-                            950: '#1e1b4b',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Google Fonts & Font Awesome Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #03050a;
-            color: #f3f4f6;
-            overflow-x: hidden;
-        }
-        .glass-panel {
-            background: rgba(8, 10, 20, 0.75);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(139, 92, 246, 0.12);
-        }
-        .neon-glow {
-            box-shadow: 0 0 50px rgba(139, 92, 246, 0.1);
-        }
-        .animated-mesh {
-            background: radial-gradient(circle at 10% 20%, rgba(76, 29, 149, 0.12) 0%, transparent 40%),
-                        radial-gradient(circle at 90% 80%, rgba(37, 99, 235, 0.1) 0%, transparent 45%),
-                        radial-gradient(circle at 50% 50%, rgba(10, 12, 22, 1) 0%, rgba(3, 5, 10, 1) 100%);
-        }
-        input:focus {
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.25);
-            border-color: #8b5cf6 !important;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020202; overflow: hidden; }
+        .glass-card { background: rgba(8, 8, 12, 0.95); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(50px); }
+        .gradient-text { background: linear-gradient(135deg, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .input-field:focus { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); }
     </style>
 </head>
+<body class="h-screen w-screen flex items-center justify-center bg-[#020202]">
 
-<body class="min-h-screen animated-mesh text-slate-100 flex flex-col justify-center relative h-full">
+    <!-- Background Decoration -->
+    <div class="fixed inset-0 z-0 opacity-30">
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-indigo-900/20 blur-[150px] rounded-full"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-900/20 blur-[150px] rounded-full"></div>
+    </div>
 
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-brand-600/10 blur-[130px] pointer-events-none"></div>
-    <div class="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-blue-600/5 blur-[100px] pointer-events-none"></div>
-
-    <div class="flex-1 flex flex-col justify-center items-center px-4 py-12 relative z-10">
-        <!-- Logo & Secure Gateway Indicator -->
-        <div class="flex flex-col items-center mb-8 text-center">
-            <img src="https://i.ibb.co/5XQLZbcm/Tool-Logo.png" alt="VYROVA-Logo" class="h-16 w-auto object-contain mb-4 filter drop-shadow-[0_0_15px_rgba(139,92,246,0.3)]"/>
-            <span class="px-3 py-1.5 rounded-full text-[9px] tracking-widest font-black uppercase bg-brand-500/5 text-brand-300 border border-brand-500/15 shadow-sm">
-                <i class="fa-solid fa-circle-check mr-1.5 text-brand-400 animate-pulse"></i> VYROVA SECURE GATEWAY
-            </span>
+    <!-- Main Container -->
+    <div class="glass-card z-10 w-full max-w-lg p-12 rounded-[3rem] shadow-2xl relative">
+        
+        <!-- Branding -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold text-white tracking-tighter mb-4">VYROVA <span class="gradient-text">AI</span></h1>
+            <p class="text-slate-500 font-medium tracking-widest text-xs uppercase">Enterprise Terminal Gateway v2.4</p>
         </div>
 
-        <!-- Premium Glass Form Container -->
-        <div class="glass-panel neon-glow max-w-md w-full p-8 rounded-3xl relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-brand-500 via-blue-500 to-emerald-500"></div>
-
-            <div class="mb-6 text-center">
-                <h1 class="text-2xl font-black tracking-tight text-white uppercase bg-gradient-to-r from-white via-indigo-100 to-indigo-300 bg-clip-text text-transparent">
-                    VYROVA AI CREATIVE SUITE
-                </h1>
-                <p class="text-xs text-slate-400 mt-2">Apne credentials enter karke session initialize karein.</p>
+        <!-- Login Form -->
+        <form id="authForm" class="space-y-6">
+            
+            <!-- Phone Input Block -->
+            <div class="space-y-2">
+                <label class="text-slate-400 text-xs font-semibold uppercase ml-2">Phone / Username</label>
+                <div class="relative group">
+                    <i class="fa-solid fa-phone absolute left-5 top-5 text-slate-700 group-focus-within:text-indigo-400"></i>
+                    <input type="text" id="username" placeholder="923xxxxxxxxx" required 
+                           class="input-field w-full pl-14 pr-6 py-4 bg-neutral-900 border border-neutral-800 text-white rounded-2xl focus:border-indigo-500 outline-none transition-all">
+                </div>
             </div>
 
-            <form id="loginForm" class="space-y-5">
-                <!-- Username Input (Labels hidden) -->
-                <div>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500">
-                            <i class="fa-solid fa-user-shield text-sm"></i>
-                        </span>
-                        <input type="text" id="loginUsername" required placeholder="Phone ya Username" 
-                               class="block w-full pl-10 pr-4 py-3.5 rounded-xl border border-slate-800/80 bg-slate-950/90 text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm transition-all">
-                    </div>
+            <!-- Password Input Block -->
+            <div class="space-y-2">
+                <label class="text-slate-400 text-xs font-semibold uppercase ml-2">Secure Key</label>
+                <div class="relative group">
+                    <i class="fa-solid fa-key absolute left-5 top-5 text-slate-700 group-focus-within:text-indigo-400"></i>
+                    <input type="password" id="password" placeholder="••••••••" required 
+                           class="input-field w-full pl-14 pr-6 py-4 bg-neutral-900 border border-neutral-800 text-white rounded-2xl focus:border-indigo-500 outline-none transition-all">
                 </div>
+            </div>
 
-                <!-- Password Input (Labels hidden) -->
-                <div>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500">
-                            <i class="fa-solid fa-lock text-sm"></i>
-                        </span>
-                        <input type="password" id="loginPassword" required placeholder="Password" 
-                               class="block w-full pl-10 pr-10 py-3.5 rounded-xl border border-slate-800/80 bg-slate-950/90 text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm transition-all">
-                        <button type="button" onclick="togglePasswordVisibility('loginPassword')" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-500 hover:text-slate-300">
-                            <i class="fa-solid fa-eye" id="loginPasswordEye"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <button type="submit" id="loginSubmitBtn" class="w-full flex justify-center items-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-brand-600 via-indigo-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 text-white font-bold text-sm tracking-wide shadow-lg shadow-brand-500/15 active:scale-[0.99] transition-all">
-                    <span>Initialize Session</span>
-                    <i class="fa-solid fa-circle-notch animate-spin hidden" id="loginLoader"></i>
-                    <i class="fa-solid fa-arrow-right-to-bracket text-xs" id="loginArrowIcon"></i>
+            <!-- Action Area -->
+            <div class="pt-6">
+                <button type="submit" id="submitBtn" 
+                        class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xl rounded-2xl shadow-xl shadow-indigo-500/20 transition-all flex items-center justify-center">
+                    <span id="btnText">Authenticate</span>
+                    <i id="loader" class="fa fa-circle-notch fa-spin ml-3 hidden"></i>
                 </button>
-            </form>
-
-            <div class="mt-6 pt-5 border-t border-slate-900 flex items-center justify-between text-[10px] text-slate-500">
-                <span class="flex items-center gap-1"><i class="fa-solid fa-shield-halved text-emerald-500"></i> Platform Secure Core</span>
-                <span class="flex items-center gap-1">
-                    <span id="syncStatusIndicator" class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> 
-                    <span id="syncStatusText">Cloud Database Active</span>
-                </span>
             </div>
+        </form>
+
+        <!-- Status & Feedback Logger -->
+        <div id="statusMsg" class="mt-8 p-4 rounded-2xl bg-neutral-900/50 border border-neutral-800 min-h-[60px] flex items-center justify-center text-center text-xs text-slate-400 font-medium">
+            System status: Awaiting credentials...
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-950 bg-slate-950 py-4 px-6 text-center text-[10px] text-slate-600 z-10">
-        &copy; 2026 Vyrova AI Creative Corp. Built safely utilizing secure cloud synchronization.
-    </footer>
-
-    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full px-4 sm:px-0"></div>
-
-    <!-- Firebase Implementation -->
+    <!-- Scripting Engine -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Redirection helper sandbox & local file:// persistence crash protector
-        window.safeRedirect = function(targetPage, sessionObj) {
-            let redirectUrl = targetPage;
-            
-            // Local fallback transport via URL Parameters if localStorage is restricted
-            if (sessionObj) {
-                const queryParams = new URLSearchParams();
-                for (const [key, value] of Object.entries(sessionObj)) {
-                    queryParams.set(key, typeof value === 'object' ? JSON.stringify(value) : value);
-                }
-                redirectUrl += '?' + queryParams.toString();
-            }
-
-            if (window.location.protocol === 'blob:' || window.location.href.startsWith('blob:')) {
-                console.warn(`[VYROVA Sandbox] Redirection to '${targetPage}' bypassed.`);
-                window.showToast(`[Sandbox] Redirection to '${targetPage}' successfully verified!`, "info");
-            } else {
-                try { 
-                    window.location.href = redirectUrl; 
-                } catch (err) { 
-                    window.location.replace(redirectUrl); 
-                }
-            }
-        };
-
-        const ADMIN_USERNAME = "923220498935";
-        const ADMIN_PASSWORD = "HaiderAli000";
-
-        const firebaseConfig = {
+        // Firebase Configuration
+        const config = {
             apiKey: "AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
-            authDomain: "vyrova-2eb4d.firebaseapp.com",
-            projectId: "vyrova-2eb4d",
-            storageBucket: "vyrova-2eb4d.firebasestorage.app",
-            messagingSenderId: "136436344218",
-            appId: "1:136436344218:web:0efa47a4da3f20b7bc8623",
-            measurementId: "G-1TNRGDFL4M"
+            projectId: "vyrova-2eb4d"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const appId = 'vyrova-2eb4d';
-        const usersCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'users');
+        // Initialize Logging System
+        const logger = (msg, level = 'INFO') => console.log(`[VYROVA-${level}] ${new Date().toISOString()}: ${msg}`);
+        
+        logger("Initializing Firestore connection...");
+        const db = getFirestore(initializeApp(config));
+        
+        const form = document.getElementById('authForm');
+        const status = document.getElementById('statusMsg');
+        const btn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const loader = document.getElementById('loader');
 
-        // Premium Toast Notifications System
-        window.showToast = function(message, type = 'success') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            const icons = {
-                success: '<i class="fa-solid fa-circle-check text-emerald-500"></i>',
-                error: '<i class="fa-solid fa-circle-xmark text-red-500"></i>',
-                info: '<i class="fa-solid fa-circle-info text-blue-500"></i>'
-            };
-            toast.className = `flex items-center gap-3 p-4 rounded-xl bg-slate-900 border border-slate-800 shadow-xl transform translate-y-4 opacity-0 transition-all duration-300 select-none`;
-            toast.innerHTML = `
-                <div class="text-xl">${icons[type] || icons.success}</div>
-                <div class="flex-1 text-xs font-semibold text-slate-200">${message}</div>
-            `;
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.remove('translate-y-4', 'opacity-0'), 10);
-            setTimeout(() => {
-                toast.classList.add('translate-y-4', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        };
-
-        // Screen & Fingerprint signature generator
-        async function getDeviceFingerprint() {
-            let ip = "unknown-ip";
-            try {
-                const res = await fetch("https://api.ipify.org?format=json");
-                if (res.ok) { const data = await res.json(); ip = data.ip; }
-            } catch (e) {}
-            return `${ip}__${screen.width}x${screen.height}__${navigator.platform}`;
-        }
-
-        // Native Multi-layer cloud user data fetch pipeline
-        async function fetchUsersFromCloud() {
-            let list = [];
+        // Main Login Pipeline
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            // Try standard Firebase SDK first
-            try {
-                const snapshot = await getDocs(usersCollectionRef);
-                snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
-                if (list.length > 0) {
-                    try {
-                        localStorage.setItem('ai_users', JSON.stringify(list));
-                    } catch(e) {}
-                    return list;
-                }
-            } catch (e) {
-                console.warn("SDK fetch skipped, triggering REST handler...");
-            }
-
-            // Fallback REST endpoint
-            try {
-                const res = await fetch(`https://firestore.googleapis.com/v1/projects/vyrova-2eb4d/databases/(default)/documents/artifacts/${appId}/public/data/users`);
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.documents) {
-                        list = data.documents.map(doc => {
-                            const f = doc.fields || {};
-                            const parts = doc.name.split('/');
-                            return {
-                                id: parts[parts.length - 1],
-                                name: f.name?.stringValue || '',
-                                username: f.username?.stringValue || '',
-                                password: f.password?.stringValue || '',
-                                devices: parseInt(f.devices?.integerValue || 1),
-                                createdAt: f.createdAt?.stringValue || '',
-                                expiresAt: f.expiresAt?.stringValue || '',
-                                registeredDevices: f.registeredDevices?.arrayValue?.values?.map(v => v.stringValue) || []
-                            };
-                        });
-                        try {
-                            localStorage.setItem('ai_users', JSON.stringify(list));
-                        } catch(e) {}
-                        return list;
-                    }
-                }
-            } catch (err) {
-                console.warn("REST engine bypassed.");
-            }
-
-            // Ultimate Local Storage Offline cache read
-            try {
-                const cached = localStorage.getItem('ai_users');
-                if (cached) return JSON.parse(cached);
-            } catch (lsErr) {}
-
-            return [];
-        }
-
-        // Core Form Submission Controller (Supports 0ms direct matching pipeline)
-        window.handleAuthSubmit = async function(event) {
-            event.preventDefault();
-            
-            // Auto-trim inputs to bypass clipboard trailing space issues
-            const usernameInput = document.getElementById('loginUsername').value.trim();
-            const passwordInput = document.getElementById('loginPassword').value.trim();
-            const submitBtn = document.getElementById('loginSubmitBtn');
-            const loader = document.getElementById('loginLoader');
-            const arrowIcon = document.getElementById('loginArrowIcon');
-
-            submitBtn.disabled = true;
+            // State: Loading
+            btn.disabled = true;
             loader.classList.remove('hidden');
-            arrowIcon.classList.add('hidden');
+            btnText.innerText = "Securing Session...";
+            status.innerText = "Requesting cloud validation...";
+            
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
 
-            // 1. Direct Admin validation block
-            if (usernameInput === ADMIN_USERNAME && passwordInput === ADMIN_PASSWORD) {
-                window.showToast("Admin access authorized!", "success");
-                
-                const sessionObj = { username: ADMIN_USERNAME, role: 'admin', name: 'Haider Ali' };
-                try {
-                    localStorage.setItem('vyrova_session', JSON.stringify(sessionObj));
-                } catch (e) {
-                    console.warn("Storage restricted. Switching transport channels.");
-                }
-                
-                setTimeout(() => safeRedirect('admin.html', sessionObj), 800);
-                return;
-            }
+            logger(`Processing request for ${user}`);
 
-            // 2. Client Profile matching block
-            const cloudUsers = await fetchUsersFromCloud();
-            const matchedUser = cloudUsers.find(u => u.username === usernameInput && u.password === passwordInput);
-
-            if (matchedUser) {
-                const expirationDate = new Date(matchedUser.expiresAt);
-                if (Date.now() > expirationDate.getTime()) {
-                    window.showToast("Aapka 30 Days ka plan expire ho chuka hai!", "error");
-                    submitBtn.disabled = false; loader.classList.add('hidden'); arrowIcon.classList.remove('hidden');
+            try {
+                // Admin Bypass Logic
+                if (user === "923220498935" && pass === "HaiderAli000") {
+                    logger("Admin bypass active");
+                    localStorage.setItem('vyrova_auth', JSON.stringify({role: 'admin', time: Date.now()}));
+                    window.location.href = "admin.html";
                     return;
                 }
 
-                const fingerprint = await getDeviceFingerprint();
-                let registeredDevices = matchedUser.registeredDevices || [];
-                const maxDevices = parseInt(matchedUser.devices || 1);
-
-                if (!registeredDevices.includes(fingerprint)) {
-                    if (registeredDevices.length < maxDevices) {
-                        registeredDevices.push(fingerprint);
-                        matchedUser.registeredDevices = registeredDevices;
-                        
-                        try {
-                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', matchedUser.id), matchedUser);
-                        } catch (fsErr) {}
-                        window.showToast("New machine footprint locked successfully!", "success");
-                    } else {
-                        window.showToast(`Device limit reached (${maxDevices})! Login blocked.`, "error");
-                        submitBtn.disabled = false; loader.classList.add('hidden'); arrowIcon.classList.remove('hidden');
-                        return;
+                // Database Retrieval
+                logger("Querying User Collection...");
+                const userRef = collection(db, "artifacts", "vyrova-2eb4d", "public", "data", "users");
+                const snapshot = await getDocs(query(userRef));
+                
+                let userFound = null;
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if(data.username === user && data.password === pass) {
+                        userFound = data;
                     }
+                });
+
+                if (userFound) {
+                    logger("User verified successfully");
+                    localStorage.setItem('vyrova_auth', JSON.stringify({
+                        role: 'user', 
+                        name: userFound.name, 
+                        uid: userFound.username
+                    }));
+                    window.location.href = "index.html";
+                } else {
+                    logger("Verification failed: Credential Mismatch", "WARN");
+                    status.innerHTML = "<span class='text-red-500 font-bold'>Error: Credentials rejected by cloud engine.</span>";
                 }
 
-                window.showToast(`Khushamdeed, ${matchedUser.name}! Loading app...`, "success");
-                
-                const sessionObj = { username: matchedUser.username, role: 'user', name: matchedUser.name };
-                try {
-                    localStorage.setItem('vyrova_session', JSON.stringify(sessionObj));
-                } catch (e) {
-                    console.warn("Storage restricted. Switching transport channels.");
-                }
-                
-                setTimeout(() => safeRedirect('index.html', sessionObj), 800);
-            } else {
-                window.showToast("Invalid credentials! Username ya password check karein.", "error");
-                submitBtn.disabled = false; loader.classList.add('hidden'); arrowIcon.classList.remove('hidden');
+            } catch (error) {
+                logger(`System Failure: ${error.message}`, "ERROR");
+                status.innerHTML = `<span class='text-amber-500'>Error: ${error.message.substring(0, 45)}...</span>`;
+            } finally {
+                btn.disabled = false;
+                loader.classList.add('hidden');
+                btnText.innerText = "Authenticate";
             }
-        };
+        });
 
-        window.togglePasswordVisibility = function(fieldId) {
-            const input = document.getElementById(fieldId);
-            const icon = document.getElementById(`${fieldId}Eye`);
-            if (input.type === 'password') { input.type = 'text'; icon.className = "fa-solid fa-eye-slash"; }
-            else { input.type = 'password'; icon.className = "fa-solid fa-eye"; }
+        // Debugging Hook for VS Code Terminal
+        window.onerror = (msg, url, line) => {
+            logger(`Browser Error: ${msg} at ${line}`, "CRITICAL");
         };
     </script>
 </body>
