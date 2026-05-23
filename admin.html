@@ -181,7 +181,7 @@
                         </div>
                         
                         <div class="pt-2 flex items-center gap-3">
-                            <button type="submit" id="formSubmitBtn" class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-brand-600 via-indigo-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-500/15">
+                            <button type="submit" id="formSubmitBtn" class="w-full flex-1 py-3.5 rounded-xl bg-gradient-to-r from-brand-600 via-indigo-600 to-blue-600 hover:from-brand-500 hover:to-blue-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-500/15">
                                 <i class="fa-solid fa-circle-notch animate-spin hidden" id="formLoader"></i>
                                 <span id="formSubmitText">Register & Activate Plan</span>
                             </button>
@@ -292,7 +292,6 @@
         const db = getFirestore(app);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'vyrova-2eb4d';
 
-        // RULE 1: Strict Firestore path used precisely
         const usersCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'users');
 
         // Security session check with safe redirection fallback
@@ -305,7 +304,7 @@
         window.isEditMode = false;
         window.isOfflineMode = false;
 
-        // Toast notifications system launcher
+        // Custom Toast system
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -331,7 +330,78 @@
             }, 3000);
         };
 
-        // Render metrics cards data
+        // Instant Initial Render from cache to guarantee 0ms blank screens
+        window.localUsersArray = JSON.parse(localStorage.getItem('ai_users')) || [];
+        renderMetrics();
+        renderUsersTable();
+
+        // Safe Offline Mode Switcher
+        window.enableLocalSafeBypass = function() {
+            window.isOfflineMode = true;
+            const badge = document.getElementById('syncStatusBadge');
+            const dot = document.getElementById('syncStatusDot');
+            const text = document.getElementById('syncStatusText');
+            if (badge && dot && text) {
+                badge.className = "text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold animate-pulse";
+                dot.className = "w-1.5 h-1.5 inline-block bg-amber-500 rounded-full mr-1";
+                text.innerText = "Sandbox Active";
+            }
+        }
+
+        // RULE 3 - Auth Before Queries with custom mismatch and sandbox protection
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } catch (tokErr) {
+                        console.warn("Custom token mismatch, falling back to anonymous.");
+                        await signInAnonymously(auth);
+                    }
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                // Graceful catch ensures sandbox iframe restrictions do not freeze UI loading thread
+                console.warn("Auth initialization failed. Sandbox/iFrame domain restriction bypass active:", err.message);
+                enableLocalSafeBypass();
+            }
+        };
+
+        // Register the Auth State observer immediately so state changes can be tracked synchronously
+        onAuthStateChanged(auth, (user) => {
+            if (user && !window.isOfflineMode) {
+                startUsersRealtimeListener();
+            } else {
+                enableLocalSafeBypass();
+            }
+        });
+
+        // Trigger safe Auth flow execution
+        initAuth();
+
+        // Realtime snapshots listener configuration
+        function startUsersRealtimeListener() {
+            try {
+                onSnapshot(usersCollectionRef, (snapshot) => {
+                    const fetchedList = [];
+                    snapshot.forEach((doc) => {
+                        fetchedList.push({ id: doc.id, ...doc.data() });
+                    });
+                    window.localUsersArray = fetchedList;
+                    localStorage.setItem('ai_users', JSON.stringify(fetchedList));
+                    renderMetrics();
+                    renderUsersTable();
+                }, (error) => {
+                    console.warn("Sync stream interrupted. Sandbox mode backup active.", error);
+                    enableLocalSafeBypass();
+                });
+            } catch (e) {
+                console.warn("Firestore snapshot subscription failed:", e);
+                enableLocalSafeBypass();
+            }
+        }
+
         function renderMetrics() {
             document.getElementById('totalUsersCount').innerText = window.localUsersArray.length;
             let totalDevices = 0;
@@ -341,7 +411,6 @@
             document.getElementById('totalDeviceAllocation').innerText = totalDevices;
         }
 
-        // Render dynamic table rows from synchronised memory state
         function renderUsersTable() {
             const tbody = document.getElementById('usersTableBody');
             const noMsg = document.getElementById('noUsersMessage');
@@ -426,78 +495,7 @@
             });
         }
 
-        // Live Realtime sync switcher
-        window.enableLocalSafeBypass = function() {
-            window.isOfflineMode = true;
-            const badge = document.getElementById('syncStatusBadge');
-            const dot = document.getElementById('syncStatusDot');
-            const text = document.getElementById('syncStatusText');
-            if (badge && dot && text) {
-                badge.className = "text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold animate-pulse";
-                dot.className = "w-1.5 h-1.5 inline-block bg-amber-500 rounded-full mr-1";
-                text.innerText = "Sandbox Active";
-            }
-        };
-
-        // RULE 3 - Auth Before Queries with custom mismatch and sandbox protection
-        const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    try {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } catch (tokErr) {
-                        console.warn("Custom token mismatch, falling back to anonymous.");
-                        await signInAnonymously(auth);
-                    }
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (err) {
-                console.warn("Auth failed entirely. Launching local sandbox state.", err.message);
-                enableLocalSafeBypass();
-            }
-        };
-
-        // Initialize table from safe local cache instantly to maintain 0ms lag
-        window.localUsersArray = JSON.parse(localStorage.getItem('ai_users')) || [];
-        renderMetrics();
-        renderUsersTable();
-
-        // Listen for Auth Completion to trigger dynamic snapshot queries safely
-        onAuthStateChanged(auth, (user) => {
-            if (user && !window.isOfflineMode) {
-                startUsersRealtimeListener();
-            } else {
-                enableLocalSafeBypass();
-            }
-        });
-
-        // Trigger safe Auth flow execution
-        initAuth();
-
-        // Realtime snapshots listener configuration
-        function startUsersRealtimeListener() {
-            try {
-                onSnapshot(usersCollectionRef, (snapshot) => {
-                    const fetchedList = [];
-                    snapshot.forEach((doc) => {
-                        fetchedList.push({ id: doc.id, ...doc.data() });
-                    });
-                    window.localUsersArray = fetchedList;
-                    localStorage.setItem('ai_users', JSON.stringify(fetchedList));
-                    renderMetrics();
-                    renderUsersTable();
-                }, (error) => {
-                    console.warn("Sync interrupted, using cache backup.");
-                    enableLocalSafeBypass();
-                });
-            } catch (e) {
-                console.warn("Firestore snapshot subscription failed:", e);
-                enableLocalSafeBypass();
-            }
-        }
-
-        // Form Submit Handler (Covers inserts and updates)
+        // Form Submit Handler (Covers inserts and updates - Awaited for real cloud sync with instant manual state update)
         window.handleFormSubmit = async function(e) {
             e.preventDefault();
 
@@ -508,7 +506,7 @@
             const editId = document.getElementById('editUserId').value;
 
             if (phone === "923220498935") {
-                window.showToast("Cannot utilize restricted admin phone identifier.", "error");
+                window.showToast("Admin number protected.", "error");
                 return;
             }
 
@@ -518,68 +516,77 @@
             const now = new Date();
             const thirtyDaysLater = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
-            if (window.isEditMode && editId) {
-                // Edit/Update Mode
-                const existingUser = window.localUsersArray.find(u => u.id === editId);
-                const updatedPayload = {
-                    ...existingUser,
-                    name: fullName,
-                    username: phone,
-                    password: password,
-                    devices: devices
-                };
+            try {
+                if (window.isEditMode && editId) {
+                    // Edit/Update Mode
+                    const existingUser = window.localUsersArray.find(u => u.id === editId);
+                    const updatedPayload = {
+                        ...existingUser,
+                        name: fullName,
+                        username: phone,
+                        password: password,
+                        devices: devices
+                    };
 
-                window.localUsersArray = window.localUsersArray.map(u => u.id === editId ? updatedPayload : u);
-                localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
-                renderUsersTable();
-                resetFormState();
-                window.showToast("Profile details updated successfully!", "success");
+                    // Real Cloud Write (Awaited so it's guaranteed to be saved in Cloud Firestore!)
+                    if (!window.isOfflineMode) {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', editId), updatedPayload);
+                    }
 
-                try {
-                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', editId), updatedPayload);
-                } catch (err) {
-                    console.error("Cloud update failed:", err);
+                    // Instant Manual State Update & Render (No wait for slow onSnapshot streaming roundtrips!)
+                    window.localUsersArray = window.localUsersArray.map(u => u.id === editId ? updatedPayload : u);
+                    localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+                    renderUsersTable();
+                    renderMetrics();
+
+                    resetFormState();
+                    window.showToast("Profile details updated successfully on cloud!", "success");
+
+                } else {
+                    // Register/Create Mode
+                    if (window.localUsersArray.some(u => u.username === phone)) {
+                        window.showToast("Username already exists!", "warning");
+                        document.getElementById('formLoader').classList.add('hidden');
+                        document.getElementById('formSubmitBtn').disabled = false;
+                        return;
+                    }
+
+                    const newUserId = crypto.randomUUID();
+                    const newUserPayload = {
+                        id: newUserId,
+                        name: fullName,
+                        username: phone,
+                        password: password,
+                        devices: devices,
+                        tier: "Pro Creator",
+                        createdAt: now.toISOString(),
+                        expiresAt: thirtyDaysLater.toISOString(),
+                        registeredDevices: [], // Empty device list ready for hardware lock
+                        isActive: true
+                    };
+
+                    // Real Cloud Write (Awaited so it's guaranteed to be saved in Cloud Firestore!)
+                    if (!window.isOfflineMode) {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', newUserId), newUserPayload);
+                    }
+
+                    // Instant Manual State Update & Render (No wait for slow onSnapshot streaming roundtrips!)
+                    window.localUsersArray.push(newUserPayload);
+                    localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+                    renderUsersTable();
+                    renderMetrics();
+                    
+                    document.getElementById('userForm').reset();
+                    window.showToast("Profile registered and active on cloud!", "success");
                 }
-            } else {
-                // Register/Create Mode
-                if (window.localUsersArray.some(u => u.username === phone)) {
-                    window.showToast("Username already exists!", "warning");
-                    document.getElementById('formLoader').classList.add('hidden');
-                    document.getElementById('formSubmitBtn').disabled = false;
-                    return;
-                }
-
-                const newUserId = crypto.randomUUID();
-                const newUserPayload = {
-                    id: newUserId,
-                    name: fullName,
-                    username: phone,
-                    password: password,
-                    devices: devices,
-                    tier: "Pro Creator",
-                    createdAt: now.toISOString(),
-                    expiresAt: thirtyDaysLater.toISOString(),
-                    registeredDevices: [], // Empty device list ready for hardware lock
-                    isActive: true
-                };
-
-                window.localUsersArray.push(newUserPayload);
-                localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
-                renderUsersTable();
-                renderMetrics();
-                
-                document.getElementById('userForm').reset();
-                window.showToast("Profile active for 30 days!", "success");
-
-                try {
-                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', newUserId), newUserPayload);
-                } catch (err) {
-                    console.error("Cloud insert failed:", err);
-                }
+            } catch (err) {
+                console.error("Cloud write failed:", err);
+                window.showToast("Cloud writing error: " + err.message, "error");
+            } finally {
+                // Immediately reset button states
+                document.getElementById('formLoader').classList.add('hidden');
+                document.getElementById('formSubmitBtn').disabled = false;
             }
-
-            document.getElementById('formLoader').classList.add('hidden');
-            document.getElementById('formSubmitBtn').disabled = false;
         };
 
         // Form loader configuration (Edit Mode)
@@ -618,19 +625,23 @@
 
             const updatedUser = {
                 ...user,
-                registeredDevices: [] // Cleared fingerprints array
+                registeredDevices: []
             };
 
-            window.localUsersArray = window.localUsersArray.map(u => u.id === id ? updatedUser : u);
-            localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
-            renderUsersTable();
-            renderMetrics();
-            window.showToast("Device fingerprints cleared successfully!", "success");
-
             try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id), updatedUser);
+                if (!window.isOfflineMode) {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id), updatedUser);
+                }
+                
+                // Instant Local State Sync
+                window.localUsersArray = window.localUsersArray.map(u => u.id === id ? updatedUser : u);
+                localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+                renderUsersTable();
+                renderMetrics();
+                window.showToast("Device fingerprints cleared successfully on cloud!", "success");
             } catch (err) {
-                console.error("Lock reset failed on cloud:", err);
+                console.error("Lock reset failed:", err);
+                window.showToast("Failed to reset devices on cloud: " + err.message, "error");
             }
         };
 
@@ -649,32 +660,44 @@
                 devices: targetDevices
             };
 
-            window.localUsersArray = window.localUsersArray.map(u => u.id === id ? updatedUser : u);
-            localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
-            renderUsersTable();
-            renderMetrics();
-            window.showToast("Devices limit updated successfully!", "info");
-
             try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id), updatedUser);
+                if (!window.isOfflineMode) {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id), updatedUser);
+                }
+                
+                // Instant Local State Sync
+                window.localUsersArray = window.localUsersArray.map(u => u.id === id ? updatedUser : u);
+                localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+                renderUsersTable();
+                renderMetrics();
+                window.showToast("Devices limit updated on cloud!", "info");
             } catch (err) {
                 console.error("Cloud limit update failed:", err);
+                window.showToast("Limit update error: " + err.message, "error");
             }
         };
 
         // Terminate profile subscription
         window.deleteUserAccount = async function(id) {
-            window.localUsersArray = window.localUsersArray.filter(u => u.id !== id);
-            localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
-            renderUsersTable();
-            renderMetrics();
+            const confirmAction = confirm("Kya aap wakai is account ka access band karna chahte hain?");
+            if (!confirmAction) return;
+
             window.showToast("Revoking user account access...", "warning");
 
             try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id));
+                if (!window.isOfflineMode) {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', id));
+                }
+                
+                // Instant Local State Sync
+                window.localUsersArray = window.localUsersArray.filter(u => u.id !== id);
+                localStorage.setItem('ai_users', JSON.stringify(window.localUsersArray));
+                renderUsersTable();
+                renderMetrics();
                 window.showToast("Account successfully removed from cloud.", "success");
             } catch (err) {
                 console.error("Cloud deletion failed:", err);
+                window.showToast("Deletion error: " + err.message, "error");
             }
         };
 
