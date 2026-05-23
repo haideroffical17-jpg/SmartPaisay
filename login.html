@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VYROVA AI - Secure Login</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -28,6 +29,7 @@
             }
         }
     </script>
+    <!-- Google Fonts & Font Awesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -64,6 +66,7 @@
     <div class="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-blue-600/5 blur-[100px] pointer-events-none"></div>
 
     <div class="flex-1 flex flex-col justify-center items-center px-4 py-12 relative z-10">
+        <!-- Logo & Secure Gateway Indicator -->
         <div class="flex flex-col items-center mb-8 text-center">
             <img src="https://i.ibb.co/5XQLZbcm/Tool-Logo.png" alt="VYROVA-Logo" class="h-16 w-auto object-contain mb-4 filter drop-shadow-[0_0_15px_rgba(139,92,246,0.3)]"/>
             <span class="px-3 py-1.5 rounded-full text-[9px] tracking-widest font-black uppercase bg-brand-500/5 text-brand-300 border border-brand-500/15 shadow-sm">
@@ -71,6 +74,7 @@
             </span>
         </div>
 
+        <!-- Premium Glass Form Container -->
         <div class="glass-panel neon-glow max-w-md w-full p-8 rounded-3xl relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-brand-500 via-blue-500 to-emerald-500"></div>
 
@@ -82,6 +86,7 @@
             </div>
 
             <form id="loginForm" class="space-y-5">
+                <!-- Username Input (Labels hidden) -->
                 <div>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500">
@@ -92,6 +97,7 @@
                     </div>
                 </div>
 
+                <!-- Password Input (Labels hidden) -->
                 <div>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500">
@@ -122,22 +128,40 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="border-t border-slate-950 bg-slate-950 py-4 px-6 text-center text-[10px] text-slate-600 z-10">
         &copy; 2026 Vyrova AI Creative Corp. Built safely utilizing secure cloud synchronization.
     </footer>
 
     <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full px-4 sm:px-0"></div>
 
+    <!-- Firebase Implementation -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        window.safeRedirect = function(targetPage) {
+        // Redirection helper sandbox & local file:// persistence crash protector
+        window.safeRedirect = function(targetPage, sessionObj) {
+            let redirectUrl = targetPage;
+            
+            // Local fallback transport via URL Parameters if localStorage is restricted
+            if (sessionObj) {
+                const queryParams = new URLSearchParams();
+                for (const [key, value] of Object.entries(sessionObj)) {
+                    queryParams.set(key, typeof value === 'object' ? JSON.stringify(value) : value);
+                }
+                redirectUrl += '?' + queryParams.toString();
+            }
+
             if (window.location.protocol === 'blob:' || window.location.href.startsWith('blob:')) {
                 console.warn(`[VYROVA Sandbox] Redirection to '${targetPage}' bypassed.`);
                 window.showToast(`[Sandbox] Redirection to '${targetPage}' successfully verified!`, "info");
             } else {
-                try { window.location.href = targetPage; } catch (err) { window.location.replace(targetPage); }
+                try { 
+                    window.location.href = redirectUrl; 
+                } catch (err) { 
+                    window.location.replace(redirectUrl); 
+                }
             }
         };
 
@@ -159,6 +183,7 @@
         const appId = 'vyrova-2eb4d';
         const usersCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'users');
 
+        // Premium Toast Notifications System
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -180,6 +205,7 @@
             }, 3000);
         };
 
+        // Screen & Fingerprint signature generator
         async function getDeviceFingerprint() {
             let ip = "unknown-ip";
             try {
@@ -189,43 +215,70 @@
             return `${ip}__${screen.width}x${screen.height}__${navigator.platform}`;
         }
 
-        // Native REST Client to completely bypass SDK domain blockers
+        // Native Multi-layer cloud user data fetch pipeline
         async function fetchUsersFromCloud() {
+            let list = [];
+            
+            // Try standard Firebase SDK first
             try {
                 const snapshot = await getDocs(usersCollectionRef);
-                const list = [];
                 snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
-                return list;
+                if (list.length > 0) {
+                    try {
+                        localStorage.setItem('ai_users', JSON.stringify(list));
+                    } catch(e) {}
+                    return list;
+                }
             } catch (e) {
-                // If SDK gets blocked by domain restrictions, use direct secure REST API endpoint
-                try {
-                    const res = await fetch(`https://firestore.googleapis.com/v1/projects/vyrova-2eb4d/databases/(default)/documents/artifacts/${appId}/public/data/users`);
-                    if (!res.ok) return [];
-                    const data = await res.json();
-                    if (!data.documents) return [];
-                    
-                    return data.documents.map(doc => {
-                        const f = doc.fields || {};
-                        const parts = doc.name.split('/');
-                        return {
-                            id: parts[parts.length - 1],
-                            name: f.name?.stringValue || '',
-                            username: f.username?.stringValue || '',
-                            password: f.password?.stringValue || '',
-                            devices: parseInt(f.devices?.integerValue || 1),
-                            createdAt: f.createdAt?.stringValue || '',
-                            expiresAt: f.expiresAt?.stringValue || '',
-                            registeredDevices: f.registeredDevices?.arrayValue?.values?.map(v => v.stringValue) || []
-                        };
-                    });
-                } catch (err) { return []; }
+                console.warn("SDK fetch skipped, triggering REST handler...");
             }
+
+            // Fallback REST endpoint
+            try {
+                const res = await fetch(`https://firestore.googleapis.com/v1/projects/vyrova-2eb4d/databases/(default)/documents/artifacts/${appId}/public/data/users`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.documents) {
+                        list = data.documents.map(doc => {
+                            const f = doc.fields || {};
+                            const parts = doc.name.split('/');
+                            return {
+                                id: parts[parts.length - 1],
+                                name: f.name?.stringValue || '',
+                                username: f.username?.stringValue || '',
+                                password: f.password?.stringValue || '',
+                                devices: parseInt(f.devices?.integerValue || 1),
+                                createdAt: f.createdAt?.stringValue || '',
+                                expiresAt: f.expiresAt?.stringValue || '',
+                                registeredDevices: f.registeredDevices?.arrayValue?.values?.map(v => v.stringValue) || []
+                            };
+                        });
+                        try {
+                            localStorage.setItem('ai_users', JSON.stringify(list));
+                        } catch(e) {}
+                        return list;
+                    }
+                }
+            } catch (err) {
+                console.warn("REST engine bypassed.");
+            }
+
+            // Ultimate Local Storage Offline cache read
+            try {
+                const cached = localStorage.getItem('ai_users');
+                if (cached) return JSON.parse(cached);
+            } catch (lsErr) {}
+
+            return [];
         }
 
+        // Core Form Submission Controller (Supports 0ms direct matching pipeline)
         window.handleAuthSubmit = async function(event) {
             event.preventDefault();
+            
+            // Auto-trim inputs to bypass clipboard trailing space issues
             const usernameInput = document.getElementById('loginUsername').value.trim();
-            const passwordInput = document.getElementById('loginPassword').value;
+            const passwordInput = document.getElementById('loginPassword').value.trim();
             const submitBtn = document.getElementById('loginSubmitBtn');
             const loader = document.getElementById('loginLoader');
             const arrowIcon = document.getElementById('loginArrowIcon');
@@ -234,14 +287,22 @@
             loader.classList.remove('hidden');
             arrowIcon.classList.add('hidden');
 
+            // 1. Direct Admin validation block
             if (usernameInput === ADMIN_USERNAME && passwordInput === ADMIN_PASSWORD) {
                 window.showToast("Admin access authorized!", "success");
-                localStorage.setItem('vyrova_session', JSON.stringify({ username: ADMIN_USERNAME, role: 'admin', name: 'Haider Ali' }));
-                setTimeout(() => safeRedirect('admin.html'), 800);
+                
+                const sessionObj = { username: ADMIN_USERNAME, role: 'admin', name: 'Haider Ali' };
+                try {
+                    localStorage.setItem('vyrova_session', JSON.stringify(sessionObj));
+                } catch (e) {
+                    console.warn("Storage restricted. Switching transport channels.");
+                }
+                
+                setTimeout(() => safeRedirect('admin.html', sessionObj), 800);
                 return;
             }
 
-            // Fetch live users directly from the Cloud Database setup
+            // 2. Client Profile matching block
             const cloudUsers = await fetchUsersFromCloud();
             const matchedUser = cloudUsers.find(u => u.username === usernameInput && u.password === passwordInput);
 
@@ -264,9 +325,7 @@
                         
                         try {
                             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', matchedUser.id), matchedUser);
-                        } catch (fsErr) {
-                            // Endpoint REST patch fallback if required
-                        }
+                        } catch (fsErr) {}
                         window.showToast("New machine footprint locked successfully!", "success");
                     } else {
                         window.showToast(`Device limit reached (${maxDevices})! Login blocked.`, "error");
@@ -276,8 +335,15 @@
                 }
 
                 window.showToast(`Khushamdeed, ${matchedUser.name}! Loading app...`, "success");
-                localStorage.setItem('vyrova_session', JSON.stringify({ username: matchedUser.username, role: 'user', name: matchedUser.name }));
-                setTimeout(() => safeRedirect('index.html'), 800);
+                
+                const sessionObj = { username: matchedUser.username, role: 'user', name: matchedUser.name };
+                try {
+                    localStorage.setItem('vyrova_session', JSON.stringify(sessionObj));
+                } catch (e) {
+                    console.warn("Storage restricted. Switching transport channels.");
+                }
+                
+                setTimeout(() => safeRedirect('index.html', sessionObj), 800);
             } else {
                 window.showToast("Invalid credentials! Username ya password check karein.", "error");
                 submitBtn.disabled = false; loader.classList.add('hidden'); arrowIcon.classList.remove('hidden');
