@@ -60,26 +60,20 @@
     </style>
 </head>
 
-<body class="min-h-screen animated-mesh text-slate-100 flex flex-col justify-between relative h-full">
+<body class="min-h-screen animated-mesh text-slate-100 flex flex-col justify-center relative h-full">
 
-    <!-- Top Windows Bar Mockup -->
-    <div class="w-full bg-[#070a12] border-b border-slate-900/60 px-4 py-2 flex items-center justify-between text-xs text-slate-500 relative z-50">
-        <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-[#ff5f56] inline-block"></span>
-            <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block"></span>
-            <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block"></span>
-        </div>
-        <div class="font-semibold text-[10px] tracking-widest uppercase text-slate-400">VYROVA AI DESKTOP SHELL</div>
-        <div class="text-[10px] text-indigo-400 font-mono"><i class="fa-solid fa-server mr-1"></i>SECURE SHELL</div>
-    </div>
+    <!-- Top & Bottom Abstract Glow Overlays -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-brand-600/10 blur-[130px] pointer-events-none"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-blue-600/5 blur-[100px] pointer-events-none"></div>
 
     <!-- Main Content login layout -->
     <div class="flex-1 flex flex-col justify-center items-center px-4 py-12 relative z-10">
         <!-- Brand Logo Header -->
         <div class="flex flex-col items-center mb-8 text-center">
             <img src="https://i.ibb.co/5XQLZbcm/Tool-Logo.png" alt="VYROVA-Logo" class="h-16 w-auto object-contain mb-4 filter drop-shadow-[0_0_15px_rgba(139,92,246,0.3)]"/>
-            <span class="px-3 py-1 rounded-full text-[10px] tracking-widest font-bold uppercase bg-brand-500/10 text-brand-300 border border-brand-500/20">
-                <i class="fa-solid fa-bolt mr-1 animate-pulse"></i> Terminal Lock System
+            <!-- Upgraded beautiful Secure Gateway indicator -->
+            <span class="px-3 py-1.5 rounded-full text-[9px] tracking-widest font-black uppercase bg-brand-500/5 text-brand-300 border border-brand-500/15 shadow-sm">
+                <i class="fa-solid fa-circle-check mr-1.5 text-brand-400 animate-pulse"></i> VYROVA SECURE GATEWAY
             </span>
         </div>
 
