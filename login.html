@@ -479,45 +479,39 @@
     </div>
   </div>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDK — Realtime Database -->
   <script type="module">
-    import { initializeApp }    from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-    import { getAnalytics }     from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
+    import { initializeApp }   from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import { getAnalytics }    from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
     import { getAuth, signInWithEmailAndPassword }
-                                from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, updateDoc }
-                                from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+                               from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+    import { getDatabase, ref, get, update }
+                               from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
 
     const firebaseConfig = {
-      apiKey:            "AIzaSyBuYNUubdCfCktR1cWiKPJquVd8dbB-NUw",
-      authDomain:        "vyrova-2eb4d.firebaseapp.com",
-      projectId:         "vyrova-2eb4d",
-      storageBucket:     "vyrova-2eb4d.firebasestorage.app",
-      messagingSenderId: "136436344218",
-      appId:             "1:136436344218:web:0efa47a4da3f20b7bc8623",
-      measurementId:     "G-1TNRGDFL4M"
+      apiKey:            "AIzaSyB_ifbshi2ZGcK0nhq6UiLZsUYRlxyxk1U",
+      authDomain:        "vyrova-860b3.firebaseapp.com",
+      databaseURL:       "https://vyrova-860b3-default-rtdb.firebaseio.com",
+      projectId:         "vyrova-860b3",
+      storageBucket:     "vyrova-860b3.firebasestorage.app",
+      messagingSenderId: "1084760988508",
+      appId:             "1:1084760988508:web:6959662c20638278783f99",
+      measurementId:     "G-RVM3PB40TW"
     };
 
     const app       = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const auth      = getAuth(app);
-    const db        = getFirestore(app);
+    const db        = getDatabase(app);
 
-    /* ── Get approximate public IP ── */
+    /* ── Get public IP ── */
     async function getPublicIP() {
       try {
         const r = await fetch('https://api.ipify.org?format=json');
         const d = await r.json();
         return d.ip;
-      } catch {
-        return null;
-      }
+      } catch { return null; }
     }
-
-    /* ── Show IP badge ── */
-    getPublicIP().then(ip => {
-      /* IP badge hidden — no display needed */
-    });
 
     /* ── Helpers ── */
     function showError(msg) {
@@ -526,39 +520,36 @@
       el.classList.add('show');
       document.getElementById('success-msg').classList.remove('show');
     }
-
     function showSuccess(msg) {
       const el = document.getElementById('success-msg');
       document.getElementById('success-text').textContent = msg;
       el.classList.add('show');
       document.getElementById('error-msg').classList.remove('show');
     }
-
     function setLoading(on) {
       document.getElementById('loginBtn').disabled = on;
-      document.getElementById('btn-text').style.display  = on ? 'none' : 'block';
-      document.getElementById('spinner').style.display   = on ? 'block' : 'none';
+      document.getElementById('btn-text').style.display = on ? 'none' : 'block';
+      document.getElementById('spinner').style.display  = on ? 'block' : 'none';
     }
 
-    /* ── ADMIN credentials ── */
-    const ADMIN_USER   = '923220498935';
-    const ADMIN_PWD    = 'HaiderAli000';
-    const ADMIN_EMAILS = ['923220498935@vyrova.com'];
+    /* ── Admin credentials ── */
+    const ADMIN_USER = '923220498935';
+    const ADMIN_PWD  = 'HaiderAli000';
 
-    /* ── Main login handler (exposed to window) ── */
+    /* ── Login handler ── */
     window.handleLogin = async function () {
-      const emailOrPhone = document.getElementById('email').value.trim();
-      const password     = document.getElementById('password').value;
+      const input    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
 
       document.getElementById('error-msg').classList.remove('show');
       document.getElementById('success-msg').classList.remove('show');
 
-      if (!emailOrPhone || !password) { showError('Please enter credentials.'); return; }
+      if (!input || !password) { showError('Please enter credentials.'); return; }
 
       setLoading(true);
 
-      /* ── Admin direct login via phone number ── */
-      if (emailOrPhone === ADMIN_USER && password === ADMIN_PWD) {
+      /* Admin shortcut */
+      if (input === ADMIN_USER && password === ADMIN_PWD) {
         showSuccess('Admin verified! Entering dashboard...');
         setTimeout(() => { window.location.href = 'Admin.html'; }, 1400);
         return;
@@ -566,36 +557,54 @@
 
       try {
         const currentIP  = await getPublicIP();
-        const loginEmail = emailOrPhone.includes('@') ? emailOrPhone : emailOrPhone + '@vyrova.com';
+        const loginEmail = input.includes('@') ? input : input + '@vyrova.com';
 
+        /* Firebase Auth login */
         const cred = await signInWithEmailAndPassword(auth, loginEmail, password);
         const uid  = cred.user.uid;
 
-        const userRef  = doc(db, 'users', uid);
-        const userSnap = await getDoc(userRef);
+        /* Read user from Realtime DB */
+        const snap = await get(ref(db, `users/${uid}`));
+        const data = snap.val();
 
-        if (!userSnap.exists()) {
-          await setDoc(userRef, {
-            email: loginEmail,
+        if (!data) {
+          await auth.signOut();
+          setLoading(false);
+          showError('Account not found in system. Contact admin.');
+          return;
+        }
+
+        /* Plan expiry check */
+        const planEnd = data.planEnd ? new Date(data.planEnd) : null;
+        if (planEnd && planEnd < new Date()) {
+          await auth.signOut();
+          setLoading(false);
+          showError('Your 30-day plan has expired. Please contact admin.');
+          return;
+        }
+
+        /* IP Lock check */
+        if (data.registeredIP && data.registeredIP !== currentIP) {
+          await auth.signOut();
+          setLoading(false);
+          showError('Access denied. This account is locked to a different device/IP.');
+          return;
+        }
+
+        /* First login — save IP */
+        if (!data.registeredIP && currentIP) {
+          await update(ref(db, `users/${uid}`), {
             registeredIP: currentIP,
             lastLogin: new Date().toISOString()
           });
         } else {
-          const data    = userSnap.data();
-          const isAdmin = ADMIN_EMAILS.includes(loginEmail.toLowerCase());
-
-          if (!isAdmin && data.registeredIP && data.registeredIP !== currentIP) {
-            await auth.signOut();
-            setLoading(false);
-            showError('Access denied. This account is locked to a different IP address.');
-            return;
-          }
-          await updateDoc(userRef, { lastLogin: new Date().toISOString(), lastIP: currentIP });
+          await update(ref(db, `users/${uid}`), {
+            lastLogin: new Date().toISOString()
+          });
         }
 
-        const isAdmin = ADMIN_EMAILS.includes(loginEmail.toLowerCase());
-        showSuccess(isAdmin ? 'Admin verified! Entering dashboard...' : 'Welcome back! Loading workspace...');
-        setTimeout(() => { window.location.href = isAdmin ? 'Admin.html' : 'index.html'; }, 1400);
+        showSuccess('Welcome back! Loading workspace...');
+        setTimeout(() => { window.location.href = 'index.html'; }, 1400);
 
       } catch (err) {
         setLoading(false);
@@ -609,7 +618,7 @@
       }
     };
 
-    /* ── Enter key support ── */
+    /* ── Enter key ── */
     document.addEventListener('keydown', e => {
       if (e.key === 'Enter') window.handleLogin();
     });
