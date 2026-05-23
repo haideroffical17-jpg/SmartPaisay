@@ -71,7 +71,6 @@
         <!-- Brand Logo Header -->
         <div class="flex flex-col items-center mb-8 text-center">
             <img src="https://i.ibb.co/5XQLZbcm/Tool-Logo.png" alt="VYROVA-Logo" class="h-16 w-auto object-contain mb-4 filter drop-shadow-[0_0_15px_rgba(139,92,246,0.3)]"/>
-            <!-- Upgraded beautiful Secure Gateway indicator -->
             <span class="px-3 py-1.5 rounded-full text-[9px] tracking-widest font-black uppercase bg-brand-500/5 text-brand-300 border border-brand-500/15 shadow-sm">
                 <i class="fa-solid fa-circle-check mr-1.5 text-brand-400 animate-pulse"></i> VYROVA SECURE GATEWAY
             </span>
@@ -142,7 +141,8 @@
     <!-- Firebase Implementation -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        // Import initializeAuth and inMemoryPersistence to bypass iframe third-party cookie/IndexedDB restrictions completely
+        import { initializeAuth, inMemoryPersistence, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Redirection helper sandbox crash protection ko prevent karne ke liye
@@ -174,7 +174,10 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        // FORCE IN-MEMORY PERSISTENCE: This ensures Auth succeeds even inside restricted iframe sandboxes
+        const auth = initializeAuth(app, {
+            persistence: inMemoryPersistence
+        });
         const db = getFirestore(app);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'vyrova-2eb4d';
 
@@ -259,7 +262,7 @@
             window.localUsersArray = JSON.parse(localStorage.getItem('ai_users')) || [];
         }
 
-        // Rule 3: Anonymous auth before queries with admin restricted error catch blocks
+        // Rule 3: Anonymous auth before queries
         const initAuth = async () => {
             try {
                 await signInAnonymously(auth);
@@ -310,6 +313,7 @@
             // 2. Regular User Credentials
             let cachedUsers = window.localUsersArray || JSON.parse(localStorage.getItem('ai_users')) || [];
             
+            // Fallback: real cloud fetch if sync was delayed or not active
             if (cachedUsers.length === 0 && !window.isOfflineMode) {
                 try {
                     const snapshot = await getDocs(usersCollectionRef);
